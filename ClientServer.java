@@ -13,23 +13,9 @@ public class ClientServer {
             DataInputStream din=new DataInputStream(s.getInputStream());
             DataOutputStream dout=new DataOutputStream(s.getOutputStream());
 
-            // string to read message from input
-            String line = "";
-
-            // keep reading until "Over" is input
-            while (!line.equals("Over"))
-            {
-                try
-                {
-                    line = din.readLine();
-                    System.out.println(line);
-                    dout.writeUTF(line);
-                }
-                catch(IOException i)
-                {
-                    System.out.println(i);
-                }
-            }
+            Thread tRead = new Thread(new ReadHandler(s));
+            tRead.start();
+     
         }catch(Exception e){
             System.out.println(e);
         }
