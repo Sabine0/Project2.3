@@ -15,7 +15,9 @@ public class ClientServer {
 
             Thread tRead = new Thread(new ReadHandler(s));
             tRead.start();
-     
+            Thread tWtrite = new Thread(new WriteHandler(s));
+            tWtrite.start();
+
         }catch(Exception e){
             System.out.println(e);
         }
