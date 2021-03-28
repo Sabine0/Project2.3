@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 public class WriteHandler implements Runnable{
 
+    private volatile boolean exit = false;
     PrintWriter toServer;
     BufferedReader userInput;
     //scanner is bedoeld voor test doeleiden
@@ -16,12 +17,16 @@ public class WriteHandler implements Runnable{
         toServer = new PrintWriter(socket.getOutputStream(), true);
         //de userInput moet nog
     }
+    public void stop() {
+        exit = true;
+    }
 
     @Override
     public void run() {
-        while (true){
+        while (!exit){
             toServer.println(scanner.nextLine());
         }
+
         
     }
 }
