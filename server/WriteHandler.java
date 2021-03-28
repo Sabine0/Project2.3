@@ -22,6 +22,6 @@ public class WriteHandler implements Runnable{
         while (true){
             toServer.println(scanner.nextLine());
         }
-
+        
     }
 }
