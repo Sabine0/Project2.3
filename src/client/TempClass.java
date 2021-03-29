@@ -1,4 +1,5 @@
 package client;
+
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -90,6 +91,7 @@ public class TempClass extends Application {
         public GameMenu(){
             VBox menu0 = new VBox(10);
             VBox playMenu = new VBox(10);
+            VBox playModeMenu = new VBox(10);
 
             menu0.setTranslateX(100);
             menu0.setTranslateY(200);
@@ -97,8 +99,12 @@ public class TempClass extends Application {
             playMenu.setTranslateX(100);
             playMenu.setTranslateY(200);
 
+            playModeMenu.setTranslateX(100);
+            playModeMenu.setTranslateY(200);
+
             final int offset = 400;
             playMenu.setTranslateX(offset);
+            playModeMenu.setTranslateX(offset);
 
             MenuButton btnPlay = new MenuButton("PLAY");
             btnPlay.setOnMouseClicked(event ->{
@@ -121,15 +127,40 @@ public class TempClass extends Application {
 
             MenuButton btnTicTacToe = new MenuButton("TICTACTOE");
             btnTicTacToe.setOnMouseClicked(event ->{
-                // Start Tic Tac Toe match
-                // Maybe add menu: Co-Op/AI
-//                TicTacToe.launch();
+                getChildren().add(playModeMenu);
+
+                TranslateTransition tt = new TranslateTransition(Duration.seconds(0.25), playMenu);
+                tt.setToX(playMenu.getTranslateX() - offset);
+
+                TranslateTransition tt1 = new TranslateTransition(Duration.seconds(0.5), playModeMenu);
+                tt1.setToX(playMenu.getTranslateX());
+
+                tt.play();
+                tt1.play();
+
+                tt.setOnFinished(evt ->{
+                    getChildren().remove(playMenu);
+                });
             });
 
             MenuButton btnOthello = new MenuButton("OTHELLO");
             btnOthello.setOnMouseClicked(event ->{
-                // Start Othello match
-                // Maybe add menu: Co-Op/AI
+                // Duplicate code (same as btnTicTacToe):
+                getChildren().add(playModeMenu);
+
+                TranslateTransition tt = new TranslateTransition(Duration.seconds(0.25), playMenu);
+                tt.setToX(playMenu.getTranslateX() - offset);
+
+                TranslateTransition tt1 = new TranslateTransition(Duration.seconds(0.5), playModeMenu);
+                tt1.setToX(playMenu.getTranslateX());
+
+                tt.play();
+                tt1.play();
+
+                tt.setOnFinished(evt ->{
+                    getChildren().remove(playMenu);
+                });
+
             });
 
             MenuButton btnCredits = new MenuButton("CREDITS");
@@ -160,8 +191,20 @@ public class TempClass extends Application {
                 System.exit(0);
             });
 
+            MenuButton btnPvp = new MenuButton("PLAYER VS PLAYER");
+            btnPvp.setOnMouseClicked(event->{
+                // Start game player vs player match: TicTacToe/Othello
+            });
+
+            MenuButton btnPvc = new MenuButton("PLAYER VS COMPUTER");
+            btnPvc.setOnMouseClicked(event ->{
+                // Start game player vs computer match: TicTacToe/Othello
+            });
+
+
             menu0.getChildren().addAll(btnPlay, btnCredits, btnExit);
             playMenu.getChildren().addAll(btnTicTacToe, btnOthello, btnBack);
+            playModeMenu.getChildren().addAll(btnPvp, btnPvc);
 
 
             Rectangle bg = new Rectangle(800,600);
