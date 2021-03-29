@@ -25,7 +25,7 @@ public class ReadHandler implements Runnable{
             try {
                String serverOutput = inputFromServer.readLine();
                if (serverOutput==null){
-                   stop();
+                   System.exit(0);
                }else{
                    System.out.println(serverOutput);
                }
