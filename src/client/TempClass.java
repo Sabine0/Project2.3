@@ -1,5 +1,4 @@
 package client;
-
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -124,6 +123,7 @@ public class TempClass extends Application {
             btnTicTacToe.setOnMouseClicked(event ->{
                 // Start Tic Tac Toe match
                 // Maybe add menu: Co-Op/AI
+//                TicTacToe.launch();
             });
 
             MenuButton btnOthello = new MenuButton("OTHELLO");
