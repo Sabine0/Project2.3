@@ -35,3 +35,10 @@ out/production/client/server/ReadHandler.class
 Application/client.iml
 Application/Application.iml
 *.class
+.DS_Store
+.gitignore
+.vscode/settings.json
+.DS_Store
+.vscode/launch.json
+.DS_Store
+.gitignore
