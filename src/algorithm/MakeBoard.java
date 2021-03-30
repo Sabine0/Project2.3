@@ -56,6 +56,7 @@ public class MakeBoard {
         boolean valid = false;
         if (game == "Reversie") {
             // hier moet kijken welke zetten mogelijk zijn, hier wordt een andere functie voor aangeroepen.
+            
         } else if (game == "Tic-tac-toe") {
             if (board[move] == 0) {
                 valid = true;
