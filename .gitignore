@@ -35,3 +35,5 @@ out/production/client/server/ReadHandler.class
 Application/client.iml
 Application/Application.iml
 *.class
+.idea/codeStyles/codeStyleConfig.xml
+.idea/codeStyles/Project.xml
