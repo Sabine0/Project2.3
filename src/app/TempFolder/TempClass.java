@@ -1,4 +1,4 @@
-package client;
+package games;
 
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
