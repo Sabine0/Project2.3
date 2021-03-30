@@ -55,3 +55,13 @@ out/production/Project2.3/games/Othello.class
 out/production/Project2.3/games/TicTacToe$Combo.class
 out/production/Project2.3/games/TicTacToe$Tile.class
 out/production/Project2.3/games/TicTacToe.class
+.idea/compiler.xml
+.idea/description.html
+.idea/encodings.xml
+.idea/gradle.xml
+.idea/uiDesigner.xml
+Game2.3.iml
+out/production/Game2.3/sample/Controller.class
+out/production/Game2.3/sample/Main.class
+out/production/Game2.3/sample/sample.fxml
+*.class
