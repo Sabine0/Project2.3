@@ -1,17 +1,21 @@
-package server;
+package networking;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.List;
 
 public class ReadHandler implements Runnable{
 
     private volatile boolean exit = false;
-    Socket s;
-    BufferedReader inputFromServer;
-    public ReadHandler(Socket socket) throws IOException {
+    private Socket s;
+    private BufferedReader inputFromServer;
+    private List<String> readQueue;
+
+    public ReadHandler(Socket socket, List readQueue) throws IOException {
         inputFromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        this.readQueue = readQueue;
         s = socket;
     }
 
@@ -28,6 +32,9 @@ public class ReadHandler implements Runnable{
                    System.exit(0);
                }else{
                    System.out.println(serverOutput);
+                   synchronized (readQueue){
+                       readQueue.add(serverOutput);
+                   }
                }
 
             }catch (IOException e){
