@@ -13,6 +13,7 @@ public class WriteHandler implements Runnable{
     BufferedReader userInput;
     //scanner is bedoeld voor test doeleiden
     Scanner scanner = new Scanner(System.in);
+
     public WriteHandler(Socket socket) throws IOException {
         toServer = new PrintWriter(socket.getOutputStream(), true);
         //de userInput moet nog
