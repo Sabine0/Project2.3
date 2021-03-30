@@ -31,12 +31,12 @@ public class ReadHandler implements Runnable{
                if (serverOutput==null){
                    System.exit(0);
                }else{
-                   System.out.println(serverOutput);
+                   //System.out.println(serverOutput);
                    synchronized (readQueue){
                        readQueue.add(serverOutput);
+                       System.out.println(serverOutput);
                    }
                }
-
             }catch (IOException e){
                 System.out.println(e);
             }

@@ -11,12 +11,13 @@ import java.util.List;
 
 public class Connection {
     // readQueue
-    List<String> readQueue = Collections.synchronizedList(new ArrayList<String>());
+    List<String> readQueue;
     // write arraylist
-    List<String> writeQueue = Collections.synchronizedList(new ArrayList<String>());
+    List<String> writeQueue;
 
-    public Connection(String host, int port) {
-          connect(host, port);
+    public Connection() {
+               readQueue = Collections.synchronizedList(new ArrayList<String>());
+               writeQueue = Collections.synchronizedList(new ArrayList<String>());
     }
 
     public boolean connect(String host, int port) {
@@ -27,6 +28,8 @@ public class Connection {
             tRead.start();
             Thread tWtrite = new Thread(new WriteHandler(s, writeQueue));
             tWtrite.start();
+            readQueue.remove(0);
+            readQueue.remove(0);
             return true;
 
         } catch (Exception e) {
