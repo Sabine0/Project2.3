@@ -1,4 +1,5 @@
 package client;
+
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -31,14 +32,14 @@ public class TempClass extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Pane root = new Pane();
-        root.setPrefSize(600,500);
+        root.setPrefSize(500,500);
 
         InputStream is = Files.newInputStream(Paths.get("res/images/background.jpg"));
         Image img = new Image(is);
         is.close();
 
         ImageView imageView = new ImageView(img);
-        imageView.setFitWidth(600);
+        imageView.setFitWidth(500);
         imageView.setFitHeight(500);
 
         gameMenu = new GameMenu();
@@ -88,48 +89,91 @@ public class TempClass extends Application {
 
     private class GameMenu extends Parent{
         public GameMenu(){
-            VBox menu0 = new VBox(10);
-            VBox playMenu = new VBox(10);
+            VBox mainMenu = new VBox(10);
+            VBox connectionModeMenu = new VBox(10);
+            VBox onlinePlayModeMenu = new VBox(10);
+            VBox localPlayModeMenu = new VBox(10);
+            VBox onlineGamesMenu = new VBox(10);
+            VBox localGamesMenu = new VBox(10);
 
-            menu0.setTranslateX(100);
-            menu0.setTranslateY(200);
+            mainMenu.setTranslateX(100);
+            mainMenu.setTranslateY(200);
 
-            playMenu.setTranslateX(100);
-            playMenu.setTranslateY(200);
+            connectionModeMenu.setTranslateX(100);
+            connectionModeMenu.setTranslateY(200);
+
+            localGamesMenu.setTranslateX(100);
+            localGamesMenu.setTranslateY(200);
+
+            onlineGamesMenu.setTranslateX(100);
+            onlineGamesMenu.setTranslateY(200);
+
+            onlinePlayModeMenu.setTranslateX(100);
+            onlinePlayModeMenu.setTranslateY(200);
+
+            localPlayModeMenu.setTranslateX(100);
+            localPlayModeMenu.setTranslateY(200);
 
             final int offset = 400;
-            playMenu.setTranslateX(offset);
+            localGamesMenu.setTranslateX(offset);
+            connectionModeMenu.setTranslateX(offset);
+            onlineGamesMenu.setTranslateX(offset);
 
             MenuButton btnPlay = new MenuButton("PLAY");
             btnPlay.setOnMouseClicked(event ->{
-                getChildren().add(playMenu);
+                getChildren().add(connectionModeMenu);
 
-                TranslateTransition tt = new TranslateTransition(Duration.seconds(0.25), menu0);
-                tt.setToX(menu0.getTranslateX() - offset);
+                TranslateTransition tt = new TranslateTransition(Duration.seconds(0.25), mainMenu);
+                tt.setToX(mainMenu.getTranslateX() - offset);
 
-                TranslateTransition tt1 = new TranslateTransition(Duration.seconds(0.5), playMenu);
-                tt1.setToX(menu0.getTranslateX());
+                TranslateTransition tt1 = new TranslateTransition(Duration.seconds(0.5), connectionModeMenu);
+                tt1.setToX(mainMenu.getTranslateX());
 
                 tt.play();
                 tt1.play();
 
                 tt.setOnFinished(evt ->{
-                    getChildren().remove(menu0);
+                    getChildren().remove(mainMenu);
                 });
 
             });
 
             MenuButton btnTicTacToe = new MenuButton("TICTACTOE");
             btnTicTacToe.setOnMouseClicked(event ->{
-                // Start Tic Tac Toe match
-                // Maybe add menu: Co-Op/AI
-//                TicTacToe.launch();
+                getChildren().add(onlinePlayModeMenu);
+
+                TranslateTransition tt = new TranslateTransition(Duration.seconds(0.25), onlineGamesMenu);
+                tt.setToX(onlineGamesMenu.getTranslateX() + offset);
+
+                TranslateTransition tt1 = new TranslateTransition(Duration.seconds(0.5), onlinePlayModeMenu);
+                tt1.setToX(onlineGamesMenu.getTranslateX());
+
+                tt.play();
+                tt1.play();
+
+                tt.setOnFinished(evt ->{
+                    getChildren().remove(onlineGamesMenu);
+                });
+
+
             });
 
             MenuButton btnOthello = new MenuButton("OTHELLO");
             btnOthello.setOnMouseClicked(event ->{
-                // Start Othello match
-                // Maybe add menu: Co-Op/AI
+                getChildren().add(localPlayModeMenu);
+
+                TranslateTransition tt = new TranslateTransition(Duration.seconds(0.25), localGamesMenu);
+                tt.setToX(localGamesMenu.getTranslateX() + offset);
+
+                TranslateTransition tt1 = new TranslateTransition(Duration.seconds(0.5), localPlayModeMenu);
+                tt1.setToX(localGamesMenu.getTranslateX());
+
+                tt.play();
+                tt1.play();
+
+                tt.setOnFinished(evt ->{
+                    getChildren().remove(localGamesMenu);
+                });
             });
 
             MenuButton btnCredits = new MenuButton("CREDITS");
@@ -139,19 +183,19 @@ public class TempClass extends Application {
 
             MenuButton btnBack = new MenuButton("BACK");
             btnBack.setOnMouseClicked(event ->{
-                getChildren().add(menu0);
+                getChildren().add(mainMenu);
 
-                TranslateTransition tt = new TranslateTransition(Duration.seconds(0.25), playMenu);
-                tt.setToX(playMenu.getTranslateX() + offset);
+                TranslateTransition tt = new TranslateTransition(Duration.seconds(0.25), connectionModeMenu);
+                tt.setToX(connectionModeMenu.getTranslateX() + offset);
 
-                TranslateTransition tt1 = new TranslateTransition(Duration.seconds(0.5), menu0);
-                tt1.setToX(playMenu.getTranslateX());
+                TranslateTransition tt1 = new TranslateTransition(Duration.seconds(0.5), mainMenu);
+                tt1.setToX(connectionModeMenu.getTranslateX());
 
                 tt.play();
                 tt1.play();
 
                 tt.setOnFinished(evt ->{
-                    getChildren().remove(playMenu);
+                    getChildren().remove(connectionModeMenu);
                 });
             });
 
@@ -160,15 +204,69 @@ public class TempClass extends Application {
                 System.exit(0);
             });
 
-            menu0.getChildren().addAll(btnPlay, btnCredits, btnExit);
-            playMenu.getChildren().addAll(btnTicTacToe, btnOthello, btnBack);
+            MenuButton btnPvp = new MenuButton("PLAYER VS PLAYER");
+            btnPvp.setOnMouseClicked(event->{
+                // Start game player vs player match: TicTacToe/Othello
+            });
 
+            MenuButton btnPvc = new MenuButton("PLAYER VS COMPUTER");
+            btnPvc.setOnMouseClicked(event ->{
+                // Start game player vs computer match: TicTacToe/Othello
+            });
+
+            MenuButton btnCvc = new MenuButton("COMPUTER VS COMPUTER");
+            btnCvc.setOnMouseClicked(event ->{
+                // start computer vs computer game
+            });
+
+            MenuButton btnLocal = new MenuButton("LOCAL");
+            btnLocal.setOnMouseClicked(event ->{
+                getChildren().add(localGamesMenu);
+
+                TranslateTransition tt = new TranslateTransition(Duration.seconds(0.25), connectionModeMenu);
+                tt.setToX(connectionModeMenu.getTranslateX() + offset);
+
+                TranslateTransition tt1 = new TranslateTransition(Duration.seconds(0.5), localGamesMenu);
+                tt1.setToX(connectionModeMenu.getTranslateX());
+
+                tt.play();
+                tt1.play();
+
+                tt.setOnFinished(evt ->{
+                    getChildren().remove(connectionModeMenu);
+                });
+            });
+
+            MenuButton btnOnline = new MenuButton("ONLINE");
+            btnOnline.setOnMouseClicked(event ->{
+                getChildren().add(onlineGamesMenu);
+
+                TranslateTransition tt = new TranslateTransition(Duration.seconds(0.25), connectionModeMenu);
+                tt.setToX(connectionModeMenu.getTranslateX() + offset);
+
+                TranslateTransition tt1 = new TranslateTransition(Duration.seconds(0.5), onlineGamesMenu);
+                tt1.setToX(connectionModeMenu.getTranslateX());
+
+                tt.play();
+                tt1.play();
+
+                tt.setOnFinished(evt ->{
+                    getChildren().remove(connectionModeMenu);
+                });
+            });
+
+            mainMenu.getChildren().addAll(btnPlay, btnCredits, btnExit);
+            connectionModeMenu.getChildren().addAll(btnLocal, btnOnline, btnBack);
+            localGamesMenu.getChildren().addAll(btnOthello);
+            localPlayModeMenu.getChildren().addAll(btnPvp, btnPvc);
+            onlineGamesMenu.getChildren().addAll(btnTicTacToe);
+            onlinePlayModeMenu.getChildren().addAll(btnCvc);
 
             Rectangle bg = new Rectangle(800,600);
             bg.setFill(Color.GREY);
             bg.setOpacity(0.4);
 
-            getChildren().addAll(bg, menu0);
+            getChildren().addAll(bg, mainMenu);
         }
     }
 

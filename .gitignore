@@ -34,6 +34,12 @@ out/production/Project2.3/server/ReadHandler.class
 out/production/client/server/ReadHandler.class
 Application/client.iml
 Application/Application.iml
-*.class
+*.class.DS_Store
+.gitignore
+.vscode/settings.json
+.DS_Store
+.vscode/launch.json
+.DS_Store
+.gitignore
 .idea/codeStyles/codeStyleConfig.xml
 .idea/codeStyles/Project.xml
