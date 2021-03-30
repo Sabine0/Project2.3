@@ -43,3 +43,15 @@ Application/Application.iml
 .gitignore
 .idea/codeStyles/codeStyleConfig.xml
 .idea/codeStyles/Project.xml
+out/production/Project2.3/client/controller/ClientAppController.class
+out/production/Project2.3/client/model/TempModel.class
+out/production/Project2.3/client/controller/ClientAppRunner.class
+out/production/Project2.3/client/TempClass$GameMenu.class
+out/production/Project2.3/client/TempClass$MenuButton.class
+out/production/Project2.3/client/TempClass.class
+out/production/Project2.3/client/view/TempView.class
+out/production/Project2.3/games/Othello$Tile.class
+out/production/Project2.3/games/Othello.class
+out/production/Project2.3/games/TicTacToe$Combo.class
+out/production/Project2.3/games/TicTacToe$Tile.class
+out/production/Project2.3/games/TicTacToe.class
