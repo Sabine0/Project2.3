@@ -1,4 +1,4 @@
-package algorithm;
+package app.algorithm;
 
 public class MakeBoard {
 

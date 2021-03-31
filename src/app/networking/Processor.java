@@ -1,4 +1,4 @@
-package networking;
+package app.networking;
 
 public class Processor {
      Connection connection;
