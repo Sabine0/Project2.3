@@ -1,22 +1,19 @@
 package app.games;
 
 import app.games.gameobjects.TicTacToeBoard;
-import app.games.gameobjects.TicTacToeTile;
 import app.model.Bot;
 import app.model.Player;
 import app.model.UserPlayer;
 import app.state.GameState;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.scene.Parent;
 
 public class TicTacToe extends GameState {
-    // game logic
-    boolean online;
-    TicTacToeBoard tttBoard;
-    boolean p1turn;
-    Player p1;
-    Player p2;
+    // game logic in this class (methods)
+    private boolean online;
+    private TicTacToeBoard tttBoard;
+    private boolean p1turn;
+    private Player p1;
+    private Player p2;
 
     public TicTacToe(boolean online, boolean playerOneHuman, boolean playerTwoHuman) { // TO DO: missing username param
         super(online, playerOneHuman, playerTwoHuman);
@@ -63,10 +60,10 @@ public class TicTacToe extends GameState {
                     int c = col;
                     int r = row;
                     tttBoard.getTile(c, r).setOnMouseClicked(event -> {
-                        if (p1turn) {
+                        if (p1turn && p1.isHuman()) {
                             tttBoard.doMoveX(c, r);
                             p1turn = false;
-                        } else if (!p1turn) {
+                        } else if (!p1turn && p2.isHuman()) {
                             tttBoard.doMoveO(c, r);
                             p1turn = true;
                         } else {
@@ -79,7 +76,7 @@ public class TicTacToe extends GameState {
 
         //If player is bot
         if (!p1.isHuman() || !p2.isHuman()) {
-            // Get move from AI: row and column
+            // TO DO: Get move from AI: row and column
             // Code here
 
             if (p1turn) {

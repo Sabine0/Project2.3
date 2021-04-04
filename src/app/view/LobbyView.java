@@ -27,7 +27,7 @@ public class LobbyView implements View{
         lobbyText = new Text();
         modeMenu = modeMenu();
 
-        lobbyText.setText("Online lobby");
+        lobbyText.setText("ONLINE LOBBY FOR " + game);
         textBox.getChildren().addAll(lobbyText);
 
         view.setTop(textBox);

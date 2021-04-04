@@ -10,6 +10,7 @@ public class OthelloTile extends Tile {
     public OthelloTile(){
         super();
         circle = new Circle();
+
         getChildren().add(circle);
     }
 
