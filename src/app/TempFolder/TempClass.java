@@ -1,4 +1,4 @@
-package games;
+package app.TempFolder;
 
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;

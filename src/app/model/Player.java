@@ -5,5 +5,12 @@ public abstract class Player {
     public Player(String username){
         this.username = username;
     }
+
+    public String getUsername(){
+        return username;
+    }
+
     public abstract void doMove();
+
+    public abstract boolean isHuman();
 }

@@ -4,8 +4,7 @@ import app.games.gameobjects.Board;
 import javafx.scene.Parent;
 
 public class OthelloBoard extends Board {
-    public OthelloBoard(int width, int height) {
-        super(width, height);
+    public OthelloBoard() {
     }
 
     @Override

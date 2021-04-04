@@ -8,6 +8,10 @@ public class UserPlayer extends Player{
 
     @Override
     public void doMove(){
-        // do move!
+        // click the tile
+    }
+
+    public boolean isHuman(){
+        return true;
     }
 }

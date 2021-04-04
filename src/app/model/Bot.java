@@ -10,4 +10,8 @@ public class Bot extends Player{
     public void doMove(){
         // do move!
     }
+
+    public boolean isHuman(){
+        return false;
+    }
 }

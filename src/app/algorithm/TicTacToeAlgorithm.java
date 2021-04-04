@@ -1,4 +1,4 @@
-package algorithm;
+package app.algorithm;
 
 import java.util.Random;
 
@@ -56,7 +56,7 @@ public class TicTacToeAlgorithm {
     }
 
     private int getPosition(){
-        int pos;
+        int pos=0;
 
         return pos;
     }

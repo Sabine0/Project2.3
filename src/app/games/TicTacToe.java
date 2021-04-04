@@ -1,45 +1,101 @@
 package app.games;
 
+import app.games.gameobjects.TicTacToeBoard;
+import app.games.gameobjects.TicTacToeTile;
+import app.model.Bot;
+import app.model.Player;
+import app.model.UserPlayer;
+import app.state.GameState;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.scene.Parent;
-import javafx.scene.control.Label;
 
 public class TicTacToe extends GameState {
     // game logic
-    boolean online = false;
-    boolean multiplayer;
-    boolean playerOneHuman;
+    boolean online;
+    TicTacToeBoard tttBoard;
+    boolean p1turn;
+    Player p1;
+    Player p2;
 
-    public TicTacToe(boolean multiplayer, boolean online, boolean playerOneHuman) {
-        super(3, 3, multiplayer, online);
+    public TicTacToe(boolean online, boolean playerOneHuman, boolean playerTwoHuman) { // TO DO: missing username param
+        super(online, playerOneHuman, playerTwoHuman);
+        tttBoard = new TicTacToeBoard();
         this.online = online;
-        this.multiplayer = multiplayer;
-        this.playerOneHuman = playerOneHuman;
+
+        p1turn = true;
+
+        if(playerOneHuman){
+            p1 = new UserPlayer(""); // TO DO: username from constructor param
+        }else{
+            p1 = new Bot("Victor");
+        }
+
+        if (playerTwoHuman){
+            p2 = new UserPlayer(""); // TO DO: username from constructor param
+        }else {
+            p2 = new Bot("Victor");
+        }
+
+        if(online){
+            launchOnline();
+        }else{
+            launchLocal();
+        }
     }
 
-    public void launchOnline(boolean multiplayer){
-        if(multiplayer){
-            // start server connection + run online multiplayer game
-        }else{
-            if(playerOneHuman){
-                // start server connection + run online AI vs AI game
-            }else{
-                // start server connection + run online player vs AI game
+    public void launchOnline(){
+        getView();
+
+        // TO DO: implement online match
+    }
+
+    @Override
+    public void launchLocal() {
+        getView();
+
+        // TO DO: EVERYTHING BELOW DOESNT WORK YET FOR SOME REASON
+
+        //If player is human
+        if (p1.isHuman() || p2.isHuman()) {
+            for (int row = 0; row < 3; row++) {
+                for (int col = 0; col < 3; col++) {
+                    int c = col;
+                    int r = row;
+                    tttBoard.getTile(c, r).setOnMouseClicked(event -> {
+                        if (p1turn) {
+                            tttBoard.doMoveX(c, r);
+                            p1turn = false;
+                        } else if (!p1turn) {
+                            tttBoard.doMoveO(c, r);
+                            p1turn = true;
+                        } else {
+                            // Do not respond to clicks
+                        }
+                    });
+                }
+            }
+        }
+
+        //If player is bot
+        if (!p1.isHuman() || !p2.isHuman()) {
+            // Get move from AI: row and column
+            // Code here
+
+            if (p1turn) {
+                // Do move on coordinates given by AI
+//                tttBoard.doMoveX(r, c);
+                p1turn = false;
+            } else {
+                // Do move on coordinates given by AI
+//                tttBoard.doMoveO(r, c);
+                p1turn = true;
             }
         }
     }
 
     @Override
-    public void launchLocal(boolean multiplayer) {
-        if(multiplayer){
-            // run local CO-OP game
-        }else{
-            // run player vs AI game
-        }
-    }
-
-    @Override
     public Parent getView() {
-        // return board
-        return new Label("TicTacToe");
+        return tttBoard.boardView();
     }
 }

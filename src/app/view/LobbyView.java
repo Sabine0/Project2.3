@@ -6,40 +6,55 @@ import app.games.TicTacToe;
 import app.state.MainMenuState;
 import app.view.components.Menu;
 import javafx.scene.Parent;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 
 
 // whatever the online lobby looks like
 public class LobbyView implements View{
-    StackPane view;
-    Menu currentMenu;
+    BorderPane view;
+    String game;
+    Menu modeMenu;
+    Text lobbyText;
+    HBox textBox;
 
-    public LobbyView(){
-        view = new StackPane();
-        setMenu(modeMenu());
+    public LobbyView(String game){
+        this.game = game;
+        view = new BorderPane();
+        textBox = new HBox();
+        lobbyText = new Text();
+        modeMenu = modeMenu();
+
+        lobbyText.setText("Online lobby");
+        textBox.getChildren().addAll(lobbyText);
+
+        view.setTop(textBox);
+        view.setCenter(modeMenu);
     }
 
     // While in this lobby you can receive/send game requests
     // Menu: online AI vs AI / Player vs Player
 
-    public void setMenu(Menu menu){
-        Text text = new Text(); //temporary
-        text.setText("Online lobby");
-        if(currentMenu!=null){
-            view.getChildren().remove(currentMenu);
-        }
-        view.getChildren().addAll(text, menu);
-        currentMenu = menu;
-    }
-
     public Menu modeMenu(){
         Menu menu = new Menu();
-        menu.addButton("PLAYER VS PLAYER", event -> {
-            // run online game pvp
+        menu.addButton("PLAYER vs PLAYER", event -> {
+            if(game == "TICTACTOE"){
+                Main.setState(new TicTacToe(true, true, true));
+            }else if(game == "OTHELLO") {
+                Main.setState(new Othello(true, true, true));
+            }
         });
         menu.addButton("AI vs AI", event -> {
-            // run online game AIvAI
+            if(game == "TICTACTOE"){
+                Main.setState(new TicTacToe(true, false, false));
+            }else if(game == "OTHELLO") {
+                Main.setState(new Othello(true, false, false));
+            }
+        });
+        menu.addButton("EXIT LOBBY", event -> {
+            Main.setState(new MainMenuState());
         });
         return menu;
     }
