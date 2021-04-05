@@ -30,10 +30,14 @@ public class ReadHandler implements Runnable{
                String serverOutput = inputFromServer.readLine();
                if (serverOutput==null){
                    System.exit(0);
-               }else{
+               }else if(serverOutput.equals("Strategic Game Server Fixed [Version 1.1.0]") || serverOutput.equals("(C) Copyright 2015 Hanzehogeschool Groningen") ||serverOutput.equals("OK") ){
+
+                }else{
                    //System.out.println(serverOutput);
                    synchronized (readQueue){
                        readQueue.add(serverOutput);
+                       System.out.println("rq"+ readQueue.size());
+                       readQueue.notifyAll();
                        System.out.println(serverOutput);
                    }
                }

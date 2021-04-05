@@ -13,7 +13,12 @@ public class Processor {
 
     public String getGamelsit(){
         connection.write("get gamelist");
-        System.out.println(connection.readQueue);
+ /*       try {
+            Thread.sleep(1000);
+        }catch (Exception e){
+            System.out.println(e);
+        }*/
+        System.out.println("proccesor" +connection.read());
         return null;
     }
 }

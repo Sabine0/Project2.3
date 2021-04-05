@@ -58,7 +58,7 @@ public class TicTacToeAlgorithm {
     private int getPosition(){
         int pos=0;
 
-        return pos;
+        return 0;
     }
 
 }

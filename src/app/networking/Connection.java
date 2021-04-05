@@ -11,9 +11,9 @@ import java.util.List;
 
 public class Connection {
     // readQueue
-    List<String> readQueue;
+    private List<String> readQueue;
     // write arraylist
-    List<String> writeQueue;
+    private List<String> writeQueue;
 
     public Connection() {
                readQueue = Collections.synchronizedList(new ArrayList<String>());
@@ -28,8 +28,8 @@ public class Connection {
             tRead.start();
             Thread tWtrite = new Thread(new WriteHandler(s, writeQueue));
             tWtrite.start();
-            readQueue.remove(0);
-            readQueue.remove(0);
+
+
             return true;
 
         } catch (Exception e) {
@@ -40,8 +40,21 @@ public class Connection {
 
     public String read() {
         synchronized (readQueue) {
-            return readQueue.remove(0);
+/*            if(!readQueue.isEmpty()) {
+                return readQueue.remove(0);
+            }else{
+                return "server is not responding";
+            }*/
+            try {
+                while (readQueue.isEmpty()) {
+                    readQueue.wait();
+                    return readQueue.remove(0);
+                }
+            }catch (Exception e){
+                System.out.println(e);
+            }
         }
+        return "server is not responding";
     }
 
     public void write(String commandToServer) {
@@ -49,4 +62,23 @@ public class Connection {
             writeQueue.add(commandToServer);
         }
     }
+
+    public List<String> getWriteQueue() {
+        return writeQueue;
+    }
+
+    public List<String> getReadQueue() {
+        return readQueue;
+    }
+
+    public boolean isReadQueueEmpty() {
+        synchronized (readQueue) {
+            if (readQueue.isEmpty()){
+                return true;
+            }else{
+                return false;
+            }
+        }
+    }
+
 }
