@@ -37,11 +37,11 @@ public class OthelloBoard extends Board {
         return grid[c][r];
     }
 
-    public void doMoveWhite(int c, int r){
+    public void doMoveBlack(int c, int r){
         grid[c][r].setTileP1();
     }
-
-    public void doMoveBlack(int c, int r){
+    
+    public void doMoveWhite(int c, int r){
         grid[c][r].setTileP2();
     }
 
