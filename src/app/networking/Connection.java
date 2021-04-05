@@ -34,7 +34,29 @@ public class Connection {
         }
     }
 
-    public String read() throws ServerNotRespondingException, CommandFailedException {
+    public String readSingleLine() throws ServerNotRespondingException, CommandFailedException {
+        synchronized (readQueue) {
+            try {
+                while (readQueue.isEmpty()) {
+                    readQueue.wait(2000);
+                    if (!readQueue.isEmpty()) {
+                        String response = readQueue.remove(0);
+                        checkRespose(response);
+                        System.out.println("rq size after read:"+readQueue.size());
+                        return response;
+                    }else{
+                        throw new ServerNotRespondingException("There is no response form the the serve");
+                    }
+                }
+            }catch (IllegalArgumentException | InterruptedException e){
+                System.out.println("problem while reading"+ e);
+                return  "exception occurd";
+            }
+        }
+        return " read methode server is not responding";
+    }
+
+    public String readDubbleLine() throws ServerNotRespondingException, CommandFailedException {
         synchronized (readQueue) {
             try {
                 while (readQueue.isEmpty()) {

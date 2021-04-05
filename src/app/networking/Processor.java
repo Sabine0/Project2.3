@@ -24,7 +24,7 @@ public class Processor {
      */
     public String[] getGamelsit() throws ServerNotRespondingException, CommandFailedException {
         connection.write("get gamelist");
-        String gameList = connection.read();
+        String gameList = connection.readDubbleLine();
         System.out.println("proccesor" + gameList);
         return toStringArray(gameList);
     }
@@ -36,7 +36,7 @@ public class Processor {
     public String[] getPlayerList() throws ServerNotRespondingException, CommandFailedException {
         connection.write("get playerlist");
 
-        return toStringArray(connection.read());
+        return toStringArray(connection.readDubbleLine());
     }
 
     /**
@@ -46,7 +46,7 @@ public class Processor {
     public void login(String name) throws ServerNotRespondingException, CommandFailedException {
 
         connection.write("login "+ name);
-        if (connection.read().equals("OK")){
+        if (connection.readSingleLine().equals("OK")){
 
         }else{
 

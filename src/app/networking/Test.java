@@ -10,7 +10,7 @@ public class Test {
             p.getGamelsit();
             p.login("Danial");
           //  Thread.sleep(10000);
-            //p.login("Danial");
+            p.login("Danial");
            // p.getPlayerList();
         }catch (Exception e){
             System.out.println(e);
