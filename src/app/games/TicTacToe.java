@@ -25,13 +25,13 @@ public class TicTacToe extends GameState {
         if(playerOneHuman){
             p1 = new UserPlayer(""); // TO DO: username from constructor param
         }else{
-            p1 = new Bot("Victor");
+            p1 = new Bot("Victor BOT");
         }
 
         if (playerTwoHuman){
             p2 = new UserPlayer(""); // TO DO: username from constructor param
         }else {
-            p2 = new Bot("Victor");
+            p2 = new Bot("Victor BOT");
         }
 
         if(online){
