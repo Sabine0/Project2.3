@@ -1,11 +1,7 @@
 package app.networking;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -38,22 +34,25 @@ public class Connection {
         }
     }
 
-    public String read() throws serverNotRespondingException {
+    public String read() throws ServerNotRespondingException {
         synchronized (readQueue) {
             try {
                 while (readQueue.isEmpty()) {
                     readQueue.wait(2000);
                     if (!readQueue.isEmpty()) {
+                        checkRespose(readQueue.remove(0));
+                        System.out.println(readQueue.size());
                         return readQueue.remove(0);
                     }else{
-                        throw new serverNotRespondingException("There is no response form the the serve");
+                        throw new ServerNotRespondingException("There is no response form the the serve");
                     }
                 }
             }catch (Exception e){
                 System.out.println(e);
+                return  "exception occurd";
             }
         }
-        return "server is not responding";
+        return " read methode server is not responding";
     }
 
     public void write(String commandToServer) {
@@ -77,6 +76,29 @@ public class Connection {
             }else{
                 return false;
             }
+        }
+    }
+
+    /**
+     * this methode is meant to check the first response of a server to a command. if its ok it will do nothing
+     *  if there is and error it will create and exception with the error text and throw it.
+     * @param
+     * @throws CommandFailedException
+     */
+    private void checkRespose(String s) throws CommandFailedException {
+        if (s.equals("OK")){
+         synchronized (readQueue){
+             try {
+                 readQueue.wait(2000);
+             } catch (InterruptedException e) {
+                 e.printStackTrace();
+             }
+         }
+        }else if(s.startsWith("ERR")){
+           // String[] arr = s.split(" ", 2);
+            throw new CommandFailedException(s);
+        }else{
+            throw new CommandFailedException(s);
         }
     }
 

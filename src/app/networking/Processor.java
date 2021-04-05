@@ -20,9 +20,9 @@ public class Processor {
 
     /**
      * @return the available games in an array
-     * @throws serverNotRespondingException if disconnected or no response from the server
+     * @throws ServerNotRespondingException if disconnected or no response from the server
      */
-    public String[] getGamelsit() throws serverNotRespondingException{
+    public String[] getGamelsit() throws ServerNotRespondingException {
         connection.write("get gamelist");
         String gameList = connection.read();
         System.out.println("proccesor" + gameList);
@@ -31,9 +31,9 @@ public class Processor {
 
     /**
      * @return an array in the player names
-     * @throws serverNotRespondingException if disconnected or no response from the server
+     * @throws ServerNotRespondingException if disconnected or no response from the server
      */
-    public String[] getPlayerList() throws serverNotRespondingException{
+    public String[] getPlayerList() throws ServerNotRespondingException {
         connection.write("get playerlist");
 
         return toStringArray(connection.read());

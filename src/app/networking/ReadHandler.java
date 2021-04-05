@@ -30,7 +30,7 @@ public class ReadHandler implements Runnable{
                String serverOutput = inputFromServer.readLine();
                if (serverOutput==null){
                    System.exit(0);
-               }else if(serverOutput.equals("Strategic Game Server Fixed [Version 1.1.0]") || serverOutput.equals("(C) Copyright 2015 Hanzehogeschool Groningen") ||serverOutput.equals("OK") ){
+               }else if(serverOutput.equals("Strategic Game Server Fixed [Version 1.1.0]") || serverOutput.equals("(C) Copyright 2015 Hanzehogeschool Groningen")){
 
                 }else{
                    //System.out.println(serverOutput);
@@ -38,7 +38,7 @@ public class ReadHandler implements Runnable{
                        readQueue.add(serverOutput);
                        System.out.println("rq"+ readQueue.size());
                        readQueue.notifyAll();
-                       System.out.println("add to read queue" + serverOutput);
+                       System.out.println("add to read queue: " + serverOutput);
                    }
                }
             }catch (IOException e){

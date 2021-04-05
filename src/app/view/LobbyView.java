@@ -4,7 +4,7 @@ import app.Main;
 import app.games.Othello;
 import app.games.TicTacToe;
 import app.networking.Processor;
-import app.networking.serverNotRespondingException;
+import app.networking.ServerNotRespondingException;
 import app.state.MainMenuState;
 import app.view.components.Menu;
 import javafx.geometry.Pos;
@@ -123,7 +123,7 @@ public class LobbyView implements View{
     public void updateOnlinePlayerList(){
         try{
             onlineUsers = processor.getPlayerList();
-        }catch (serverNotRespondingException E){
+        }catch (ServerNotRespondingException E){
             System.out.println("HELP " + E);
         }
 
