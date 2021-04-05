@@ -14,6 +14,10 @@ public class OthelloTile extends Tile {
         getChildren().add(circle);
     }
 
+    public Circle getContent(){
+        return circle;
+    }
+
     @Override
     public void setTileP1(){
         circle.setFill(Color.WHITE);

@@ -62,10 +62,10 @@ public class Othello extends GameState {
                     int r = row;
                     othelloBoard.getTile(c, r).setOnMouseClicked(event -> {
                         if (p1turn && p1.isHuman()) {
-                            othelloBoard.doMoveWhite(c, r);
+                            othelloBoard.doMoveBlack(c, r);
                             p1turn = false;
                         } else if (!p1turn && p2.isHuman()) {
-                            othelloBoard.doMoveBlack(c, r);
+                            othelloBoard.doMoveWhite(c, r);
                             p1turn = true;
                         } else {
                             // Do not respond to clicks
