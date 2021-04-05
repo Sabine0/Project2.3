@@ -8,6 +8,8 @@ public class Test {
         Processor p = new Processor(c);
         try{
             p.getGamelsit();
+            p.login("Danial");
+            p.getPlayerList();
         }catch (Exception e){
             System.out.println(e);
         }
