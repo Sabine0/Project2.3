@@ -38,17 +38,16 @@ public class Connection {
         }
     }
 
-    public String read() {
+    public String read() throws serverNotRespondingException {
         synchronized (readQueue) {
-/*            if(!readQueue.isEmpty()) {
-                return readQueue.remove(0);
-            }else{
-                return "server is not responding";
-            }*/
             try {
                 while (readQueue.isEmpty()) {
-                    readQueue.wait();
-                    return readQueue.remove(0);
+                    readQueue.wait(2000);
+                    if (!readQueue.isEmpty()) {
+                        return readQueue.remove(0);
+                    }else{
+                        throw new serverNotRespondingException("There is no response form the the serve");
+                    }
                 }
             }catch (Exception e){
                 System.out.println(e);

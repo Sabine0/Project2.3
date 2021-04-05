@@ -6,7 +6,11 @@ public class Test {
         c.connect("localHost", 7789);
 
         Processor p = new Processor(c);
-        p.getGamelsit();
+        try{
+            p.getGamelsit();
+        }catch (Exception e){
+            System.out.println(e);
+        }
 
     }
 }

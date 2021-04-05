@@ -11,7 +11,7 @@ public class Processor {
         // thread maken  voor readArray en die naar de ui toe sturen
     }
 
-    public String getGamelsit(){
+    public String getGamelsit() throws serverNotRespondingException{
         connection.write("get gamelist");
  /*       try {
             Thread.sleep(1000);
