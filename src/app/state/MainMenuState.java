@@ -11,12 +11,12 @@ public class MainMenuState implements State {
 
     @Override
     public void enter() {
-        System.out.println("entering App.state");
+        System.out.println("entering main menu");
     }
 
     @Override
     public void exit() {
-        System.out.println("exiting App.state");
+        System.out.println("exiting main menu");
     }
 
     @Override

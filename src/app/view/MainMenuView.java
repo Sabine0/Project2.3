@@ -3,6 +3,7 @@ package app.view;
 import app.Main;
 import app.games.*;
 import app.state.LobbyState;
+import app.state.LoginScreenState;
 import app.state.MainMenuState;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -15,7 +16,6 @@ import javafx.scene.text.Text;
 public class MainMenuView implements View{
     StackPane view;
     Menu currentMenu;
-    boolean multiplayer = true;
     String game;
 
     public MainMenuView(){
@@ -35,18 +35,14 @@ public class MainMenuView implements View{
 
     public Menu startMenu(){
         Menu menu = new Menu();
+
         menu.addButton("PLAY", event ->{
             setMenu(gameMenu());
         });
-
         menu.addButton("EXIT", event ->{
             System.exit(0);
         });
 
-        return menu;
-    }
-    public Menu login(){
-        Menu menu = new Menu();
         return menu;
     }
 
@@ -73,8 +69,7 @@ public class MainMenuView implements View{
             setMenu(modeMenu(game));
         });
         menu.addButton("ONLINE", event ->{
-            // TO DO: Redirect to "insert username" form to get username for online matches
-            Main.setState(new LobbyState(game));
+            Main.setState(new LoginScreenState(game));
         });
         menu.addButton("BACK", event ->{
             setMenu(gameMenu());

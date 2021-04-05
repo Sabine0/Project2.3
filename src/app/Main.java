@@ -1,6 +1,5 @@
 package app;
 
-import app.networking.Connection;
 import app.state.MainMenuState;
 import app.state.State;
 import javafx.application.Application;
@@ -31,7 +30,7 @@ public class Main extends Application {
 
         currentState = state;
         Scene scene = new Scene(state.getView());
-        scene.getStylesheets().add("res/backgrounds/background.css");
+        scene.getStylesheets().add("/res/backgrounds/background.css");
         stage.setScene(scene);
         state.enter();
     }

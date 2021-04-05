@@ -5,6 +5,7 @@ import app.games.gameobjects.Board;
 import javafx.scene.Parent;
 import javafx.scene.layout.Pane;
 
+// TO DO: implement game logic
 public class OthelloBoard extends Board {
     private OthelloTile[][] grid;
 
@@ -40,7 +41,7 @@ public class OthelloBoard extends Board {
     public void doMoveBlack(int c, int r){
         grid[c][r].setTileP1();
     }
-    
+
     public void doMoveWhite(int c, int r){
         grid[c][r].setTileP2();
     }

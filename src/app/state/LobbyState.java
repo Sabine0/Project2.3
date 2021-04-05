@@ -7,14 +7,17 @@ import app.networking.*;
 
 public class LobbyState implements State {
     String game;
+    String username;
 
-    public LobbyState(String game){
+    public LobbyState(String game, String username){
         this.game = game;
+        this.username = username;
     }
 
     @Override
     public void enter() {
         System.out.println("entering lobby");
+        System.out.println("User: " + username);
 
         // start server connection!
         Connection connection = new Connection();
@@ -29,7 +32,7 @@ public class LobbyState implements State {
 
     @Override
     public Parent getView() {
-        return new LobbyView(game).buildSceneGraph();
+        return new LobbyView(game, username).buildSceneGraph();
     }
 
 }
