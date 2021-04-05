@@ -33,7 +33,9 @@ public class WriteHandler implements Runnable {
             synchronized (writeQueue) {
                 while (!writeQueue.isEmpty()) {
                     System.out.println("wq size = " + writeQueue.size());
-                    toServer.println(writeQueue.remove(0));
+                    String tosend = writeQueue.remove(0);
+                    System.out.println("is writing: "+ tosend);
+                    toServer.println(tosend);
                 }
             }
         }

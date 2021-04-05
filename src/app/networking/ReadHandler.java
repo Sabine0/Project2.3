@@ -36,7 +36,7 @@ public class ReadHandler implements Runnable{
                    //System.out.println(serverOutput);
                    synchronized (readQueue){
                        readQueue.add(serverOutput);
-                       System.out.println("rq"+ readQueue.size());
+                       System.out.println("read queue size: "+ readQueue.size());
                        readQueue.notifyAll();
                        System.out.println("add to read queue: " + serverOutput);
                    }

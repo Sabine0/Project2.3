@@ -34,7 +34,7 @@ public class Connection {
         }
     }
 
-    public String read() throws ServerNotRespondingException {
+    public String read() throws ServerNotRespondingException, CommandFailedException {
         synchronized (readQueue) {
             try {
                 while (readQueue.isEmpty()) {
@@ -42,13 +42,18 @@ public class Connection {
                     if (!readQueue.isEmpty()) {
                         checkRespose(readQueue.remove(0));
                         System.out.println(readQueue.size());
-                        return readQueue.remove(0);
+                        if(!readQueue.isEmpty()) {
+                            System.out.println("is exceuted");
+                            return readQueue.remove(0);
+                        }else {
+
+                        }
                     }else{
                         throw new ServerNotRespondingException("There is no response form the the serve");
                     }
                 }
-            }catch (Exception e){
-                System.out.println(e);
+            }catch (IllegalArgumentException | InterruptedException e){
+                System.out.println("problem while reading"+ e);
                 return  "exception occurd";
             }
         }

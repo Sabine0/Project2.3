@@ -3,6 +3,7 @@ package app.view;
 import app.Main;
 import app.games.Othello;
 import app.games.TicTacToe;
+import app.networking.CommandFailedException;
 import app.networking.Processor;
 import app.networking.ServerNotRespondingException;
 import app.state.MainMenuState;
@@ -50,8 +51,14 @@ public class LobbyView implements View{
         view.setTop(textBox);
         textBox.setAlignment(Pos.CENTER);
         view.setCenter(lobbyMenu);
-
-        processor.login(username);
+        // tijdelijk gefixed
+        try {
+            processor.login(username);
+        } catch (ServerNotRespondingException e) {
+            e.printStackTrace();
+        } catch (CommandFailedException e) {
+            e.printStackTrace();
+        }
     }
 
     // TO DO: while loop for receiving challenge requests
@@ -121,10 +128,13 @@ public class LobbyView implements View{
     }
 
     public void updateOnlinePlayerList(){
+        // tijdelijk gefixed
         try{
             onlineUsers = processor.getPlayerList();
         }catch (ServerNotRespondingException E){
             System.out.println("HELP " + E);
+        } catch (CommandFailedException e) {
+            e.printStackTrace();
         }
 
         // test
