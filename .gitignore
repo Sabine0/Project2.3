@@ -68,5 +68,5 @@ ttt algo.txt
 *.class
 out/production/Game2.3/res/images/background.jpg
 out/
-/Users/yannickhuisman/Desktop/project/Project2.3/src/temp/Algorithm.java
-/Users/yannickhuisman/Desktop/project/Project2.3/src/temp/Main.java
+Algorithm.java
+Main.java
