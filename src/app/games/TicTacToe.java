@@ -6,15 +6,24 @@ import app.model.Player;
 import app.model.UserPlayer;
 import app.state.GameState;
 import javafx.scene.Parent;
-
+/**
+ * The TicTacToe class holds the game logic for TicTacToe
+ * @author Sabine Schreuder
+ * @version 05-04-21
+ */
+// TO DO: implement game logic for TicTacToe
 public class TicTacToe extends GameState {
-    // game logic in this class (methods)
     private boolean online;
     private TicTacToeBoard tttBoard;
     private boolean p1turn;
     private Player p1;
     private Player p2;
 
+    /**
+     * @param online Boolean indicating if the game is online or not
+     * @param playerOneHuman Boolean indicating if player one is human
+     * @param playerTwoHuman Boolean indicating if player two is human
+     */
     public TicTacToe(boolean online, boolean playerOneHuman, boolean playerTwoHuman) { // TO DO: missing username param
         super(online, playerOneHuman, playerTwoHuman);
         tttBoard = new TicTacToeBoard();
@@ -41,17 +50,21 @@ public class TicTacToe extends GameState {
         }
     }
 
+    /**
+     *  Launch an online variant of TicTacToe
+     */
     public void launchOnline(){
         getView();
 
         // TO DO: implement online match
     }
 
+    /**
+     *  Launch a local variant of TicTacToe
+     */
     @Override
     public void launchLocal() {
         getView();
-
-        // TO DO: EVERYTHING BELOW DOESNT WORK YET FOR SOME REASON
 
         //If player is human
         if (p1.isHuman() || p2.isHuman()) {
@@ -91,6 +104,9 @@ public class TicTacToe extends GameState {
         }
     }
 
+    /**
+     * @return the view of a tictactoe board
+     */
     @Override
     public Parent getView() {
         return tttBoard.boardView();

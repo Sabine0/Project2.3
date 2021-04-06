@@ -8,10 +8,13 @@
 package app.networking;
 
 public class Processor {
-     Connection connection;
+
+    Thread tNotifier;
+    Connection connection;
     // tweede argumet is UI
     public Processor(Connection connection){
           this.connection = connection;
+          tNotifier = new Thread(new Notifier(connection));
     }
 
     public void start(){
@@ -57,6 +60,22 @@ public class Processor {
     public void leaveTheMatch(){
         connection.write("forfeit");
     }
+
+    public void move(int location) throws ServerNotRespondingException, CommandFailedException {
+          connection.write("move " + location);
+          connection.readSingleLine();
+    }
+
+    public void setChallengeAccept(int challengeNumber) throws ServerNotRespondingException, CommandFailedException {
+        connection.write("challenge accept " + challengeNumber);
+        connection.readSingleLine();
+    }
+
+    public void subscribe(String game) throws ServerNotRespondingException, CommandFailedException {
+        connection.write("subscribe " + game);
+        connection.readSingleLine();
+    }
+
     /**
      * This method converts a String to an array
      * @param input

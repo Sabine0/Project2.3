@@ -17,6 +17,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
+/**
+ * The LobbyView class is used for creating and displaying the components of the lobby
+ * @author Sabine Schreuder
+ * @version 01-04-21
+ */
 public class LobbyView implements View{
     private String username;
     private BorderPane view;
@@ -29,6 +34,11 @@ public class LobbyView implements View{
     private String[] onlineUsers;
     private Processor processor;
 
+    /**
+     * @param game The game to be played
+     * @param username The username of player 1
+     * @param processor The processor which holds the connection to the server
+     */
     public LobbyView(String game, String username, Processor processor){
         this.processor = processor;
         view = new BorderPane();
@@ -74,7 +84,7 @@ public class LobbyView implements View{
             playerList.getChildren().addAll(text);
             playerList.setAlignment(Pos.TOP_CENTER);
 
-            updateOnlinePlayerList();
+            getOnlinePlayerList();
 
             view.setCenter(playerList);
             view.setBottom(menu);
@@ -91,11 +101,19 @@ public class LobbyView implements View{
         return menu;
     }
 
+    /**
+     * Return the combination of nodes that make up the lobby view
+     * @return The lobby view
+     */
     @Override
     public Parent buildSceneGraph() {
         return view;
     }
 
+    /**
+     * Display a prompt asking if you want to accept or decline a challenge
+     * @param challengerUsername The username of the person challenging the user
+     */
     public void showChallengeAlert(String challengerUsername){
         VBox challengeBox = new VBox();
 
@@ -106,7 +124,7 @@ public class LobbyView implements View{
 
         Button acceptButton = new Button("Accept");
         acceptButton.setOnMouseClicked(event ->{
-            // Start online game vs challenger
+            // TO DO: Start online game vs challenger
             if (game.equals("TICTACTOE")) {
                 Main.setState(new TicTacToe(true,true, true));
             } else if (game.equals("OTHELLO")) {
@@ -127,7 +145,11 @@ public class LobbyView implements View{
         view.setRight(challengeBox);
     }
 
-    public void updateOnlinePlayerList(){
+    /**
+     * Retrieve the list of currently online players
+     * and add it to onlineUsers
+     */
+    public void getOnlinePlayerList(){
         // tijdelijk gefixed
         try{
             onlineUsers = processor.getPlayerList();
@@ -142,8 +164,6 @@ public class LobbyView implements View{
             System.out.println(string);
         }
 
-
-        // TO DO: Get list of available players from server connection (ArrayList)
         for(int i=0; i<onlineUsers.length; i++) {
             HBox onlinePlayerButtons = new HBox();
 

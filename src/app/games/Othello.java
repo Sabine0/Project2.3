@@ -8,10 +8,14 @@ import app.model.Player;
 import app.model.UserPlayer;
 import app.state.GameState;
 import javafx.scene.Parent;
-import javafx.scene.control.Label;
 
+/**
+ * The Othello class holds the game logic for Othello
+ * @author Sabine Schreuder
+ * @version 05-04-21
+ */
+// TO DO: implement game logic for Othello
 public class Othello extends GameState {
-    // game logic in this class (methods)
     private boolean online;
     private boolean p1turn;
     private OthelloBoard othelloBoard;
@@ -19,6 +23,11 @@ public class Othello extends GameState {
     private Player p2;
     private int[] listOfCoordinates;
 
+    /**
+     * @param online Boolean indicating if the game is online or not
+     * @param playerOneHuman Boolean indicating if player one is human
+     * @param playerTwoHuman Boolean indicating if player two is human
+     */
     public Othello(boolean online, boolean playerOneHuman, boolean playerTwoHuman) { // TO DO: missing username param
         super(online, playerOneHuman, playerTwoHuman);
         othelloBoard = new OthelloBoard();
@@ -44,7 +53,9 @@ public class Othello extends GameState {
             launchLocal();
         }
     }
-
+    /**
+     *  Launch an online variant of Othello
+     */
     public void launchOnline(){
         getView();
 
@@ -52,11 +63,12 @@ public class Othello extends GameState {
 
     }
 
+    /**
+     *  Launch a local variant of Othello
+     */
     @Override
     public void launchLocal() {
         getView();
-
-        // TO DO: EVERYTHING BELOW DOESNT WORK YET FOR SOME REASON
 
         if (p1.isHuman() || p2.isHuman()) {
             for (int row = 0; row < 8; row++) {
@@ -95,9 +107,11 @@ public class Othello extends GameState {
         }
     }
 
+    /**
+     * @return the view of a new Othello object
+     */
     @Override
     public Parent getView() {
-        // return board
         return othelloBoard.boardView();
     }
 

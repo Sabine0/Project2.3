@@ -1,3 +1,8 @@
+/**
+ * This class is the core of the network package. It initializes the the and write threads, it manages the read, write
+ * and notification queues.
+ * @author Danial.B
+ */
 package app.networking;
 
 import java.net.Socket;
@@ -10,17 +15,20 @@ public class Connection {
     private List<String> readQueue;
     // write arraylist
     private List<String> writeQueue;
+    //notification queue for massage unpredictable messages
+    private List<String> notificationQueue;
 
     public Connection() {
                readQueue = Collections.synchronizedList(new ArrayList<String>());
                writeQueue = Collections.synchronizedList(new ArrayList<String>());
+               notificationQueue = Collections.synchronizedList(new ArrayList<String>());
     }
 
     public boolean connect(String host, int port) {
         try {
             Socket s = new Socket(host, port);
 
-            Thread tRead = new Thread(new ReadHandler(s, readQueue));
+            Thread tRead = new Thread(new ReadHandler(s, readQueue, notificationQueue));
             tRead.start();
             Thread tWtrite = new Thread(new WriteHandler(s, writeQueue));
             tWtrite.start();
@@ -34,6 +42,12 @@ public class Connection {
         }
     }
 
+    /**
+     * this methode is used when the is a single line answer is expected form the server.
+     * @return The answer of the server or the server error massage.
+     * @throws ServerNotRespondingException If there is no response from the server .
+     * @throws CommandFailedException  If server returns an error.
+     */
     public String readSingleLine() throws ServerNotRespondingException, CommandFailedException {
         synchronized (readQueue) {
             try {
@@ -80,6 +94,29 @@ public class Connection {
             }
         }
         return " read methode server is not responding";
+    }
+
+    /**
+     * @return true if there is any new input from the server.
+     */
+    public boolean checkForNotification(){
+        synchronized (notificationQueue){
+            if(!notificationQueue.isEmpty()){
+                return true;
+            }else{
+                return false;
+            }
+        }
+    }
+
+    /**
+     * @return the input from the server and delete it from the notificationQueue.
+     */
+    public String readNotification(){
+        synchronized (notificationQueue){
+
+            return  notificationQueue.remove(0);
+        }
     }
 
     public void write(String commandToServer) {

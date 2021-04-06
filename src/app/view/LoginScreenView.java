@@ -12,10 +12,18 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
+/**
+ * The LoginScreenView class is used for creating and displaying the components of the login screen
+ * @author Sabine Schreuder
+ * @version 01/04/21
+ */
 public class LoginScreenView implements View{
     GridPane view;
     String game;
 
+    /**
+     * @param game The game to be played
+     */
     public LoginScreenView(String game){
         this.game = game;
 
@@ -48,6 +56,10 @@ public class LoginScreenView implements View{
         view.add(btn, 1, 4);
     }
 
+    /**
+     * Return the combination of nodes that make up the lobby screen view
+     * @return The lobby screen view
+     */
     @Override
     public Parent buildSceneGraph() {
         return view;
