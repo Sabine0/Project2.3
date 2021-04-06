@@ -20,7 +20,7 @@ public class Othello extends Application {
 
     private boolean playable = true;
     private boolean turnX = true;
-    private Othello.Tile[][] board = new Othello.Tile[8][8]; // hardcoded for tic tac toe only
+    private Othello.Tile[][] board = new Othello.Tile[8][8];
     private List<Othello.Combo> combos = new ArrayList<>();
     Pane root = new Pane();
 
@@ -78,8 +78,11 @@ public class Othello extends Application {
             }
         }
 
-        if(done == 64){ playable = false; }
-//        --------------------------
+        if(done == 64){
+            playable = false;
+            whoWon();
+        }
+//        ------------------------------------------------------------
 
         for(Othello.Combo combo : combos){
             if(combo.isComplete()){
@@ -162,5 +165,9 @@ public class Othello extends Application {
         private void drawO(){ text.setText("\u25CB"); }
 
         public boolean empty(){ return getValue().isEmpty(); }
+    }
+
+    public void whoWon(){
+
     }
 }
