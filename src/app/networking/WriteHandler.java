@@ -1,3 +1,7 @@
+/**
+ * This class is responsible for writing data to the server.
+ * @author Danial.B
+ */
 package app.networking;
 
 import java.io.BufferedReader;

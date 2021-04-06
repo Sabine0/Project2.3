@@ -1,6 +1,6 @@
 package app;
 
-import app.networking.serverNotRespondingException;
+import app.networking.ServerNotRespondingException;
 import app.state.MainMenuState;
 import app.state.State;
 import javafx.application.Application;
@@ -52,7 +52,7 @@ public class Main extends Application {
 
         try {
             state.enter();
-        }catch(serverNotRespondingException E){
+        }catch(ServerNotRespondingException E){
             System.out.println(E);
         }
     }

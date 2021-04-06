@@ -1,8 +1,11 @@
+/**
+ * This exception is thrown when there is no response from the server.
+ */
 package app.networking;
 
-public class serverNotRespondingException extends Exception{
+public class ServerNotRespondingException extends Exception{
 
-    public serverNotRespondingException(String message){
+    public ServerNotRespondingException(String message){
         super(message);
     }
 }

@@ -1,6 +1,6 @@
 package app.state;
 
-import app.networking.serverNotRespondingException;
+import app.networking.ServerNotRespondingException;
 import javafx.scene.Parent;
 
 /**
@@ -12,7 +12,7 @@ public interface State {
     /**
      * Code to be executed upon entering the login screen state
      */
-    void enter() throws serverNotRespondingException;
+    void enter() throws ServerNotRespondingException;
 
     /**
      * Code to be executed upon exiting the login screen state
