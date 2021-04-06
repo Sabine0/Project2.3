@@ -20,7 +20,6 @@ public class TicTacToe extends GameState {
     private boolean p1turn;
     private Player p1;
     private Player p2;
-    private String appPlayerUsername;
 
     /**
      * @param online Boolean indicating if the game is online or not
@@ -31,7 +30,6 @@ public class TicTacToe extends GameState {
                      boolean appUserPlayer1, String appPlayerUsername, String opponentUsername) {
         tttBoard = new TicTacToeBoard();
         this.online = online;
-        this.appPlayerUsername = appPlayerUsername;
 
         if(appUserPlayer1 && playerOneHuman){
             p1 = new UserPlayer(appPlayerUsername);
