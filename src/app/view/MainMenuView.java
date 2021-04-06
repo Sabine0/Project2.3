@@ -2,17 +2,18 @@ package app.view;
 
 import app.Main;
 import app.games.*;
-import app.state.LobbyState;
 import app.state.LoginScreenState;
 import app.state.MainMenuState;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import app.view.components.Menu;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 
+
+/**
+ * The MainMenuView class is used for creating and displaying the components of the main menu
+ * @author Sabine Schreuder
+ * @version 01/04/21
+ */
 public class MainMenuView implements View{
     StackPane view;
     Menu currentMenu;
@@ -25,6 +26,10 @@ public class MainMenuView implements View{
         setMenu(startMenu());
     }
 
+    /**
+     * Set the current menu to the menu given in the parameter
+     * @param menu The menu to be set to
+     */
     public void setMenu(Menu menu){
         if(currentMenu!=null){
             view.getChildren().remove(currentMenu);
@@ -33,6 +38,10 @@ public class MainMenuView implements View{
         currentMenu = menu;
     }
 
+    /**
+     * Create the starting menu and return it
+     * @return The start menu
+     */
     public Menu startMenu(){
         Menu menu = new Menu();
 
@@ -46,6 +55,10 @@ public class MainMenuView implements View{
         return menu;
     }
 
+    /**
+     * Create the game menu and return it
+     * @return The menu containing all available games
+     */
     public Menu gameMenu(){
         Menu menu = new Menu();
         menu.addButton("TICTACTOE", event ->{
@@ -63,6 +76,10 @@ public class MainMenuView implements View{
         return menu;
     }
 
+    /**
+     * Create the connection menu and return it
+     * @return The menu containing all connection options
+     */
     public Menu connectionMenu(){
         Menu menu = new Menu();
         menu.addButton("LOCAL", event ->{
@@ -78,6 +95,12 @@ public class MainMenuView implements View{
         return menu;
     }
 
+
+    /**
+     * Create the mode menu and return it
+     * @param game The game to be played
+     * @return The menu containing all mode options
+     */
     public Menu modeMenu(String game){
         Menu menu = new Menu();
         menu.addButton("PLAYER VS PLAYER", event -> {
@@ -114,10 +137,10 @@ public class MainMenuView implements View{
         return menu;
     }
 
-    public String getGame(){
-        return game;
-    }
-
+    /**
+     * Return the combination of nodes that make up the main menu view
+     * @return The main menu view
+     */
     @Override
     public Parent buildSceneGraph() {
         return view;

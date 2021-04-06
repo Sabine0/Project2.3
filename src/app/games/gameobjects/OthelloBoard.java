@@ -1,51 +1,77 @@
 package app.games.gameobjects;
 
-import app.games.Othello;
-import app.games.gameobjects.Board;
 import javafx.scene.Parent;
 import javafx.scene.layout.Pane;
 
-// TO DO: implement game logic
+/**
+ * The OthelloBoard class defines the Othello board
+ * and handles changes to the board
+ * @author Sabine Schreuder
+ * @version 01-04-21
+ */
 public class OthelloBoard extends Board {
     private OthelloTile[][] grid;
+    private Pane board;
 
+    /**
+     * Create the Othello board with a two dimensional grid
+     */
     public OthelloBoard() {
-
-    }
-
-    // TO DO: The scaling for this board is off and needs to be rescaled
-    @Override
-    public Parent boardView() {
         grid = new OthelloTile[8][8];
-        Pane board = new Pane();
+        board = new Pane();
         board.setPrefSize(600, 600);
 
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 OthelloTile tile = new OthelloTile();
-                tile.setTranslateX(j*200);
-                tile.setTranslateY(i*200);
+                tile.setTranslateX(j*50);
+                tile.setTranslateY(i*50);
 
                 board.getChildren().add(tile);
 
                 grid[j][i] = tile;
             }
         }
+    }
+
+    /**
+     * @return The boardview as a Pane
+     */
+    @Override
+    public Parent boardView() {
         return board;
     }
 
-    public OthelloTile getTile(int c, int r){
-        return grid[c][r];
+    /**
+     * @param col Column in the board
+     * @param row Row in the board
+     * @return The OthelloTile on position: column, row
+     */
+    public OthelloTile getTile(int col, int row){
+        return grid[col][row];
     }
 
-    public void doMoveBlack(int c, int r){
-        grid[c][r].setTileP1();
+    /**
+     * Set a black circle on position: column, row
+     * @param col
+     * @param row
+     */
+    public void doMoveBlack(int col, int row){
+        grid[col][row].setTileP1();
     }
 
-    public void doMoveWhite(int c, int r){
-        grid[c][r].setTileP2();
+    /**
+     * Set a white circle on position: column, row
+     * @param col
+     * @param row
+     */
+    public void doMoveWhite(int col, int row){
+        grid[col][row].setTileP2();
     }
 
+    /**
+     * Displays winner
+     */
     public void playWinAnimation(){
         // later
     }

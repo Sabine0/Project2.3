@@ -7,9 +7,17 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
+/**
+ * The class MenuButton creates a menu button object along with styling
+ * @author Sabine Schreuder
+ * @version 01-04-21
+ */
 public class MenuButton extends StackPane {
     private Text text;
 
+    /**
+     * @param name The name of the menu
+     */
     public MenuButton(String name){
         text = new Text(name);
         text.setFont(text.getFont().font(20));

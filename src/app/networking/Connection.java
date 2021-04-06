@@ -34,7 +34,7 @@ public class Connection {
         }
     }
 
-    public String readSingleLine() throws ServerNotRespondingException, CommandFailedException {
+    public String readSingleLine() throws serverNotRespondingException, CommandFailedException {
         synchronized (readQueue) {
             try {
                 while (readQueue.isEmpty()) {
@@ -45,7 +45,7 @@ public class Connection {
                         System.out.println("rq size after read:"+readQueue.size());
                         return response;
                     }else{
-                        throw new ServerNotRespondingException("There is no response form the the serve");
+                        throw new serverNotRespondingException("There is no response form the the serve");
                     }
                 }
             }catch (IllegalArgumentException | InterruptedException e){
@@ -56,7 +56,7 @@ public class Connection {
         return " read methode server is not responding";
     }
 
-    public String readDubbleLine() throws ServerNotRespondingException, CommandFailedException {
+    public String readDubbleLine() throws serverNotRespondingException, CommandFailedException {
         synchronized (readQueue) {
             try {
                 while (readQueue.isEmpty()) {
@@ -71,7 +71,7 @@ public class Connection {
 
                         }
                     }else{
-                        throw new ServerNotRespondingException("There is no response form the the serve");
+                        throw new serverNotRespondingException("There is no response form the the serve");
                     }
                 }
             }catch (IllegalArgumentException | InterruptedException e){

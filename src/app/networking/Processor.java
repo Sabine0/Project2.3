@@ -20,9 +20,9 @@ public class Processor {
 
     /**
      * @return the available games in an array
-     * @throws ServerNotRespondingException if disconnected or no response from the server
+     * @throws serverNotRespondingException if disconnected or no response from the server
      */
-    public String[] getGamelsit() throws ServerNotRespondingException, CommandFailedException {
+    public String[] getGamelsit() throws serverNotRespondingException, CommandFailedException {
         connection.write("get gamelist");
         String gameList = connection.readDubbleLine();
         System.out.println("proccesor" + gameList);
@@ -31,9 +31,9 @@ public class Processor {
 
     /**
      * @return an array in the player names
-     * @throws ServerNotRespondingException if disconnected or no response from the server
+     * @throws serverNotRespondingException if disconnected or no response from the server
      */
-    public String[] getPlayerList() throws ServerNotRespondingException, CommandFailedException {
+    public String[] getPlayerList() throws serverNotRespondingException, CommandFailedException {
         connection.write("get playerlist");
 
         return toStringArray(connection.readDubbleLine());
@@ -43,7 +43,7 @@ public class Processor {
      *  logins you into the server so other players can challenge you
      * @param name name of the player
      */
-    public void login(String name) throws ServerNotRespondingException, CommandFailedException {
+    public void login(String name) throws serverNotRespondingException, CommandFailedException {
 
         connection.write("login "+ name);
         if (connection.readSingleLine().equals("OK")){

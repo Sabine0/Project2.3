@@ -1,23 +1,23 @@
 package app.games.gameobjects;
 
-import javafx.event.EventHandler;
 import javafx.scene.Parent;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import app.games.gameobjects.TicTacToeTile;
 
+
+/**
+ * @author Sabine Schreuder
+ * @version 01-04-21
+ */
 public class TicTacToeBoard extends Board {
     private TicTacToeTile[][] grid;
+    private Pane board;
 
-    public TicTacToeBoard() {
-
-    }
-
-    @Override
-    public Parent boardView() {
+    /**
+     * Create the TicTacToe board with a two dimensional grid
+     */
+    public TicTacToeBoard(){
         grid = new TicTacToeTile[3][3];
-        Pane board = new Pane();
+        board = new Pane();
         board.setPrefSize(600, 600);
 
         for (int i = 0; i < 3; i++) {
@@ -31,21 +31,47 @@ public class TicTacToeBoard extends Board {
                 grid[j][i] = tile;
             }
         }
+    }
+
+    /**
+     * Create the TicTacToe board as a two dimensional array and return it
+     * @return The board
+     */
+    @Override
+    public Parent boardView() {
         return board;
     }
 
-    public TicTacToeTile getTile(int c, int r){
-        return grid[c][r];
+    /**
+     * @param col Column in the board
+     * @param row Row in the board
+     * @return The TicTacToeTile on position: column, row
+     */
+    public TicTacToeTile getTile(int col, int row){
+        return grid[col][row];
     }
 
-    public void doMoveX(int c, int r){
-        grid[c][r].setTileP1();
+    /**
+     * Set X on location col, row
+     * @param col Column in the board
+     * @param row Row in the board
+     */
+    public void doMoveX(int col, int row){
+        grid[col][row].setTileP1();
     }
 
-    public void doMoveO(int c, int r){
-        grid[c][r].setTileP2();
+    /**
+     *  Set O on location col, row
+     * @param col Column in the board
+     * @param row Row in the board
+     */
+    public void doMoveO(int col, int row){
+        grid[col][row].setTileP2();
     }
 
+    /**
+     * Displays winner
+     */
     public void playWinAnimation(){
         // later
     }
