@@ -105,20 +105,17 @@ public class TicTacToe extends GameState {
         }
 
         //If player is bot
-        // TO DO: implement AI
         if (!p1.isHuman() || !p2.isHuman()) {
-            // TO DO: Get move from AI: row and column
-            if (p1turn && !p1.isHuman()) {
-                // Do move on coordinates given by AI
-//                p1.doMove(); // Get move that AI wants to do
-//                tttBoard.doMoveX(c, r); // insert AIs move in c, r
-                p1turn = false;
-            }
+            // TO DO: Get move from AI (row and column)
+            // Code here
 
-            if(!p1turn && !p2.isHuman()){
+            if (p1turn) {
                 // Do move on coordinates given by AI
-//                p2.doMove(); // Get move that AI wants to do
-//                tttBoard.doMoveO(c, r); // insert AIs move in c, r
+//                tttBoard.doMoveX(r, c);
+                p1turn = false;
+            } else {
+                // Do move on coordinates given by AI
+//                tttBoard.doMoveO(r, c);
                 p1turn = true;
             }
         }

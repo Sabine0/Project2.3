@@ -107,7 +107,7 @@ public class MainMenuView implements View{
             if (game == "TICTACTOE") {
                 Main.setState(new TicTacToe(false,true, true, true, "Player 1", "Player 2"));
             } else if (game == "OTHELLO") {
-                Main.setState(new Othello(false, true, true));
+                Main.setState(new Othello(false, true, true, true, "Player 1", "Player 2"));
             } else {
                 Main.setState(new MainMenuState());
             }
@@ -116,7 +116,7 @@ public class MainMenuView implements View{
             if(game == "TICTACTOE"){
                 Main.setState(new TicTacToe(false, true, false, true,"Player1", "Victor BOT"));
             }else if(game == "OTHELLO"){
-                Main.setState(new Othello(false, true, false));
+                Main.setState(new Othello(false, true, false,true, "Player 1","Victor BOT"));
             }else {
                 Main.setState(new MainMenuState());
             }
@@ -125,7 +125,7 @@ public class MainMenuView implements View{
             if(game == "TICTACTOE"){
                 Main.setState(new TicTacToe(false, false, false, true, "Jean BOT", "Victor BOT"));
             }else if(game == "OTHELLO"){
-                Main.setState(new Othello(false, false, false));
+                Main.setState(new Othello(false, false, false, true, "Jean BOT","Victor BOT"));
             }else {
                 Main.setState(new MainMenuState());
             }

@@ -128,7 +128,7 @@ public class LobbyView implements View{
             if (game.equals("TICTACTOE")) {
                 Main.setState(new TicTacToe(true,true, true, false, username, challengerUsername)); // challenger always goes first?
             } else if (game.equals("OTHELLO")) {
-                Main.setState(new Othello(true, true, true));
+                Main.setState(new Othello(true, true, true, false, username, challengerUsername)); // challenger always goes first?
             }
         });
         Button declineButton = new Button("Decline");

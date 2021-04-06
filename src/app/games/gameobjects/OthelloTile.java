@@ -17,9 +17,6 @@ public class OthelloTile extends Tile {
         circle = new Circle(20);
         circle.setLayoutX(200);
         circle.setLayoutY(200);
-        circle.setFill(Color.RED); // for testing, should be white or not added to children
-
-        getChildren().add(circle);
     }
 
     /**
@@ -27,6 +24,7 @@ public class OthelloTile extends Tile {
      */
     @Override
     public void setTileP1(){
+        getChildren().add(circle);
         circle.setFill(Color.BLACK);
     }
 
@@ -35,6 +33,7 @@ public class OthelloTile extends Tile {
      */
     @Override
     public void setTileP2(){
+        getChildren().add(circle);
         circle.setFill(Color.WHITE);
         circle.setStroke(Color.BLACK);
     }

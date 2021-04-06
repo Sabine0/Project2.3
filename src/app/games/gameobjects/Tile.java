@@ -16,7 +16,7 @@ public abstract class Tile extends StackPane {
 
     public Tile(){
         borderPane = new StackPane();
-        border = new Rectangle(200, 200);
+        border = new Rectangle(80, 80);
         border.setFill(null);
         border.setStroke(Color.BLACK);
 

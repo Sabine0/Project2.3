@@ -1,10 +1,12 @@
 package app.games;
 
+import app.Main;
 import app.games.gameobjects.OthelloBoard;
 import app.model.Bot;
 import app.model.Player;
 import app.model.UserPlayer;
 import app.state.GameState;
+import app.state.MainMenuState;
 import javafx.scene.Parent;
 
 /**
@@ -25,22 +27,33 @@ public class Othello extends GameState {
      * @param playerOneHuman Boolean indicating if player one is human
      * @param playerTwoHuman Boolean indicating if player two is human
      */
-    public Othello(boolean online, boolean playerOneHuman, boolean playerTwoHuman) { // TO DO: missing username param
+    public Othello(boolean online, boolean playerOneHuman, boolean playerTwoHuman,
+                   boolean appUserPlayer1, String appPlayerUsername, String opponentUsername) { // TO DO: missing username param
         othelloBoard = new OthelloBoard();
         this.online = online;
 
-        p1turn = true;
+        if(appUserPlayer1 && playerOneHuman){
+            p1 = new UserPlayer(appPlayerUsername);
 
-        if(playerOneHuman){
-            p1 = new UserPlayer(""); // TO DO: username from constructor param
-        }else{
-            p1 = new Bot("Victor");
+            if(playerTwoHuman) {
+                p2 = new UserPlayer(opponentUsername);
+            }else{
+                p2 = new Bot(opponentUsername);
+            }
+        }else if(!playerOneHuman){
+            p1 = new Bot(appPlayerUsername);
         }
 
-        if (playerTwoHuman){
-            p2 = new UserPlayer(""); // TO DO: username from constructor param
-        }else {
-            p2 = new Bot("Victor");
+        if(!appUserPlayer1 && playerOneHuman){
+            p2 = new UserPlayer(appPlayerUsername);
+
+            if(playerTwoHuman) {
+                p1 = new UserPlayer(opponentUsername);
+            }else{
+                p1 = new Bot(opponentUsername);
+            }
+        }else if(!playerOneHuman){
+            p2 = new Bot(appPlayerUsername);
         }
 
         if(online){
@@ -65,21 +78,26 @@ public class Othello extends GameState {
     @Override
     public void launchLocal() {
         getView();
+        System.out.println(p1.getUsername() + " starts the game!");
 
+        // Player 1 always goes first in a local match
+        p1turn = true;
+
+        //If player is human
         if (p1.isHuman() || p2.isHuman()) {
             for (int row = 0; row < 8; row++) {
                 for (int col = 0; col < 8; col++) {
                     int c = col;
                     int r = row;
                     othelloBoard.getTile(c, r).setOnMouseClicked(event -> {
-                        if (p1turn && p1.isHuman()) {
-                            othelloBoard.doMoveBlack(c, r);
-                            p1turn = false;
-                        } else if (!p1turn && p2.isHuman()) {
-                            othelloBoard.doMoveWhite(c, r);
-                            p1turn = true;
-                        } else {
-                            // Do not respond to clicks
+                        if ((p1.isHuman()  && p1turn) || (p2.isHuman() && !p1turn)) {
+                            if (isValidMove(c, r)) {
+                                drawMove(c, r);
+                                if (isWon()){
+                                    // TO DO: Display a button, upon clicked return to the main menu
+                                    Main.setState(new MainMenuState());
+                                }
+                            }
                         }
                     });
                 }
@@ -102,6 +120,27 @@ public class Othello extends GameState {
             }
         }
     }
+
+    public void drawMove(int col, int row){
+        if(p1turn){
+            othelloBoard.drawMoveBlack(col, row);
+            p1turn = false;
+            System.out.println(p2.getUsername()+"s turn"); // for testing only
+        }else{
+            othelloBoard.drawMoveWhite(col, row);
+            p1turn = true;
+            System.out.println(p1.getUsername()+"s turn"); // for testing only
+        }
+    }
+
+    public boolean isValidMove(int col, int row){
+        return true;
+    }
+
+    public boolean isWon(){
+        return false;
+    }
+
 
     /**
      * @return the view of a new Othello object

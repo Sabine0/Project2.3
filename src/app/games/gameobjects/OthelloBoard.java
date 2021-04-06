@@ -19,13 +19,13 @@ public class OthelloBoard extends Board {
     public OthelloBoard() {
         grid = new OthelloTile[8][8];
         board = new Pane();
-        board.setPrefSize(600, 600);
+        board.setPrefSize(800, 800);
 
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 OthelloTile tile = new OthelloTile();
-                tile.setTranslateX(j*50);
-                tile.setTranslateY(i*50);
+                tile.setTranslateX(j*80);
+                tile.setTranslateY(i*80);
 
                 board.getChildren().add(tile);
 
@@ -56,7 +56,7 @@ public class OthelloBoard extends Board {
      * @param col
      * @param row
      */
-    public void doMoveBlack(int col, int row){
+    public void drawMoveBlack(int col, int row){
         grid[col][row].setTileP1();
     }
 
@@ -65,7 +65,7 @@ public class OthelloBoard extends Board {
      * @param col
      * @param row
      */
-    public void doMoveWhite(int col, int row){
+    public void drawMoveWhite(int col, int row){
         grid[col][row].setTileP2();
     }
 
