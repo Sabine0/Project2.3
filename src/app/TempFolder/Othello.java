@@ -21,7 +21,7 @@ public class Othello extends Application {
     private boolean playable = true;
     private boolean turnX = true;
     private Othello.Tile[][] board = new Othello.Tile[8][8]; // hardcoded for tic tac toe only
-//    private List<Othello.Combo> combos = new ArrayList<>();
+    private List<Othello.Combo> combos = new ArrayList<>();
     Pane root = new Pane();
 
     private Parent createContent() {
@@ -68,6 +68,49 @@ public class Othello extends Application {
         primaryStage.show();
     }
 
+    private void checkState() {
+//        hardcode, moet beter
+        int done = 0;
+
+        for(int i = 0; i < 8; i++){
+            for(int j = 0; j < 8; j++){
+                if(!board[j][i].getValue().isEmpty()){ done++; }
+            }
+        }
+
+        if(done == 64){ playable = false; }
+//        --------------------------
+
+        for(Othello.Combo combo : combos){
+            if(combo.isComplete()){
+                flipDiscs(combo);
+                break;
+            }
+        }
+    }
+
+    private class Combo {
+        private Othello.Tile[] tiles;
+
+        public Combo(Othello.Tile... tiles) {
+            this.tiles = tiles;
+        }
+
+        public boolean isComplete() {
+            if (tiles[0].getValue().isEmpty()) {
+                return false;
+            }
+//            juiste manier van een win nog uitzoeken
+//            return tiles[0].getValue().equals(tiles[1].getValue()) &&
+//                    tiles[0].getValue().equals(tiles[2].getValue());
+            return true;
+        }
+    }
+
+    private void flipDiscs(Combo combo){
+
+    }
+
     private class Tile extends StackPane {
         private Text text = new Text();
 
@@ -87,14 +130,19 @@ public class Othello extends Application {
                 }
                 if(event.getButton() == MouseButton.PRIMARY) {
                     if (!turnX) return;
-                    drawX();
-                    turnX = false;
-//                    checkState();
+                    if(empty()){
+                        drawX();
+                        turnX = false;
+                        checkState();
+                    }
+
                 }else if(event.getButton() == MouseButton.SECONDARY){
                     if(turnX) return;
-                    drawO();
-                    turnX= true;
-//                    checkState();
+                    if(empty()) {
+                        drawO();
+                        turnX = true;
+                        checkState();
+                    }
                 }
             });
         }
@@ -107,14 +155,12 @@ public class Othello extends Application {
 //            return getTranslateY() + 100;
 //        }
 //
-//        public String getValue(){
-//            return text.getText();
-//        }
+        public String getValue(){ return text.getText(); }
 
-        private void drawX(){
-            text.setText("\u25CF");
-        }
+        private void drawX(){ text.setText("\u25CF"); }
 
         private void drawO(){ text.setText("\u25CB"); }
+
+        public boolean empty(){ return getValue().isEmpty(); }
     }
 }
