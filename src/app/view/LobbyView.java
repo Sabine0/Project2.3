@@ -6,6 +6,7 @@ import app.games.TicTacToe;
 import app.networking.CommandFailedException;
 import app.networking.Processor;
 import app.networking.ServerNotRespondingException;
+import app.state.LobbyState;
 import app.state.MainMenuState;
 import app.view.components.Menu;
 import javafx.geometry.Pos;
@@ -63,7 +64,9 @@ public class LobbyView implements View{
         view.setCenter(lobbyMenu);
         // tijdelijk gefixed
         try {
-            processor.login(username);
+            if(username == null) {
+                processor.login(username);
+            }
         } catch (ServerNotRespondingException e) {
             e.printStackTrace();
         } catch (CommandFailedException e) {
@@ -93,7 +96,6 @@ public class LobbyView implements View{
 
         menu.addButton("EXIT LOBBY", event -> {
             Main.setState(new MainMenuState());
-            username = "";
         });
 
         showChallengeAlert("Henkie"); // only for testing

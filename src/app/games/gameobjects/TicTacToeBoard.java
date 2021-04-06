@@ -23,8 +23,8 @@ public class TicTacToeBoard extends Board {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 TicTacToeTile tile = new TicTacToeTile();
-                tile.setTranslateX(j*200);
-                tile.setTranslateY(i*200);
+                tile.setTranslateX(j*80);
+                tile.setTranslateY(i*80);
 
                 board.getChildren().add(tile);
 
