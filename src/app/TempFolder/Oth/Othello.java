@@ -1,4 +1,4 @@
-package app.TempFolder;
+package app.TempFolder.Oth;
 
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -12,6 +12,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import temp123.Algorithm;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,22 +40,6 @@ public class Othello extends Application {
                 board[j][i] = tile;
             }
         }
-
-//        // All possible winning combos
-//        //Horizontal
-//        for(int y=0; y<3; y++){
-//            combos.add(new Othello.Combo(board[0][y], board[1][y], board[2][y]));
-//        }
-//
-//        //Vertical
-//        for(int x=0; x<3; x++){
-//            combos.add(new Othello.Combo(board[x][0], board[x][1], board[x][2]));
-//        }
-//
-//        //Diagonals
-//        combos.add(new Othello.Combo(board[0][0], board[1][1], board[2][2]));
-//        combos.add(new Othello.Combo(board[2][0], board[1][1], board[0][2]));
-
         return root;
     }
 
@@ -66,6 +51,8 @@ public class Othello extends Application {
         board[3][4].drawX();
         board[4][4].drawO();
         primaryStage.show();
+        AlgorithmO algorithm = new AlgorithmO();
+        algorithm.setBoard(board);
     }
 
     private void checkState() {
@@ -103,9 +90,7 @@ public class Othello extends Application {
             if (tiles[0].getValue().isEmpty()) {
                 return false;
             }
-//            juiste manier van een win nog uitzoeken
-//            return tiles[0].getValue().equals(tiles[1].getValue()) &&
-//                    tiles[0].getValue().equals(tiles[2].getValue());
+
             return true;
         }
     }
@@ -114,7 +99,7 @@ public class Othello extends Application {
 
     }
 
-    private class Tile extends StackPane {
+    public class Tile extends StackPane {
         private Text text = new Text();
 
         public Tile(){
@@ -150,14 +135,6 @@ public class Othello extends Application {
             });
         }
 
-//        public double getCenterX(){
-//            return getTranslateX() + 100;
-//        }
-//
-//        public double getCenterY(){
-//            return getTranslateY() + 100;
-//        }
-//
         public String getValue(){ return text.getText(); }
 
         private void drawX(){ text.setText("\u25CF"); }
@@ -168,6 +145,19 @@ public class Othello extends Application {
     }
 
     public void whoWon(){
+        int X = 0;
+        int O = 0;
 
+        for(int i = 0; i < 8; i++){
+            for(int j = 0; j < 8; j++){
+                if(board[j][i].getValue() == "\u25CF"){ X++; }
+                else{ O++; }
+            }
+        }
+        if(X > O){ System.out.println("Player X won!"); }
+        else if(O > X){ System.out.println("Player O won!"); }
+        else{ System.out.println("Tie!"); }
     }
+
+    public Othello.Tile[][] getBoard(){ return board; }
 }
