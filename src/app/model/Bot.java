@@ -24,6 +24,7 @@ public class Bot extends Player{
     /**
      * @return False, the class Bot is never human
      */
+    @Override
     public boolean isHuman(){
         return false;
     }

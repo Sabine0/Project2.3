@@ -126,7 +126,7 @@ public class LobbyView implements View{
         acceptButton.setOnMouseClicked(event ->{
             // TO DO: Start online game vs challenger
             if (game.equals("TICTACTOE")) {
-                Main.setState(new TicTacToe(true,true, true));
+                Main.setState(new TicTacToe(true,true, true, false, username, challengerUsername)); // challenger always goes first?
             } else if (game.equals("OTHELLO")) {
                 Main.setState(new Othello(true, true, true));
             }

@@ -14,17 +14,6 @@ public abstract class GameState implements State {
     boolean playerTwoHuman;
 
     /**
-     * @param online Boolean indicating if the game is online or not
-     * @param playerOneHuman Boolean indicating if player one is human
-     * @param playerTwoHuman Boolean indicatingif player two is human
-     */
-    public GameState(boolean online, boolean playerOneHuman, boolean playerTwoHuman){
-        this.online = online;
-        this.playerOneHuman = playerOneHuman;
-        this.playerTwoHuman = playerTwoHuman;
-    }
-
-    /**
      * Code to be executed upon entering the game state
      */
     @Override

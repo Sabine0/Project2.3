@@ -24,23 +24,28 @@ public class TicTacToe extends GameState {
      * @param playerOneHuman Boolean indicating if player one is human
      * @param playerTwoHuman Boolean indicating if player two is human
      */
-    public TicTacToe(boolean online, boolean playerOneHuman, boolean playerTwoHuman) { // TO DO: missing username param
-        super(online, playerOneHuman, playerTwoHuman);
+    public TicTacToe(boolean online, boolean playerOneHuman, boolean playerTwoHuman,
+                     boolean appUserPlayer1, String appPlayerUsername, String opponentUsername) {
         tttBoard = new TicTacToeBoard();
         this.online = online;
 
-        p1turn = true;
-
-        if(playerOneHuman){
-            p1 = new UserPlayer(""); // TO DO: username from constructor param
-        }else{
-            p1 = new Bot("Victor BOT");
+        if(appUserPlayer1 && playerOneHuman){
+            p1 = new UserPlayer(appPlayerUsername);
+            if(playerTwoHuman) {
+                p2 = new UserPlayer(opponentUsername);
+            }else{
+                p2 = new Bot(opponentUsername);
+            }
         }
 
-        if (playerTwoHuman){
-            p2 = new UserPlayer(""); // TO DO: username from constructor param
-        }else {
-            p2 = new Bot("Victor BOT");
+        if(!appUserPlayer1 && playerOneHuman){
+            p2 = new UserPlayer(appPlayerUsername);
+
+            if(playerTwoHuman) {
+                p1 = new UserPlayer(opponentUsername);
+            }else{
+                p1 = new Bot(opponentUsername);
+            }
         }
 
         if(online){
@@ -66,6 +71,9 @@ public class TicTacToe extends GameState {
     public void launchLocal() {
         getView();
 
+        // Player 1 always goes first in a local match
+        p1turn = true;
+
         //If player is human
         if (p1.isHuman() || p2.isHuman()) {
             for (int row = 0; row < 3; row++) {
@@ -73,14 +81,11 @@ public class TicTacToe extends GameState {
                     int c = col;
                     int r = row;
                     tttBoard.getTile(c, r).setOnMouseClicked(event -> {
-                        if (p1turn && p1.isHuman()) {
-                            tttBoard.doMoveX(c, r);
-                            p1turn = false;
-                        } else if (!p1turn && p2.isHuman()) {
-                            tttBoard.doMoveO(c, r);
-                            p1turn = true;
-                        } else {
-                            // Do not respond to clicks
+                        if (p1.isHuman() || p2.isHuman()) {
+                            // TO DO: implement isValidMove
+                            if (isValidMove(c, r)) {
+                                drawMove(c, r);
+                            }
                         }
                     });
                 }
@@ -88,19 +93,48 @@ public class TicTacToe extends GameState {
         }
 
         //If player is bot
+        // TO DO: implement AI
         if (!p1.isHuman() || !p2.isHuman()) {
             // TO DO: Get move from AI: row and column
-            // Code here
-
-            if (p1turn) {
+            if (p1turn && !p1.isHuman()) {
                 // Do move on coordinates given by AI
-//                tttBoard.doMoveX(r, c);
+//                p1.doMove(); // Get move that AI wants to do
+//                tttBoard.doMoveX(c, r); // insert AIs move in c, r
                 p1turn = false;
-            } else {
+            }
+
+            if(!p1turn && !p2.isHuman()){
                 // Do move on coordinates given by AI
-//                tttBoard.doMoveO(r, c);
+//                p2.doMove(); // Get move that AI wants to do
+//                tttBoard.doMoveO(c, r); // insert AIs move in c, r
                 p1turn = true;
             }
+        }
+    }
+
+    /**
+     * @param col Column in the board
+     * @param row Row in the board
+     * @return Boolean if the move can be set on position col, row
+     */
+    public boolean isValidMove(int col, int row){
+        // TO DO: check if move is valid
+        return true;
+    }
+
+    /**
+     * @param col Column in the board
+     * @param row Row in the board
+     */
+    public void drawMove(int col, int row){
+        if(p1turn){
+            tttBoard.drawMoveX(col, row);
+            p1turn = false;
+            System.out.println(p2.getUsername()+"s turn"); // for testing only
+        }else{
+            tttBoard.drawMoveO(col, row);
+            p1turn = true;
+            System.out.println(p1.getUsername()+"s turn"); // for testing only
         }
     }
 

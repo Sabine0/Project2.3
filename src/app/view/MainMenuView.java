@@ -105,7 +105,7 @@ public class MainMenuView implements View{
         Menu menu = new Menu();
         menu.addButton("PLAYER VS PLAYER", event -> {
             if (game == "TICTACTOE") {
-                Main.setState(new TicTacToe(false,true, true));
+                Main.setState(new TicTacToe(false,true, true, true, "Player 1", "Player 2"));
             } else if (game == "OTHELLO") {
                 Main.setState(new Othello(false, true, true));
             } else {
@@ -114,7 +114,7 @@ public class MainMenuView implements View{
         });
         menu.addButton("PLAYER VS AI", event ->{
             if(game == "TICTACTOE"){
-                Main.setState(new TicTacToe(false, true, false));
+                Main.setState(new TicTacToe(false, true, false, true,"Player1", "Victor BOT"));
             }else if(game == "OTHELLO"){
                 Main.setState(new Othello(false, true, false));
             }else {
@@ -123,7 +123,7 @@ public class MainMenuView implements View{
         });
         menu.addButton("AI VS AI", event ->{
             if(game == "TICTACTOE"){
-                Main.setState(new TicTacToe(false, false, false));
+                Main.setState(new TicTacToe(false, false, false, true, "Jean BOT", "Victor BOT"));
             }else if(game == "OTHELLO"){
                 Main.setState(new Othello(false, false, false));
             }else {

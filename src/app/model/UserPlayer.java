@@ -15,12 +15,13 @@ public class UserPlayer extends Player{
     // TO DO: implement?
     @Override
     public void doMove(){
-        // click the tile
+        // click the tile ;)
     }
 
     /**
      * @return True, the class UserPlayer is always human
      */
+    @Override
     public boolean isHuman(){
         return true;
     }

@@ -56,7 +56,7 @@ public class TicTacToeBoard extends Board {
      * @param col Column in the board
      * @param row Row in the board
      */
-    public void doMoveX(int col, int row){
+    public void drawMoveX(int col, int row){
         grid[col][row].setTileP1();
     }
 
@@ -65,7 +65,7 @@ public class TicTacToeBoard extends Board {
      * @param col Column in the board
      * @param row Row in the board
      */
-    public void doMoveO(int col, int row){
+    public void drawMoveO(int col, int row){
         grid[col][row].setTileP2();
     }
 
