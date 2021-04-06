@@ -1,10 +1,12 @@
 package app.games;
 
+import app.Main;
 import app.games.gameobjects.TicTacToeBoard;
 import app.model.Bot;
 import app.model.Player;
 import app.model.UserPlayer;
 import app.state.GameState;
+import app.state.MainMenuState;
 import javafx.scene.Parent;
 /**
  * The TicTacToe class holds the game logic for TicTacToe
@@ -18,6 +20,7 @@ public class TicTacToe extends GameState {
     private boolean p1turn;
     private Player p1;
     private Player p2;
+    private String appPlayerUsername;
 
     /**
      * @param online Boolean indicating if the game is online or not
@@ -28,14 +31,18 @@ public class TicTacToe extends GameState {
                      boolean appUserPlayer1, String appPlayerUsername, String opponentUsername) {
         tttBoard = new TicTacToeBoard();
         this.online = online;
+        this.appPlayerUsername = appPlayerUsername;
 
         if(appUserPlayer1 && playerOneHuman){
             p1 = new UserPlayer(appPlayerUsername);
+
             if(playerTwoHuman) {
                 p2 = new UserPlayer(opponentUsername);
             }else{
                 p2 = new Bot(opponentUsername);
             }
+        }else if(!playerOneHuman){
+            p1 = new Bot(appPlayerUsername);
         }
 
         if(!appUserPlayer1 && playerOneHuman){
@@ -46,6 +53,8 @@ public class TicTacToe extends GameState {
             }else{
                 p1 = new Bot(opponentUsername);
             }
+        }else if(!playerOneHuman){
+            p2 = new Bot(appPlayerUsername);
         }
 
         if(online){
@@ -70,6 +79,7 @@ public class TicTacToe extends GameState {
     @Override
     public void launchLocal() {
         getView();
+        System.out.println(p1.getUsername() + " starts the game!");
 
         // Player 1 always goes first in a local match
         p1turn = true;
@@ -81,10 +91,14 @@ public class TicTacToe extends GameState {
                     int c = col;
                     int r = row;
                     tttBoard.getTile(c, r).setOnMouseClicked(event -> {
-                        if (p1.isHuman() || p2.isHuman()) {
+                        if ((p1.isHuman()  && p1turn) || (p2.isHuman() && !p1turn)) {
                             // TO DO: implement isValidMove
                             if (isValidMove(c, r)) {
                                 drawMove(c, r);
+                                if (isWon()){
+                                    // TO DO: Display a button, upon clicked return to the main menu
+                                    Main.setState(new MainMenuState());
+                                }
                             }
                         }
                     });
@@ -120,6 +134,16 @@ public class TicTacToe extends GameState {
     public boolean isValidMove(int col, int row){
         // TO DO: check if move is valid
         return true;
+    }
+
+    /**
+     * @return True if someone won the game
+     */
+    public boolean isWon(){
+        // TO DO: implement win condition
+
+//        tttBoard.playWinAnimation();
+        return false; // temporary always false
     }
 
     /**
