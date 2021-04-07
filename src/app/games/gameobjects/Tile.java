@@ -13,12 +13,14 @@ import javafx.scene.shape.Rectangle;
 public abstract class Tile extends StackPane {
     Rectangle border;
     StackPane borderPane;
+    boolean valid;
 
     public Tile(){
         borderPane = new StackPane();
         border = new Rectangle(80, 80);
         border.setFill(null);
         border.setStroke(Color.BLACK);
+        valid = true;
 
         borderPane.getChildren().add(border);
         getChildren().add(borderPane);
@@ -33,5 +35,16 @@ public abstract class Tile extends StackPane {
      * Set the tile for player two
      */
     public abstract void setTileP2();
+
+    /**
+     *
+     * @return
+     */
+    public abstract boolean getValid();
+
+    /**
+     *
+     */
+    public abstract void setValid();
 
 }

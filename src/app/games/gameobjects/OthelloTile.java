@@ -39,6 +39,19 @@ public class OthelloTile extends Tile {
     }
 
     /**
+     *
+     * @return
+     */
+    @Override
+    public boolean getValid() { return valid; }
+
+    /**
+     *
+     */
+    @Override
+    public void setValid() { valid = false; }
+
+    /**
      * @return The circle that belongs to the tile object
      */
     public Circle getContent(){

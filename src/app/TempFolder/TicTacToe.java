@@ -131,14 +131,18 @@ public class TicTacToe extends Application {
                 }
                 if(event.getButton() == MouseButton.PRIMARY) {
                     if (!turnX) return;
-                    drawX();
-                    turnX = false;
-                    checkState();
+                    if(empty()){
+                        drawX();
+                        turnX = false;
+                        checkState();
+                    }
                 }else if(event.getButton() == MouseButton.SECONDARY){
                     if(turnX) return;
-                    drawO();
-                    turnX= true;
-                    checkState();
+                    if(empty()){
+                        drawO();
+                        turnX= true;
+                        checkState();
+                    }
                 }
             });
         }
@@ -162,6 +166,8 @@ public class TicTacToe extends Application {
         private void drawO(){
             text.setText("O");
         }
+
+        public boolean empty(){ return getValue().isEmpty(); }
     }
 
 }
