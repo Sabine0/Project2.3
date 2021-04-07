@@ -92,6 +92,7 @@ public class TicTacToe extends GameState {
                         if ((p1.isHuman()  && p1turn) || (p2.isHuman() && !p1turn)) {
                             if (isValidMove(c, r)) {
                                 drawMove(c, r);
+                                System.out.println(tttBoard.getTile(c, r).getCoordinates());
                                 if (isWon()){
                                     // TO DO: Display a button, upon clicked return to the main menu
                                     Main.setState(new MainMenuState());
@@ -133,8 +134,8 @@ public class TicTacToe extends GameState {
      */
     public boolean isWon(){
         // TO DO: implement win condition
+//        tttBoard.playWinAnimation();
 
-        tttBoard.playWinAnimation();
         return false; // temporary always false
     }
 

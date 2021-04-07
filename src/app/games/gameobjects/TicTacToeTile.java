@@ -2,6 +2,9 @@ package app.games.gameobjects;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+
 /**
  * The class TicTacToeTile defines the contents of a tile in a TicTacToe game
  * @author Sabine Schreuder
@@ -9,6 +12,7 @@ import javafx.scene.text.Text;
  */
 public class TicTacToeTile extends Tile {
     private Text text;
+    private ArrayList<Integer> coordinates = new ArrayList<Integer>();
 
     public TicTacToeTile(){
         super();
@@ -24,6 +28,7 @@ public class TicTacToeTile extends Tile {
     @Override
     public void setTileP1(){
         text.setText("X");
+        setMove('X');
     }
 
     /**
@@ -32,6 +37,7 @@ public class TicTacToeTile extends Tile {
     @Override
     public void setTileP2(){
         text.setText("O");
+        setMove('O');
     }
 
     /**
@@ -47,10 +53,32 @@ public class TicTacToeTile extends Tile {
     @Override
     public void setValid() { valid = false; }
 
+    @Override
+    public char getMove() { return move; }
+
+    @Override
+    public void setMove(char c) {
+        move = c;
+    }
+
+    @Override
+    public ArrayList<Integer> getCoordinates() {
+        return coordinates;
+    }
+
+    @Override
+    public void setCoordinates(int c, int r) {
+        coordinates.add(r);
+        coordinates.add(c);
+    }
+
     /**
      * @return The text that belongs to the tile
      */
     public Text getText(){
         return text;
     }
+
+
+
 }

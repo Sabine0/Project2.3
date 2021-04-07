@@ -3,6 +3,8 @@ package app.games.gameobjects;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
+import java.util.ArrayList;
+
 /**
  * The class OthelloTile defines the contents of a tile in an Othello game
  * @author Sabine Schreuder
@@ -50,6 +52,26 @@ public class OthelloTile extends Tile {
      */
     @Override
     public void setValid() { valid = false; }
+
+    @Override
+    public char getMove() {
+        return 0;
+    }
+
+    @Override
+    public void setMove(char c) {
+
+    }
+
+    @Override
+    public ArrayList<Integer> getCoordinates() {
+        return null;
+    }
+
+    @Override
+    public void setCoordinates(int c, int r) {
+
+    }
 
     /**
      * @return The circle that belongs to the tile object

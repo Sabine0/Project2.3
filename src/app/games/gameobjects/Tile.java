@@ -1,9 +1,11 @@
 package app.games.gameobjects;
 
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+
+import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * The Tile class holds creates the border for every Tile
@@ -14,6 +16,7 @@ public abstract class Tile extends StackPane {
     Rectangle border;
     StackPane borderPane;
     boolean valid;
+    char move;
 
     public Tile(){
         borderPane = new StackPane();
@@ -38,13 +41,35 @@ public abstract class Tile extends StackPane {
 
     /**
      *
-     * @return
+     * @return if a set is possible
      */
     public abstract boolean getValid();
 
     /**
-     *
+     * Turns a tile to a false move
      */
     public abstract void setValid();
+
+    /**
+     *
+     * @return value of a tile
+     */
+    public abstract char getMove();
+
+    /**
+     * sets a value of a tile
+     */
+    public abstract void setMove(char c);
+
+    /**
+     *
+     * @return the coordinates of a tile
+     */
+    public abstract ArrayList<Integer> getCoordinates();
+
+    /**
+     * sets the coordinates of a tile
+     */
+    public abstract void setCoordinates(int c, int r);
 
 }

@@ -20,6 +20,8 @@ import java.util.List;
 public class TicTacToeBoard extends Board {
     private TicTacToeTile[][] grid;
     private Pane board;
+    public int[] corX;
+    public int[] corY;
 
     /**
      * Create the TicTacToe board with a two dimensional grid
@@ -57,9 +59,7 @@ public class TicTacToeBoard extends Board {
      * @param row Row in the board
      * @return The TicTacToeTile on position: column, row
      */
-    public TicTacToeTile getTile(int col, int row) {
-        return grid[col][row];
-    }
+    public TicTacToeTile getTile(int col, int row) { return grid[col][row]; }
 
     /**
      * Set X on location col, row
@@ -69,6 +69,7 @@ public class TicTacToeBoard extends Board {
      */
     public void drawMoveX(int col, int row) {
         grid[col][row].setTileP1();
+        grid[col][row].setCoordinates(col, row);
     }
 
     /**
@@ -79,6 +80,7 @@ public class TicTacToeBoard extends Board {
      */
     public void drawMoveO(int col, int row) {
         grid[col][row].setTileP2();
+        grid[col][row].setCoordinates(col, row);
     }
 
     /**
