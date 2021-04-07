@@ -90,4 +90,67 @@ public class TicTacToeBoard extends Board {
 //        hardcode
         System.out.println("win");
     }
+
+
+
+
+// hardcode test
+    public boolean testWin(){
+
+
+//        eventueel nog beter uitwerken
+//        for(int y=0; y<3; y++){
+//            if(grid[0][y].getMove() == grid[1][y].getMove() && grid[0][y].getMove() == grid[2][y].getMove()){
+//                return true;
+//            }
+//        }
+//
+//        for(int x=0; x<3; x++){
+//            if(grid[x][0].getMove() == grid[x][1].getMove() && grid[x][0].getMove() == grid[x][2].getMove()){
+//                return true;
+//            }
+//        }
+//
+//        if(grid[0][0].getMove() == grid[1][1].getMove() && grid[0][0].getMove() == grid[2][2].getMove()){
+//            return true;
+//        }
+//        else if(grid[2][0].getMove() == grid[1][1].getMove() && grid[2][0].getMove() == grid[0][2].getMove()){
+//            return true;
+//        }
+
+
+
+        for(int y=0; y<3; y++){
+            if(grid[0][y].getMove() == 'X' && grid[1][y].getMove() == 'X' && grid[2][y].getMove() == 'X'){
+                return true;
+            }
+            else if(grid[0][y].getMove() == 'O' && grid[1][y].getMove() == 'O' && grid[2][y].getMove() == 'O'){
+                return true;
+            }
+        }
+
+        for(int x=0; x<3; x++){
+            if(grid[x][0].getMove() == 'X' && grid[x][1].getMove() == 'X' && grid[x][2].getMove() == 'X'){
+                return true;
+            }
+            else if(grid[x][0].getMove() == 'O' && grid[x][1].getMove() == 'O' && grid[x][2].getMove() == 'O'){
+                return true;
+            }
+        }
+
+        if(grid[0][0].getMove() == 'X' && grid[1][1].getMove() == 'X' && grid[2][2].getMove() == 'X'){
+            return true;
+        }
+        else if(grid[0][0].getMove() == 'O' && grid[1][1].getMove() == 'O' && grid[2][2].getMove() == 'O'){
+            return true;
+        }
+        else if(grid[2][0].getMove() == 'X' && grid[1][1].getMove() == 'X' && grid[0][2].getMove() == 'X'){
+            return true;
+        }
+        else if(grid[2][0].getMove() == 'O' && grid[1][1].getMove() == 'O' && grid[0][2].getMove() == 'O'){
+            return true;
+        }
+
+        return false;
+    }
 }
