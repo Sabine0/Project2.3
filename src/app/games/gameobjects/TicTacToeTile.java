@@ -35,6 +35,19 @@ public class TicTacToeTile extends Tile {
     }
 
     /**
+     *
+     * @return
+     */
+    @Override
+    public boolean getValid() { return valid; }
+
+    /**
+     *
+     */
+    @Override
+    public void setValid() { valid = false; }
+
+    /**
      * @return The text that belongs to the tile
      */
     public Text getText(){

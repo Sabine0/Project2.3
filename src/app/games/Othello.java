@@ -125,17 +125,17 @@ public class Othello extends GameState {
         if(p1turn){
             othelloBoard.drawMoveBlack(col, row);
             p1turn = false;
+            othelloBoard.getTile(col, row).setValid();
             System.out.println(p2.getUsername()+"s turn"); // for testing only
         }else{
             othelloBoard.drawMoveWhite(col, row);
             p1turn = true;
+            othelloBoard.getTile(col, row).setValid();
             System.out.println(p1.getUsername()+"s turn"); // for testing only
         }
     }
 
-    public boolean isValidMove(int col, int row){
-        return true;
-    }
+    public boolean isValidMove(int col, int row){ return othelloBoard.getTile(col, row).getValid(); }
 
     public boolean isWon(){
         return false;

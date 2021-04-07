@@ -126,10 +126,8 @@ public class TicTacToe extends GameState {
      * @param row Row in the board
      * @return Boolean if the move can be set on position col, row
      */
-    public boolean isValidMove(int col, int row){
-        // TO DO: check if move is valid
-        return true;
-    }
+    public boolean isValidMove(int col, int row){ return tttBoard.getTile(col, row).getValid(); }
+
 
     /**
      * @return True if someone won the game
@@ -149,10 +147,12 @@ public class TicTacToe extends GameState {
         if(p1turn){
             tttBoard.drawMoveX(col, row);
             p1turn = false;
+            tttBoard.getTile(col, row).setValid();
             System.out.println(p2.getUsername()+"s turn"); // for testing only
         }else{
             tttBoard.drawMoveO(col, row);
             p1turn = true;
+            tttBoard.getTile(col, row).setValid();
             System.out.println(p1.getUsername()+"s turn"); // for testing only
         }
     }
