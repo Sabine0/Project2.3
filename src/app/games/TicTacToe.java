@@ -90,7 +90,6 @@ public class TicTacToe extends GameState {
                     int r = row;
                     tttBoard.getTile(c, r).setOnMouseClicked(event -> {
                         if ((p1.isHuman()  && p1turn) || (p2.isHuman() && !p1turn)) {
-                            // TO DO: implement isValidMove
                             if (isValidMove(c, r)) {
                                 drawMove(c, r);
                                 if (isWon()){
