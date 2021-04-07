@@ -134,7 +134,7 @@ public class TicTacToe extends GameState {
     public boolean isWon(){
         // TO DO: implement win condition
 
-//        tttBoard.playWinAnimation();
+        tttBoard.playWinAnimation();
         return false; // temporary always false
     }
 
