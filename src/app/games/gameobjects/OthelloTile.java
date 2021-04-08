@@ -18,6 +18,7 @@ public class OthelloTile extends Tile {
     public OthelloTile(){
         super();
         circle = new Circle(20);
+        circle.setFill(Color.GREEN);
         circle.setLayoutX(200);
         circle.setLayoutY(200);
     }
@@ -27,10 +28,9 @@ public class OthelloTile extends Tile {
      */
     @Override
     public void setTileP1(){
-        if (!getChildren().isEmpty()) {
-            getChildren().remove(0);
+        if(circle.getFill() == Color.GREEN){
+            getChildren().add(circle);
         }
-        getChildren().add(circle);
         circle.setFill(Color.BLACK);
     }
 
@@ -39,10 +39,9 @@ public class OthelloTile extends Tile {
      */
     @Override
     public void setTileP2(){
-        if (!getChildren().isEmpty()) {
-            getChildren().remove(0);
+        if(circle.getFill() == Color.GREEN){
+            getChildren().add(circle);
         }
-        getChildren().add(circle);
         circle.setFill(Color.WHITE);
         circle.setStroke(Color.BLACK);
     }
