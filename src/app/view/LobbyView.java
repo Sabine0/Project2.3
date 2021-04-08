@@ -77,6 +77,18 @@ public class LobbyView implements View{
     // TO DO: while loop for receiving challenge requests
     public Menu lobbyMenu(){
         Menu menu = new Menu();
+
+        menu.addButton("LOOK FOR MATCH", event ->{
+            if(game=="TICTACTOE"){
+                // server command: subscribe Tic-tac-toe
+                // if server says OK: new TicTacToe
+                System.out.println("im subscribed to tic-tac-toe"); // temporary
+            }else if(game=="OTHELLO"){
+                // server command: subscribe Othello
+                // if server says OK: new Othello
+                System.out.println("im subscribed to othello"); // temporary
+            }
+        });
         menu.addButton("CHALLENGE OPPONENT", event -> {
             menu.getChildren().remove(0);
 
@@ -126,11 +138,10 @@ public class LobbyView implements View{
 
         Button acceptButton = new Button("Accept");
         acceptButton.setOnMouseClicked(event ->{
-            // TO DO: Start online game vs challenger
             if (game.equals("TICTACTOE")) {
-                Main.setState(new TicTacToe(true,true, true, false, username, challengerUsername)); // challenger always goes first?
+                Main.setState(new TicTacToe(true,false, true, false, username, challengerUsername)); // challenger always goes first
             } else if (game.equals("OTHELLO")) {
-                Main.setState(new Othello(true, true, true, false, username, challengerUsername)); // challenger always goes first?
+                Main.setState(new Othello(true, false, true, false, username, challengerUsername)); // challenger always goes first
             }
         });
         Button declineButton = new Button("Decline");
@@ -176,9 +187,10 @@ public class LobbyView implements View{
 
                 Button challengePlayer = new Button("Challenge!");
                 challengePlayer.setOnMouseClicked(event2 -> {
-                    // TO DO: challenge as bot or player
-                    // TO DO: send challenge to user
+                    // TO DO: send to server: challenge "user" "game"
                     System.out.println("challenged player: " + user);
+                    // if they accept: new game()
+                    // if they decline: send a message they declined
                 });
 
                 onlinePlayerButtons.setAlignment(Pos.CENTER);

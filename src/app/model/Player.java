@@ -18,6 +18,7 @@ public abstract class Player {
         return username;
     }
 
+//    public abstract void doMove();
     /**
      * @return Boolean if user is human
      */

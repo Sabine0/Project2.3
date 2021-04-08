@@ -8,6 +8,8 @@ import app.model.UserPlayer;
 import app.state.GameState;
 import app.state.MainMenuState;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
+
 /**
  * The TicTacToe class holds the game logic for TicTacToe
  * @author Sabine Schreuder
@@ -93,8 +95,14 @@ public class TicTacToe extends GameState {
                             if (isValidMove(c, r)) {
                                 drawMove(c, r);
                                 if (isWon()){
-                                    // TO DO: Display a button, upon clicked return to the main menu
-                                    Main.setState(new MainMenuState());
+                                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                    alert.setTitle("The game has ended");
+                                    alert.setHeaderText("The winner is: "+ p1.getUsername()); // hardcoded p1 wins
+                                    alert.setContentText("Click OK to return to the main menu");
+                                    alert.setOnCloseRequest(returnEvent ->{
+                                        Main.setState(new MainMenuState());
+                                    });
+                                    alert.show();
                                 }
                             }
                         }
