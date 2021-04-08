@@ -107,6 +107,8 @@ public class Othello extends GameState {
                                     drawMove(listOfCoordinates.get(i), listOfCoordinates.get(i+1));
                                 }
                                 listOfCoordinates.clear();
+                                System.out.println("HHHHOOOII");
+                                System.out.println("HOPELIJK LEGE LIST: " + listOfCoordinates);
 
                                 if(p1turn){
                                     p1turn = false;
@@ -181,28 +183,28 @@ public class Othello extends GameState {
         }
 
         boolean valid = false;
-        if (othelloBoard.getTile(col-1, row-1).getContent().getFill() == notPlayingColour && checkUL(col-1, row-1, playingColour)) {
+        if (othelloBoard.getTile(col-1, row-1).getContent().getFill() == notPlayingColour && checkUL(col, row, playingColour)) {
             valid = true;
         }
-        if (othelloBoard.getTile(col-1, row).getContent().getFill() == notPlayingColour && checkUM(col-1, row, playingColour)) {
+        if (othelloBoard.getTile(col-1, row).getContent().getFill() == notPlayingColour && checkUM(col, row, playingColour)) {
             valid = true;
         }
-        if (othelloBoard.getTile(col-1, row+1).getContent().getFill() == notPlayingColour && checkUR(col-1, row+1, playingColour)) {
+        if (othelloBoard.getTile(col-1, row+1).getContent().getFill() == notPlayingColour && checkUR(col, row, playingColour)) {
             valid = true;
         }
-        if (othelloBoard.getTile(col, row-1).getContent().getFill() == notPlayingColour && checkML(col, row-1, playingColour)) {
+        if (othelloBoard.getTile(col, row-1).getContent().getFill() == notPlayingColour && checkML(col, row, playingColour)) {
             valid = true;
         }
-        if (othelloBoard.getTile(col, row+1).getContent().getFill() == notPlayingColour && checkMR(col, row+1, playingColour)) {
+        if (othelloBoard.getTile(col, row+1).getContent().getFill() == notPlayingColour && checkMR(col, row, playingColour)) {
             valid = true;
         }
-        if (othelloBoard.getTile(col+1, row-1).getContent().getFill() == notPlayingColour && checkDL(col+1, row-1, playingColour)) {
+        if (othelloBoard.getTile(col+1, row-1).getContent().getFill() == notPlayingColour && checkDL(col, row, playingColour)) {
             valid = true;
         }
-        if (othelloBoard.getTile(col+1, row).getContent().getFill() == notPlayingColour && checkDM(col+1, row, playingColour)) {
+        if (othelloBoard.getTile(col+1, row).getContent().getFill() == notPlayingColour && checkDM(col, row, playingColour)) {
             valid = true;
         }
-        if (othelloBoard.getTile(col+1, row+1).getContent().getFill() == notPlayingColour && checkDR(col+1, row+1, playingColour)) {
+        if (othelloBoard.getTile(col+1, row+1).getContent().getFill() == notPlayingColour && checkDR(col, row, playingColour)) {
             valid = true;
         }
         return valid;
@@ -217,8 +219,8 @@ public class Othello extends GameState {
     public boolean checkUL(int c, int r, Paint playingColour) {
         System.out.println("UL! " + c +" "+ r);
         ArrayList<Integer>tempListOfCoordinates = new ArrayList<>();
-        tempListOfCoordinates.add(c+1);
-        tempListOfCoordinates.add(r+1);
+        tempListOfCoordinates.add(c);
+        tempListOfCoordinates.add(r);
         boolean valid = false;
         while(c > 0 && r > 0) {
             tempListOfCoordinates.add(c);
@@ -243,7 +245,7 @@ public class Othello extends GameState {
     public boolean checkUM(int c, int r, Paint playingColour) {
         System.out.println("UM! " + c +" "+ r);
         ArrayList<Integer>tempListOfCoordinates = new ArrayList<>();
-        tempListOfCoordinates.add(c+1);
+        tempListOfCoordinates.add(c);
         tempListOfCoordinates.add(r);
         boolean valid = false;
         while(c>0) {
@@ -253,6 +255,7 @@ public class Othello extends GameState {
             if(othelloBoard.getTile(c, r).getContent().getFill() == playingColour){
                 valid = true;
                 setArrayOfCoordinates(tempListOfCoordinates);
+                System.out.println(playingColour);
                 break;
             }
         }
@@ -268,8 +271,8 @@ public class Othello extends GameState {
     public boolean checkUR(int c, int r, Paint playingColour) {
         System.out.println("UR! " + c +" "+ r);
         ArrayList<Integer>tempListOfCoordinates = new ArrayList<>();
-        tempListOfCoordinates.add(c+1);
-        tempListOfCoordinates.add(r-1);
+        tempListOfCoordinates.add(c);
+        tempListOfCoordinates.add(r);
         boolean valid = false;
         while(c>0 && r<7) {
             tempListOfCoordinates.add(c);
@@ -279,6 +282,7 @@ public class Othello extends GameState {
             if(othelloBoard.getTile(c, r).getContent().getFill() == playingColour){
                 valid = true;
                 setArrayOfCoordinates(tempListOfCoordinates);
+                System.out.println(playingColour);
                 break;
             }
         }
@@ -295,7 +299,7 @@ public class Othello extends GameState {
         System.out.println("ML! " + c +" "+ r);
         ArrayList<Integer>tempListOfCoordinates = new ArrayList<>();
         tempListOfCoordinates.add(c);
-        tempListOfCoordinates.add(r+1);
+        tempListOfCoordinates.add(r);
         boolean valid = false;
         while(r>0) {
             tempListOfCoordinates.add(c);
@@ -320,7 +324,7 @@ public class Othello extends GameState {
         System.out.println("MR! " + c +" "+ r);
         ArrayList<Integer>tempListOfCoordinates = new ArrayList<>();
         tempListOfCoordinates.add(c);
-        tempListOfCoordinates.add(r-1);
+        tempListOfCoordinates.add(r);
         boolean valid = false;
         while(r<7) {
             tempListOfCoordinates.add(c);
@@ -344,8 +348,8 @@ public class Othello extends GameState {
     public boolean checkDL(int c, int r, Paint playingColour) {
         System.out.println("DL! " + c +" "+ r);
         ArrayList<Integer>tempListOfCoordinates = new ArrayList<>();
-        tempListOfCoordinates.add(c-1);
-        tempListOfCoordinates.add(r+1);
+        tempListOfCoordinates.add(c);
+        tempListOfCoordinates.add(r);
         boolean valid = false;
         while(c<7 && r>0) {
             tempListOfCoordinates.add(c);
@@ -370,7 +374,7 @@ public class Othello extends GameState {
     public boolean checkDM(int c, int r, Paint playingColour) {
         System.out.println("DM! " + c +" "+ r);
         ArrayList<Integer>tempListOfCoordinates = new ArrayList<>();
-        tempListOfCoordinates.add(c-1);
+        tempListOfCoordinates.add(c);
         tempListOfCoordinates.add(r);
         boolean valid = false;
         while(c<7) {
@@ -396,8 +400,8 @@ public class Othello extends GameState {
     public boolean checkDR(int c, int r, Paint playingColour) {
         System.out.println("DR! " + c +" "+ r);
         ArrayList<Integer>tempListOfCoordinates = new ArrayList<>();
-        tempListOfCoordinates.add(c-1);
-        tempListOfCoordinates.add(r-1);
+        tempListOfCoordinates.add(c);
+        tempListOfCoordinates.add(r);
         boolean valid = false;
         while(c<7 && r<7) {
             tempListOfCoordinates.add(c);
