@@ -8,6 +8,7 @@ import app.model.UserPlayer;
 import app.state.GameState;
 import app.state.MainMenuState;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import java.util.ArrayList;
@@ -25,6 +26,8 @@ public class Othello extends GameState {
     private OthelloBoard othelloBoard;
     private Player p1;
     private Player p2;
+    private int countMoves;
+    private boolean isWon;
     ArrayList<Integer> listOfCoordinates;
 
     /**
@@ -93,6 +96,8 @@ public class Othello extends GameState {
 
         // Player 1 always goes first in a local match
         p1turn = true;
+        isWon = true;
+        countMoves = 0;
 
         //If player is human
         if (p1.isHuman() || p2.isHuman()) {
@@ -106,8 +111,8 @@ public class Othello extends GameState {
                                 for (int i =0; i<listOfCoordinates.size(); i+=2){
                                     drawMove(listOfCoordinates.get(i), listOfCoordinates.get(i+1));
                                 }
+                                countMoves++;
                                 listOfCoordinates.clear();
-                                System.out.println("HHHHOOOII");
                                 System.out.println("HOPELIJK LEGE LIST: " + listOfCoordinates);
 
                                 if(p1turn){
@@ -116,9 +121,18 @@ public class Othello extends GameState {
                                     p1turn = true;
                                 }
 
-                                if (isWon()){
+                                if (countMoves == 60) {
+                                    ArrayList<Object> winnerList = new ArrayList<>();
+                                    winnerList = calcWinner();
+                                    
+                                }
+
+                                if (isWon){
                                     // TO DO: Display a button, upon clicked return to the main menu
-                                    Main.setState(new MainMenuState());
+                                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                                    //alert.
+                                    alert.show();
+                                    //Main.setState(new MainMenuState());
                                 }
                             }
                         }
@@ -425,8 +439,35 @@ public class Othello extends GameState {
     /**
      * @return Boolean if the game has been won by someone
      */
-    public boolean isWon(){
-        return false;
+    public ArrayList<Object> calcWinner(){
+        ArrayList<Object> listWinner = new ArrayList<>();
+        int countBlack = 0;
+        int countWhite = 0;
+        String winner;
+        for(int col = 0; col < 8; col++) {
+            for (int row = 0; row < 8; row++) {
+                if(othelloBoard.getTile(col, row).getContent().getFill() == Color.BLACK) {
+                    countBlack++;
+                } 
+                if (othelloBoard.getTile(col, row).getContent().getFill() == Color.WHITE) {
+                    countWhite++;
+                }
+            }
+        } 
+        if (countBlack > countWhite) {
+            winner = p1.getUsername();
+            listWinner.add(winner);
+            listWinner.add(countBlack);
+        } else if (countBlack < countWhite) {
+            winner = p2.getUsername();
+            listWinner.add(winner);
+            listWinner.add(countWhite);
+        } else {
+            winner = "Gelijk spel";
+            listWinner.add(winner);
+        }
+        isWon = true;
+        return listWinner;
     }
 
 
