@@ -1,5 +1,6 @@
 package app.games.gameobjects;
 
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
@@ -26,6 +27,9 @@ public class OthelloTile extends Tile {
      */
     @Override
     public void setTileP1(){
+        if (!getChildren().isEmpty()) {
+            getChildren().remove(0);
+        }
         getChildren().add(circle);
         circle.setFill(Color.BLACK);
     }
@@ -35,42 +39,16 @@ public class OthelloTile extends Tile {
      */
     @Override
     public void setTileP2(){
+        if (!getChildren().isEmpty()) {
+            getChildren().remove(0);
+        }
         getChildren().add(circle);
         circle.setFill(Color.WHITE);
         circle.setStroke(Color.BLACK);
     }
 
-    /**
-     *
-     * @return
-     */
-    @Override
-    public boolean getValid() { return valid; }
-
-    /**
-     *
-     */
-    @Override
-    public void setValid() { valid = false; }
-
-    @Override
-    public char getMove() {
-        return 0;
-    }
-
-    @Override
-    public void setMove(char c) {
-
-    }
-
-    @Override
     public ArrayList<Integer> getCoordinates() {
         return null;
-    }
-
-    @Override
-    public void setCoordinates(int c, int r) {
-
     }
 
     /**

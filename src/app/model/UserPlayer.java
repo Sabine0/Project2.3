@@ -13,7 +13,6 @@ public class UserPlayer extends Player{
     }
 
     // TO DO: implement?
-    @Override
     public void doMove(){
         // click the tile ;)
     }

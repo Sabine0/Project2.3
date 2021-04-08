@@ -20,21 +20,20 @@ public class Bot extends Player{
      * AI calculates move
      */
     // TO DO: implement
-    @Override
     public void doMove(Tile playing, Tile tegenStander){
-        int[] listOfMoves = new int[]{};
-        int teller = 0;
-        Othello othello = new Othello();
-        for(int c = 1; c < 9; c++) {
-            for(int r = 1; r < 9; r++) {
-                if(othello.validMove(c, r, playing, tegenStander)) {
-                    listOfMoves[teller] = c;
-                    teller++;
-                    listOfMoves[teller] = r;
-                    teller++;
-                }
-            }
-        }
+//        int[] listOfMoves = new int[]{};
+//        int teller = 0;
+//        Othello othello = new Othello();
+//        for(int c = 1; c < 9; c++) {
+//            for(int r = 1; r < 9; r++) {
+//                if(othello.validMove(c, r, playing, tegenStander)) {
+//                    listOfMoves[teller] = c;
+//                    teller++;
+//                    listOfMoves[teller] = r;
+//                    teller++;
+//                }
+//            }
+//        }
     }
 
     /**

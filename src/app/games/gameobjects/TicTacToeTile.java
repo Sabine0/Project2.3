@@ -12,10 +12,13 @@ import java.util.HashSet;
  */
 public class TicTacToeTile extends Tile {
     private Text text;
+    boolean valid;
+    char move;
     private ArrayList<Integer> coordinates = new ArrayList<Integer>();
 
     public TicTacToeTile(){
         super();
+        valid= true;
         text = new Text();
         text.setFont(Font.font(72));
 
@@ -44,29 +47,23 @@ public class TicTacToeTile extends Tile {
      *
      * @return
      */
-    @Override
     public boolean getValid() { return valid; }
 
     /**
      *
      */
-    @Override
     public void setValid() { valid = false; }
 
-    @Override
     public char getMove() { return move; }
 
-    @Override
     public void setMove(char c) {
         move = c;
     }
 
-    @Override
     public ArrayList<Integer> getCoordinates() {
         return coordinates;
     }
 
-    @Override
     public void setCoordinates(int c, int r) {
         coordinates.add(r);
         coordinates.add(c);

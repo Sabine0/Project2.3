@@ -29,9 +29,14 @@ public class OthelloBoard extends Board {
 
                 board.getChildren().add(tile);
 
-                grid[j][i] = tile;
+                grid[i][j] = tile;
             }
         }
+
+        drawMoveWhite(3,3);
+        drawMoveBlack(3,4);
+        drawMoveWhite(4,4);
+        drawMoveBlack(4,3);
     }
 
     /**

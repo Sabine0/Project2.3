@@ -91,9 +91,6 @@ public class TicTacToeBoard extends Board {
         System.out.println("win");
     }
 
-
-
-
 // hardcode test
     public boolean testWin(){
 
