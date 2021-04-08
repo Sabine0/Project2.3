@@ -96,7 +96,7 @@ public class Othello extends GameState {
 
         // Player 1 always goes first in a local match
         p1turn = true;
-        isWon = true;
+        isWon = false;
         countMoves = 0;
 
         //If player is human
@@ -130,7 +130,6 @@ public class Othello extends GameState {
                                 if (isWon){
                                     // TO DO: Display a button, upon clicked return to the main menu
                                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                                    //alert.
                                     alert.show();
                                     //Main.setState(new MainMenuState());
                                 }
@@ -195,31 +194,46 @@ public class Othello extends GameState {
             playingColour = Color.WHITE;
             notPlayingColour = Color.BLACK;
         }
-
         boolean valid = false;
-        if (othelloBoard.getTile(col-1, row-1).getContent().getFill() == notPlayingColour && checkUL(col, row, playingColour)) {
-            valid = true;
+        if(col - 1 > -1 && row - 1 > -1) {
+            if (othelloBoard.getTile(col-1, row-1).getContent().getFill() == notPlayingColour && checkUL(col, row, playingColour)) {
+                valid = true;
+            }
         }
-        if (othelloBoard.getTile(col-1, row).getContent().getFill() == notPlayingColour && checkUM(col, row, playingColour)) {
-            valid = true;
+        if(col - 1 > -1) {
+            if (othelloBoard.getTile(col-1, row).getContent().getFill() == notPlayingColour && checkUM(col, row, playingColour)) {
+                valid = true;
+            }
         }
-        if (othelloBoard.getTile(col-1, row+1).getContent().getFill() == notPlayingColour && checkUR(col, row, playingColour)) {
-            valid = true;
+        if(col - 1 > -1 && row + 1 < 8) {
+            if (othelloBoard.getTile(col-1, row+1).getContent().getFill() == notPlayingColour && checkUR(col, row, playingColour)) {
+                valid = true;
+            }
         }
-        if (othelloBoard.getTile(col, row-1).getContent().getFill() == notPlayingColour && checkML(col, row, playingColour)) {
-            valid = true;
+        if(row - 1 > -1) {
+            if (othelloBoard.getTile(col, row-1).getContent().getFill() == notPlayingColour && checkML(col, row, playingColour)) {
+                valid = true;
+            }
         }
-        if (othelloBoard.getTile(col, row+1).getContent().getFill() == notPlayingColour && checkMR(col, row, playingColour)) {
-            valid = true;
+        if(row + 1 < 8) {
+            if (othelloBoard.getTile(col, row+1).getContent().getFill() == notPlayingColour && checkMR(col, row, playingColour)) {
+                valid = true;
+            }
         }
-        if (othelloBoard.getTile(col+1, row-1).getContent().getFill() == notPlayingColour && checkDL(col, row, playingColour)) {
-            valid = true;
+        if(col + 1 < 8 && row - 1 > -1) {
+            if (othelloBoard.getTile(col+1, row-1).getContent().getFill() == notPlayingColour && checkDL(col, row, playingColour)) {
+                valid = true;
+            }
         }
-        if (othelloBoard.getTile(col+1, row).getContent().getFill() == notPlayingColour && checkDM(col, row, playingColour)) {
-            valid = true;
+        if(col + 1 < 8) {
+            if (othelloBoard.getTile(col+1, row).getContent().getFill() == notPlayingColour && checkDM(col, row, playingColour)) {
+                valid = true;
+            }
         }
-        if (othelloBoard.getTile(col+1, row+1).getContent().getFill() == notPlayingColour && checkDR(col, row, playingColour)) {
-            valid = true;
+        if(col + 1 < 8 && row + 1 < 8) {
+            if (othelloBoard.getTile(col+1, row+1).getContent().getFill() == notPlayingColour && checkDR(col, row, playingColour)) {
+                valid = true;
+            }
         }
         return valid;
     }
