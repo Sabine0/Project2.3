@@ -221,7 +221,8 @@ public class Othello extends GameState {
         tempListOfCoordinates.add(r+1);
         boolean valid = false;
         while(c > 0 && r > 0) {
-            tempListOfCoordinates.add(c, r);
+            tempListOfCoordinates.add(c);
+            tempListOfCoordinates.add(r);
             c--;
             r--;
             if(othelloBoard.getTile(c, r).getContent().getFill() == playingColour) {
