@@ -23,8 +23,8 @@ public class Bot extends Player{
 
     /**
      * AI calculates move
+     * @return coordinates of the best move
      */
-    // TO DO: implement
     public int[] doMove(){
         int highestScore = 0;
         int indexOfHighestScore = 0;
@@ -34,14 +34,14 @@ public class Bot extends Player{
                 indexOfHighestScore = i;
             }
         }
-        int[] coordinates = new int[]{listOfPossibleMoves().get(indexOfHighestScore - 2), listOfPossibleMoves().get(indexOfHighestScore - 1)};
-        return coordinates;
+        int[] coordinatesBestMove = new int[]{listOfPossibleMoves().get(indexOfHighestScore - 2), listOfPossibleMoves().get(indexOfHighestScore - 1)};
+        return coordinatesBestMove;
     }
 
     /**
      * mehtodes that give a list of al the possible move with their ratings
      * [col, row, rating, col, row, rating, ...]
-     * @return
+     * @return listOfPossibleMoves
      */
     public ArrayList<Integer> listOfPossibleMoves() {
         ArrayList<Integer> listOfPossible = new ArrayList<>();
