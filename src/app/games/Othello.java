@@ -15,6 +15,7 @@ import java.util.ArrayList;
 /**
  * The Othello class holds the game logic for Othello
  * @author Sabine Schreuder
+ * @author Luc Willemse
  * @version 05-04-21
  */
 // TO DO: implement game logic for Othello
@@ -105,6 +106,7 @@ public class Othello extends GameState {
                                 for (int i =0; i<listOfCoordinates.size(); i+=2){
                                     drawMove(listOfCoordinates.get(i), listOfCoordinates.get(i+1));
                                 }
+                                listOfCoordinates.clear();
 
                                 if(p1turn){
                                     p1turn = false;
@@ -207,10 +209,10 @@ public class Othello extends GameState {
     }
 
     /**
-     * @param c
-     * @param r
-     * @param playingColour
-     * @return
+     * @param c collom in board
+     * @param r row in board
+     * @param playingColour color of who's turn it is
+     * @return true when is valid row.
      */
     public boolean checkUL(int c, int r, Paint playingColour) {
         System.out.println("UL! " + c +" "+ r);
@@ -232,10 +234,10 @@ public class Othello extends GameState {
     }
 
     /**
-     * @param c
-     * @param r
-     * @param playingColour
-     * @return
+     * @param c collom in board
+     * @param r row in board
+     * @param playingColour color of who's turn it is
+     * @return true when is valid row.
      */
     public boolean checkUM(int c, int r, Paint playingColour) {
         System.out.println("UM! " + c +" "+ r);
@@ -257,10 +259,10 @@ public class Othello extends GameState {
     }
 
     /**
-     * @param c
-     * @param r
-     * @param playingColour
-     * @return
+     * @param c collom in board
+     * @param r row in board
+     * @param playingColour color of who's turn it is
+     * @return true when is valid row.
      */
     public boolean checkUR(int c, int r, Paint playingColour) {
         System.out.println("UR! " + c +" "+ r);
@@ -283,10 +285,10 @@ public class Othello extends GameState {
     }
 
     /**
-     * @param c
-     * @param r
-     * @param playingColour
-     * @return
+     * @param c collom in board
+     * @param r row in board
+     * @param playingColour color of who's turn it is
+     * @return true when is valid row.
      */
     public boolean checkML(int c, int r, Paint playingColour) {
         System.out.println("ML! " + c +" "+ r);
@@ -308,10 +310,10 @@ public class Othello extends GameState {
     }
 
     /**
-     * @param c
-     * @param r
-     * @param playingColour
-     * @return
+     * @param c collom in board
+     * @param r row in board
+     * @param playingColour color of who's turn it is
+     * @return true when is valid row.
      */
     public boolean checkMR(int c, int r, Paint playingColour) {
         System.out.println("MR! " + c +" "+ r);
@@ -333,10 +335,10 @@ public class Othello extends GameState {
     }
 
     /**
-     * @param c
-     * @param r
-     * @param playingColour
-     * @return
+     * @param c collom in board
+     * @param r row in board
+     * @param playingColour color of who's turn it is
+     * @return true when is valid row.
      */
     public boolean checkDL(int c, int r, Paint playingColour) {
         System.out.println("DL! " + c +" "+ r);
@@ -359,10 +361,10 @@ public class Othello extends GameState {
     }
 
     /**
-     * @param c
-     * @param r
-     * @param playingColour
-     * @return
+     * @param c collom in board
+     * @param r row in board
+     * @param playingColour color of who's turn it is
+     * @return true when is valid row.
      */
     public boolean checkDM(int c, int r, Paint playingColour) {
         System.out.println("DM! " + c +" "+ r);
@@ -385,10 +387,10 @@ public class Othello extends GameState {
     }
 
     /**
-     * @param c
-     * @param r
-     * @param playingColour
-     * @return
+     * @param c collom in board
+     * @param r row in board
+     * @param playingColour color of who's turn it is
+     * @return true when is valid row.
      */
     public boolean checkDR(int c, int r, Paint playingColour) {
         System.out.println("DR! " + c +" "+ r);
