@@ -18,6 +18,7 @@ public abstract class Player {
         return username;
     }
 
+    // hier in een tegenstander en player toevoegen?
     public abstract void doMove();
 
     /**

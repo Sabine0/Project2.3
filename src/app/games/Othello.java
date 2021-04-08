@@ -62,6 +62,11 @@ public class Othello extends GameState {
             launchLocal();
         }
     }
+
+    public Othello() {
+        
+    }
+
     /**
      *  Launch an online variant of Othello
      */
