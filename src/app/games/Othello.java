@@ -228,11 +228,6 @@ public class Othello extends GameState {
         if ((!p1.isHuman() && p1turn) || (!p2.isHuman() && !p1turn)) {
             int col = doMoveBOT()[0];
             int row = doMoveBOT()[1];
-            System.out.println("jo " + col + " and " + row);
-            System.out.println(isValidMove(col, row));
-            System.out.println(p1.getUsername());
-            System.out.println(p2.getUsername());
-            System.out.println("turn1: " +p1turn);
             if (isValidMove(col, row)) {
                 for (int i =0; i<tilesToBeFlipped.size(); i+=2){
                     System.out.println(tilesToBeFlipped.get(i));
@@ -587,7 +582,6 @@ public class Othello extends GameState {
 
     public ArrayList<Integer> listOfPossibleMoves() {
         ArrayList<Integer> listOfPossible = new ArrayList<>();
-
         for(int col = 0; col < 8; col++) {
             for(int row = 0; row < 8; row++) {
                 if(isValidMove(col, row)) {
@@ -636,14 +630,15 @@ public class Othello extends GameState {
     public int[] doMoveBOT(){
         int highestScore = 0;
         int indexOfHighestScore = 0;
-        for (int i = 0; i < listOfPossibleMoves().size(); i += 3) {
-            if(listOfPossibleMoves().get(i) > highestScore) {
-                highestScore = listOfPossibleMoves().get(i);
+        ArrayList<Integer> listOfmoves = new ArrayList<>();
+        listOfmoves.addAll(listOfPossibleMoves());
+        for (int i = 2; i < listOfmoves.size(); i += 3) {
+            if(listOfmoves.get(i) > highestScore) {
+                highestScore = listOfmoves.get(i);
                 indexOfHighestScore = i;
             }
         }
-        int[] coordinatesBestMove = new int[]{listOfPossibleMoves().get(indexOfHighestScore - 2), listOfPossibleMoves().get(indexOfHighestScore - 1)};
-        System.out.println("I CHOSE " + coordinatesBestMove[0] + " AND " + coordinatesBestMove[1]);
+        int[] coordinatesBestMove = new int[]{listOfmoves.get(indexOfHighestScore - 2), listOfmoves.get(indexOfHighestScore - 1)};
         return coordinatesBestMove;
     }
 }
