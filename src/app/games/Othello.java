@@ -24,6 +24,7 @@ public class Othello extends GameState {
     private boolean online;
     private boolean p1turn;
     private OthelloBoard othelloBoard;
+    private Bot bot;
     private Player p1;
     private Player p2;
     private int countMoves;
@@ -144,10 +145,24 @@ public class Othello extends GameState {
         if (!p1.isHuman() || !p2.isHuman()) {
             // TO DO: Get move from AI (row and column)
             // Code here
-
+            
             if (p1turn) {
                 // Do move on coordinates given by AI
 //                tttBoard.doMoveX(r, c);
+                int col = bot.doMove()[0];
+                int row = bot.doMove()[1];
+                if (isValidMove(col, row)) {
+                    for (int i =0; i<listOfCoordinates.size(); i+=2){
+                        drawMove(listOfCoordinates.get(i), listOfCoordinates.get(i+1));
+                    }
+                }
+                countMoves++;
+
+                if (countMoves == 60) {
+                    ArrayList<Object> winnerList = new ArrayList<>();
+                    winnerList = calcWinner();
+                    
+                }
                 p1turn = false;
             } else {
                 // Do move on coordinates given by AI
@@ -180,9 +195,9 @@ public class Othello extends GameState {
      */
     public boolean isValidMove(int col, int row){
         // fix
-//        if(othelloBoard.getTile(col, row) == null){
-//            return false;
-//        }
+        if(othelloBoard.getTile(col, row) == null){
+            return false;
+        }
 
         Paint playingColour;
         Paint notPlayingColour;
@@ -491,5 +506,12 @@ public class Othello extends GameState {
     @Override
     public Parent getView() {
         return othelloBoard.boardView();
+    }
+
+    /**
+     *  set list of coordinates empty
+     */
+    public void setListOfCoordinatesEmpty() {
+        listOfCoordinates.clear();
     }
 }
