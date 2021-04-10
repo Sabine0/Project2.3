@@ -225,9 +225,14 @@ public class Othello extends GameState {
         }
 
         //If player is bot
+        System.out.println(p1.isHuman());
+        System.out.println(p2.isHuman());
         if ((!p1.isHuman() && p1turn) || (!p2.isHuman() && !p1turn)) {
             int col = doMoveBOT()[0];
             int row = doMoveBOT()[1];
+            int p = 1;
+            System.out.println("teller: " + p);
+            p++;
             if (isValidMove(col, row)) {
                 for (int i =0; i<tilesToBeFlipped.size(); i+=2){
                     System.out.println(tilesToBeFlipped.get(i));
@@ -580,8 +585,13 @@ public class Othello extends GameState {
         return listWinner;
     }
 
+    /**
+     * 
+     * @return
+     */
     public ArrayList<Integer> listOfPossibleMoves() {
         ArrayList<Integer> listOfPossible = new ArrayList<>();
+        int fewestTiles = 100;
         for(int col = 0; col < 8; col++) {
             for(int row = 0; row < 8; row++) {
                 if(isValidMove(col, row)) {
@@ -640,5 +650,16 @@ public class Othello extends GameState {
         }
         int[] coordinatesBestMove = new int[]{listOfmoves.get(indexOfHighestScore - 2), listOfmoves.get(indexOfHighestScore - 1)};
         return coordinatesBestMove;
+    }
+
+    /**
+     * server input converter
+     * [col, row]
+     */
+    public int[] moveConverter(int move) {
+        int row = move % 8;
+        int col = (move - row) / 8;
+        int[] coordinates = new int[]{col, row};
+        return coordinates;
     }
 }
