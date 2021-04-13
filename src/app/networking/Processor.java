@@ -66,13 +66,37 @@ public class Processor {
           connection.readSingleLine();
     }
 
+    /**
+     * Accepts the challenge with the specified  challenge number
+     * @param challengeNumber
+     * @throws ServerNotRespondingException if there is no response from the server.
+     * @throws CommandFailedException if server returns an error.
+     */
     public void setChallengeAccept(int challengeNumber) throws ServerNotRespondingException, CommandFailedException {
         connection.write("challenge accept " + challengeNumber);
         connection.readSingleLine();
     }
 
+    /**
+     *
+     * @param game  to subscribe
+     * @throws ServerNotRespondingException if there is no response from the server.
+     * @throws CommandFailedException  if server returns an error.
+     */
     public void subscribe(String game) throws ServerNotRespondingException, CommandFailedException {
         connection.write("subscribe " + game);
+        connection.readSingleLine();
+    }
+
+    /**
+     *  challenge a player in the list
+     * @param playerName
+     * @param gameType
+     * @throws ServerNotRespondingException if there is no response from the server.
+     * @throws CommandFailedException if server returns an error.
+     */
+    public void challegengePlayer(String playerName, String gameType) throws ServerNotRespondingException, CommandFailedException {
+        connection.write("challenge "+ "\"" + playerName + "\""+ " " + "\""+ gameType+ "\"");
         connection.readSingleLine();
     }
 
