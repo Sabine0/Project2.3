@@ -1,4 +1,4 @@
-package app.view.components;
+package app.view.menucomponents;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
@@ -11,13 +11,12 @@ import javafx.scene.layout.VBox;
  */
 public class Menu extends VBox {
     /**
-     * Create a button and set an action listener on the button
-     * @param name Name of the button
-     * @param var1 The code to be executed upon event trigger
+     * @param name The Name of the button
+     * @param event The code to be executed upon event trigger
      */
-    public void addButton(String name, EventHandler<? super MouseEvent> var1){
+    public void addButton(String name, EventHandler<? super MouseEvent> event){
         MenuButton button = new MenuButton(name);
-        button.setOnMouseClicked(var1);
+        button.setOnMouseClicked(event);
         getChildren().add(button);
     }
 }

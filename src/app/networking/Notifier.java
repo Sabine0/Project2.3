@@ -9,11 +9,11 @@ import java.util.HashMap;
 
 public class Notifier implements Runnable{
 
-    Connection connection;             //othello //lobby //    //
+    Connection connection;
     public Notifier(Connection connection){
      this.connection = connection;
     }
-    //? wat waar moet die naar toe?
+
     public HashMap call(String s){
         return toHashMap(s);
     }
@@ -26,16 +26,24 @@ public class Notifier implements Runnable{
                 System.out.println("processing notification " + notification);
 
                 if(notification.startsWith("SVR GAME MATCH")){
-                         //een match aangeboden een mthode met 3 argumenten
-                    // lobbyView.startMatch(  ,    , );
+                         //een match aangeboden een methode met 3 argumenten
+                    // lobbyView.startMatch(game,playerToMove, opponentUsername); will return gameState
+                    // this.gameState = gameState;
                 }else if(notification.startsWith(" SVR GAME YOURTURN")){
                          // beurt toegewezen krijgen methode met een argument
+                    // gameState.doMoveOnline(); will call move <int>
                 }else if(notification.startsWith("SVR GAME MOVE")){
-                        // resultaat van een zet ontvangen methode met 3 argumeten
+                        // resultaat van een zet ontvangen methode met 3 argumenten
+                    // parameter with the move you get from the server -> board.convertMove(int move) will return int[]
+                    // parameter with the player name
+                    // if move not illegal: board.drawMove(String player, int col = move[0], int row = move[1]);
+                    // if move illegal: gameState.showWinAlert(winner)
                 }else if(notification.startsWith("SVR GAME CHALLENGE")){
                         // een challenge ontvangen methode met 3 argumenten
+                    // lobbyView.showChallengeAlert()
                 }else if(notification.startsWith("SVR GAME CHALLENGE CANCELLED")){
-                       // challenge cancelled methode met een arguement
+                       // challenge cancelled methode met een argument
+                    // lobbyView.exitWaitingForOpponent()
                 }
             }
         }

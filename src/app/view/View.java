@@ -1,16 +1,15 @@
-
 package app.view;
 
 import javafx.scene.Parent;
 
 /**
- * The View class is an interface which holds the methods each view class will implement
+ *  The View interface ensures every view has a createView method
  * @author Sabine Schreuder
- * @version 01-04-21
+ * @version 09-04-21
  */
 public interface View {
     /**
-     * @return The view
+     * @return A parent containing the view for the respective state
      */
-    public Parent buildSceneGraph();
+    public abstract Parent createView();
 }

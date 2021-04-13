@@ -1,11 +1,8 @@
-package app.games.gameobjects;
+package app.view.gameobjects;
 
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-
-import java.util.ArrayList;
-import java.util.HashSet;
 
 /**
  * The Tile class holds creates the border for every Tile
@@ -25,7 +22,7 @@ public abstract class Tile extends StackPane {
         getChildren().add(borderPane);
     }
 
-    public StackPane getMyBorder(){
+    public StackPane getGameBorder(){
         return borderPane;
     }
     /**
@@ -38,5 +35,6 @@ public abstract class Tile extends StackPane {
      */
     public abstract void setTileP2();
 
+    public abstract Object getContent();
 
 }

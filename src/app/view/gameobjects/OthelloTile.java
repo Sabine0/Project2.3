@@ -1,20 +1,17 @@
-package app.games.gameobjects;
+package app.view.gameobjects;
 
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
-
-import java.util.ArrayList;
 
 /**
  * The class OthelloTile defines the contents of a tile in an Othello game
  * @author Sabine Schreuder
  * @version 01-04-21
  */
-public class OthelloTile extends Tile {
+public class OthelloTile extends Tile{
     Circle circle;
 
-    // TO DO: fix position of circles
     public OthelloTile(){
         super();
         circle = new Circle(20);
@@ -46,14 +43,7 @@ public class OthelloTile extends Tile {
         circle.setStroke(Color.BLACK);
     }
 
-    public ArrayList<Integer> getCoordinates() {
-        return null;
-    }
-
-    /**
-     * @return The circle that belongs to the tile object
-     */
-    public Circle getContent(){
-        return circle;
+    public Paint getContent(){
+        return circle.getFill();
     }
 }

@@ -11,7 +11,7 @@ public class Test {
         Processor p = new Processor(c);
 
         try{
-            p.getGamelsit();
+            p.getGamelist();
             p.getPlayerList();
             p.login("danial");
             p.subscribe("Reversi");

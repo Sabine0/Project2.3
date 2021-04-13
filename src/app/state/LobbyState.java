@@ -1,57 +1,53 @@
 package app.state;
 
+import app.networking.CommandFailedException;
+import app.networking.Connection;
+import app.networking.Processor;
+import app.networking.ServerNotRespondingException;
 import app.view.LobbyView;
 import javafx.scene.Parent;
-import app.networking.*;
 
 /**
  * The LobbyState class is the state in which the lobby is shown
  * @author Sabine Schreuder
- * @version 01-04-21
+ * @version 10-04-21
  */
-public class LobbyState implements State {
+public class LobbyState extends State {
     private String game;
     private String username;
     private Processor processor;
 
-    /**
-     * @param game The game to be played
-     * @param username The users username
-     */
-    public LobbyState(String game, String username){
+    public LobbyState(String game, String username) throws ServerNotRespondingException, CommandFailedException {
         this.game = game;
         this.username = username;
 
-        // start server connection!
+        // Start connection
         Connection connection = new Connection();
         connection.connect("145.33.225.170", 7789);
-        processor = new Processor(connection);
+        processor = new Processor(connection); // //TO DO: parameter: gamestate, lobbyview, board
+
+        processor.login(username);
     }
 
     /**
      * Code to be executed upon entering the lobby state
      */
     @Override
-    public void enter() {
-        System.out.println("entering lobby");
-        System.out.println("User: " + username);
+    public void enter(){
+        System.out.println("Entering lobby for " + game + " as user " + username);
     }
 
     /**
-     * Code to be executed upon leaving the lobby state
+     * Code to be executed upon exiting the lobby state
      */
     @Override
-    public void exit() {
+    public void exit(){
         System.out.println("exiting lobby");
     }
 
-    /**
-     * Create a new LobbyView object and get its view
-     * @return the view of a new LobbyView object
-     */
     @Override
-    public Parent getView() {
-        return new LobbyView(game, username, processor).buildSceneGraph();
+    public Parent getView(){
+        return new LobbyView(game, username, processor).createView();
     }
 
 }

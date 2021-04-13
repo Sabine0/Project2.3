@@ -1,4 +1,4 @@
-package app.view.components;
+package app.view.menucomponents;
 
 import javafx.geometry.Pos;
 import javafx.scene.effect.GaussianBlur;
@@ -13,10 +13,10 @@ import javafx.scene.text.Text;
  * @version 01-04-21
  */
 public class MenuButton extends StackPane {
-    private Text text;
+    Text text;
 
     /**
-     * @param name The name of the menu
+     * @param name The name of the button
      */
     public MenuButton(String name){
         text = new Text(name);

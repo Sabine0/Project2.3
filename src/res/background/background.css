@@ -1,0 +1,15 @@
+.bg-grey-style {
+    -fx-background-color:  grey;
+}
+
+.bg-green-style {
+    -fx-background-color:  green;
+}
+
+.bg-blue-style {
+    -fx-background-color:  cyan;
+}
+
+.bg-black-style {
+    -fx-background-color:  black;
+}

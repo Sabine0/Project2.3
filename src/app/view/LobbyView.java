@@ -1,14 +1,14 @@
 package app.view;
 
-import app.Main;
-import app.games.Othello;
-import app.games.TicTacToe;
+import app.StateController;
 import app.networking.CommandFailedException;
 import app.networking.Processor;
 import app.networking.ServerNotRespondingException;
-import app.state.LobbyState;
 import app.state.MainMenuState;
-import app.view.components.Menu;
+import app.state.games.GameState;
+import app.state.games.OthelloState;
+import app.view.gameobjects.OthelloBoard;
+import app.view.menucomponents.Menu;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
@@ -21,132 +21,110 @@ import javafx.scene.text.Text;
 /**
  * The LobbyView class is used for creating and displaying the components of the lobby
  * @author Sabine Schreuder
- * @version 01-04-21
+ * @version 13-04-21
  */
-public class LobbyView implements View{
-    private String username;
+public class LobbyView implements View {
     private BorderPane view;
     private String game;
-    private Menu lobbyMenu;
-    private Text lobbyText;
-    private Text userText;
-    private VBox textBox;
-    private VBox playerList;
+    private String username;
     private String[] onlineUsers;
+    private VBox playerListBox;
+    private VBox headerTextBox;
+    private Text headerText;
     private Processor processor;
 
-    /**
-     * @param game The game to be played
-     * @param username The username of player 1
-     * @param processor The processor which holds the connection to the server
-     */
     public LobbyView(String game, String username, Processor processor){
         this.processor = processor;
-        view = new BorderPane();
-        this.username = username;
         this.game = game;
-        textBox = new VBox();
-        lobbyText = new Text();
-        userText = new Text();
-        lobbyMenu = lobbyMenu();
+        this.username = username;
 
+        view = new BorderPane();
+        headerTextBox = new VBox();
+        headerText = new Text();
+        playerListBox = new VBox();
 
-        lobbyText.setText("ONLINE LOBBY FOR " + game);
-        lobbyText.setFont(Font.font(30));
+        createLobbyHeader("ONLINE LOBBY FOR " + game.toUpperCase());
 
-        userText.setText("CURRENT USER: " + username);
-        userText.setFont(Font.font(30));
+        view.setTop(headerTextBox);
+        headerTextBox.setAlignment(Pos.CENTER);
+        view.setCenter(lobbyMenu());
 
-        textBox.getChildren().addAll(lobbyText, userText);
-
-        view.setTop(textBox);
-        textBox.setAlignment(Pos.CENTER);
-        view.setCenter(lobbyMenu);
-        // tijdelijk gefixed
-        try {
-            if(username == null) {
-                processor.login(username);
-            }
-        } catch (ServerNotRespondingException e) {
-            e.printStackTrace();
-        } catch (CommandFailedException e) {
-            e.printStackTrace();
+        if(game.equalsIgnoreCase("TIC-TAC-TOE")){
+            view.getStyleClass().add("bg-blue-style");
+        }else if (game.equalsIgnoreCase("OTHELLO")) {
+            view.getStyleClass().add("bg-green-style");
         }
     }
 
-    // TO DO: while loop for receiving challenge requests
-    public Menu lobbyMenu(){
-        Menu menu = new Menu();
-
-        menu.addButton("LOOK FOR MATCH", event ->{
-            if(game=="TICTACTOE"){
-                // server command: subscribe Tic-tac-toe
-                // if server says OK: new TicTacToe
-                System.out.println("im subscribed to tic-tac-toe"); // temporary
-            }else if(game=="OTHELLO"){
-                // server command: subscribe Othello
-                // if server says OK: new Othello
-                System.out.println("im subscribed to othello"); // temporary
-            }
-        });
-        menu.addButton("CHALLENGE OPPONENT", event -> {
-            menu.getChildren().remove(0);
-
-            playerList = new VBox();
-            Text text = new Text("Online users: ");
-            text.setFont(Font.font(20));
-
-            playerList.getChildren().addAll(text);
-            playerList.setAlignment(Pos.TOP_CENTER);
-
-            getOnlinePlayerList();
-
-            view.setCenter(playerList);
-            view.setBottom(menu);
-            showChallengeAlert("Ron"); // only for testing
-        });
-
-        menu.addButton("EXIT LOBBY", event -> {
-            Main.setState(new MainMenuState());
-        });
-
-        showChallengeAlert("Henkie"); // only for testing
-
-        return menu;
+    public void createLobbyHeader(String text){
+        if(headerTextBox.getChildren() != null){
+            headerTextBox.getChildren().remove(headerText);
+        }
+        headerTextBox.getChildren().add(headerText);
+        headerText.setText(text);
+        headerText.setFont(Font.font(30));
     }
 
-    /**
-     * Return the combination of nodes that make up the lobby view
-     * @return The lobby view
-     */
-    @Override
-    public Parent buildSceneGraph() {
-        return view;
+    public Menu lobbyMenu(){
+        Menu lobbyMenu = new Menu();
+
+        lobbyMenu.addButton("LOOK FOR MATCH", event ->{
+            try {
+                processor.subscribe(game);
+            } catch (ServerNotRespondingException e) {
+                e.printStackTrace();
+            } catch (CommandFailedException e) {
+                e.printStackTrace();
+            }
+        });
+        lobbyMenu.addButton("CHALLENGE OPPONENT", event -> {
+            view.getChildren().remove(lobbyMenu);
+            createLobbyHeader("ONLINE USERS:");
+            view.setCenter(onlineUsersMenu());
+        });
+        lobbyMenu.addButton("EXIT LOBBY", event -> {
+            StateController.setState(new MainMenuState());
+        });
+
+        return lobbyMenu;
+    }
+
+    public Menu onlineUsersMenu(){
+        Menu onlineUsersMenu = new Menu();
+        getOnlinePlayerList();
+        onlineUsersMenu.addButton("EXIT LOBBY", event -> {
+            StateController.setState(new MainMenuState());
+        });
+
+        return onlineUsersMenu;
     }
 
     /**
      * Display a prompt asking if you want to accept or decline a challenge
      * @param challengerUsername The username of the person challenging the user
      */
-    public void showChallengeAlert(String challengerUsername){
+    public void showChallengeAlert(String challengerUsername, int challengeNumber){
         VBox challengeBox = new VBox();
 
         Text text = new Text();
-        text.setText(challengerUsername + " challenged you!");
+        text.setText(challengerUsername + " challenged you to a game of "+ game.toLowerCase() + "!");
 
         HBox buttonBox = new HBox();
 
         Button acceptButton = new Button("Accept");
         acceptButton.setOnMouseClicked(event ->{
-            if (game.equals("TICTACTOE")) {
-                Main.setState(new TicTacToe(true,false, true, false, username, challengerUsername)); // challenger always goes first
-            } else if (game.equals("OTHELLO")) {
-                Main.setState(new Othello(true, false, true, false, username, challengerUsername)); // challenger always goes first
+            try {
+                processor.setChallengeAccept(challengeNumber);
+            } catch (ServerNotRespondingException e) {
+                e.printStackTrace();
+            } catch (CommandFailedException e) {
+                e.printStackTrace();
             }
         });
         Button declineButton = new Button("Decline");
         declineButton.setOnMouseClicked(event ->{
             view.getChildren().remove(challengeBox);
+            // send to server challenge declined???
         });
 
         buttonBox.getChildren().addAll(acceptButton, declineButton);
@@ -163,7 +141,6 @@ public class LobbyView implements View{
      * and add it to onlineUsers
      */
     public void getOnlinePlayerList(){
-        // tijdelijk gefixed
         try{
             onlineUsers = processor.getPlayerList();
         }catch (ServerNotRespondingException E){
@@ -172,32 +149,79 @@ public class LobbyView implements View{
             e.printStackTrace();
         }
 
-        // test
-        for (String string: onlineUsers) {
-            System.out.println(string);
-        }
-
-        for(int i=0; i<onlineUsers.length; i++) {
+        // test:
+        for (String user: onlineUsers) {
+            System.out.println(user);
             HBox onlinePlayerButtons = new HBox();
 
-            String user = onlineUsers[i];
-            if(!user.equals(username)) {
+            if (!user.equals(username)) {
                 Text onlineUser = new Text(user);
                 onlineUser.setFont(Font.font(17));
 
                 Button challengePlayer = new Button("Challenge!");
                 challengePlayer.setOnMouseClicked(event2 -> {
-                    // TO DO: send to server: challenge "user" "game"
-                    System.out.println("challenged player: " + user);
-                    // if they accept: new game()
-                    // if they decline: send a message they declined
+                    try {
+                        processor.challegengePlayer(user, game);
+                    } catch (ServerNotRespondingException e) {
+                        e.printStackTrace();
+                    } catch (CommandFailedException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println("challenged " + user + " in a game of " + game);
                 });
 
                 onlinePlayerButtons.setAlignment(Pos.CENTER);
 
                 onlinePlayerButtons.getChildren().addAll(onlineUser, challengePlayer);
-                playerList.getChildren().add(onlinePlayerButtons);
+                playerListBox.getChildren().add(onlinePlayerButtons);
             }
         }
+    }
+
+    public void showChallengeDeclinedAlert(){
+        // show an alert the player has declined the match
+    }
+
+    // server calls this when matchmaking OK
+    public void enterMatchMaking(){
+        // open waiting screen for matchmaking
+    }
+
+    public void enterWaitingForOpponent(){
+        // open waiting screen for matchmaking
+    }
+
+    public void exitWaitingForOpponent(){
+        // go back to lobby
+        // let player know the opponent did not accept
+    }
+
+    // if server starts a game, call this method
+    public GameState startMatch(String game, String playerToMove, String opponentUsername){
+        boolean appUserP1 = !playerToMove.equals(opponentUsername);
+        GameState gameState;
+        if(game.equalsIgnoreCase("TIC-TAC-TOE")) {
+            gameState = new OthelloState(processor,true, username, opponentUsername,
+                    appUserP1, true, false, new OthelloBoard());
+            StateController.setState(gameState);
+            return gameState;
+        }else if(game.equalsIgnoreCase("OTHELLO")) {
+            gameState = new OthelloState(processor,true, username, opponentUsername,
+                    appUserP1, true, false, new OthelloBoard());
+            StateController.setState(gameState);
+            return gameState;
+        }else{
+            System.out.println("Can't start game");
+            return null;
+        }
+    }
+
+    /**
+     * Returns the combination of nodes that make up the lobby
+     * @return A Parent containing the lobby view
+     */
+    @Override
+    public Parent createView(){
+        return view;
     }
 }

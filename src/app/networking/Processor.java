@@ -12,7 +12,7 @@ public class Processor {
     Thread tNotifier;
     Connection connection;
     // tweede argumet is UI
-    public Processor(Connection connection){
+    public Processor(Connection connection){ //TO DO: parameter: gamestate, lobbyview, board
           this.connection = connection;
           tNotifier = new Thread(new Notifier(connection));
     }
@@ -25,7 +25,7 @@ public class Processor {
      * @return the available games in an array
      * @throws ServerNotRespondingException if disconnected or no response from the server
      */
-    public String[] getGamelsit() throws ServerNotRespondingException, CommandFailedException {
+    public String[] getGamelist() throws ServerNotRespondingException, CommandFailedException {
         connection.write("get gamelist");
         String gameList = connection.readDubbleLine();
         System.out.println("proccesor" + gameList);
