@@ -24,8 +24,18 @@ public class Notifier implements Runnable{
             if(connection.checkForNotification()==true) {
                 String notification = connection.readNotification();
                 System.out.println("processing notification " + notification);
-                if(notification.startsWith("SVR GAME MATCH")){
 
+                if(notification.startsWith("SVR GAME MATCH")){
+                         //een match aangeboden een mthode met 3 argumenten
+                    // lobbyView.startMatch(  ,    , );
+                }else if(notification.startsWith(" SVR GAME YOURTURN")){
+                         // beurt toegewezen krijgen methode met een argument
+                }else if(notification.startsWith("SVR GAME MOVE")){
+                        // resultaat van een zet ontvangen methode met 3 argumeten
+                }else if(notification.startsWith("SVR GAME CHALLENGE")){
+                        // een challenge ontvangen methode met 3 argumenten
+                }else if(notification.startsWith("SVR GAME CHALLENGE CANCELLED")){
+                       // challenge cancelled methode met een arguement
                 }
             }
         }
