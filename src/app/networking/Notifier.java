@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 public class Notifier implements Runnable{
 
-    Connection connection;
+    Connection connection;             //othello //lobby //    //
     public Notifier(Connection connection){
      this.connection = connection;
     }
@@ -22,7 +22,11 @@ public class Notifier implements Runnable{
     public void run() {
         while (true){
             if(connection.checkForNotification()==true) {
-                System.out.println(connection.readNotification());
+                String notification = connection.readNotification();
+                System.out.println("processing notification " + notification);
+                if(notification.startsWith("SVR GAME MATCH")){
+
+                }
             }
         }
     }

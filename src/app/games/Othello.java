@@ -88,7 +88,6 @@ public class Othello extends GameState {
      */
     public void launchOnline(){
         getView();
-
         // TO DO: implement online match
 
 //        // Player 1 starts the match (may be opponent when challenged)

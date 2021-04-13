@@ -50,7 +50,7 @@ public class ReadHandler implements Runnable {
                String serverOutput = inputFromServer.readLine();
                if (serverOutput==null){
                    System.exit(0);
-               }else if(serverOutput.equals("Strategic Game Server Fixed [Version 1.1.0]") || serverOutput.equals("(C) Copyright 2015 Hanzehogeschool Groningen")){
+               }else if(serverOutput.equals("Strategic Game Server Fixed [Version 1.1.0]") || serverOutput.equals("(C) Copyright 2015 Hanzehogeschool Groningen") || serverOutput.equals("New Game Server [Version 1.0]") || serverOutput.equals("(C) Copyright 2021 Hanzehogeschool Groningen")){
 
                 }else if(isNotification(serverOutput)){
                    synchronized (notificationQueue){
