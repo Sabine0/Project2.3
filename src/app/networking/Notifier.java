@@ -4,10 +4,11 @@
  * @author Danial.B
  */
 package app.networking;
-
+import javafx.application.Platform;
 import app.state.games.GameState;
 import app.view.LobbyView;
 import app.view.gameobjects.Board;
+
 
 import java.util.HashMap;
 
@@ -37,8 +38,16 @@ public class Notifier implements Runnable{
                 if(notification.startsWith("SVR GAME MATCH")){
                          //een match aangeboden een methode met 3 argumenten
                     HashMap<String, String> hashMap = toHashMap(notification);
-                    gameState = lobbyView.startMatch(hashMap.get("GAMETYPE"), hashMap.get("PLAYERTOMOVE"), hashMap.get("OPPONENT")); // will return gameState
-                    board = gameState.getBoard();
+                    // In the methode run you can change the javaFx threads. Use this lambda anytime you want to
+                    // make change to javafx thread. 
+                    Platform.runLater(new Runnable(){
+                        @Override
+                        public void run(){
+                            gameState = lobbyView.startMatch(hashMap.get("GAMETYPE"), hashMap.get("PLAYERTOMOVE"), hashMap.get("OPPONENT")); // will return gameState
+                            board = gameState.getBoard();
+                        }
+                    });
+
                     System.out.println("SERVER IS STARTING GUI GAME");
                 }else if(notification.startsWith(" SVR GAME YOURTURN")){
                          // beurt toegewezen krijgen methode met een argument
