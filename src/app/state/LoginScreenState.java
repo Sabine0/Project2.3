@@ -5,8 +5,10 @@ import javafx.scene.Parent;
 
 public class LoginScreenState extends State{
     private String game;
+    private boolean appUserHuman;
 
-    public LoginScreenState(String game){ // param processor
+    public LoginScreenState(String game, boolean appUserHuman){
+        this.appUserHuman = appUserHuman;
         this.game = game;
     }
     /**
@@ -28,6 +30,6 @@ public class LoginScreenState extends State{
 
     @Override
     public Parent getView(){
-        return new LoginScreenView(game).createView();
+        return new LoginScreenView(game, appUserHuman).createView();
     }
 }

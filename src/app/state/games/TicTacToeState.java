@@ -8,11 +8,12 @@ import javafx.scene.Parent;
 /**
  * The TicTacToe class holds the game logic for TicTacToe
  * @author Sabine Schreuder
+ * @author Antoni/Yannick
  * @version 12-04-21
  */
 public class TicTacToeState extends GameState{
-    public TicTacToeState(Processor processor, boolean online, TicTacToeBoard tttBoard){
-        super(processor, online, tttBoard);
+    public TicTacToeState(Processor processor, TicTacToeBoard tttBoard){
+        super(processor, tttBoard);
     }
 
     /**
@@ -70,7 +71,7 @@ public class TicTacToeState extends GameState{
     }
 
     /**
-     * @return The view of a tictactoe board
+     * @return The view of a tic-tac-toe board
      */
     @Override
     public Parent getView(){

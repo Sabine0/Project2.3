@@ -7,7 +7,7 @@ import java.util.ArrayList;
 /**
  * The OthelloAI class holds the attributes of the othello algorithm
  * @author Sabine Schreuder
- * @author Luc
+ * @author Luc Willemse
  * @version 13-04-21
  */
 public class OthelloAI extends Bot{
@@ -49,8 +49,7 @@ public class OthelloAI extends Bot{
                 indexOfHighestScore = i;
             }
         }
-        int[] coordinatesBestMove = new int[]{listOfPossible.get(indexOfHighestScore - 2), listOfPossible.get(indexOfHighestScore - 1)};
-        return coordinatesBestMove;
+        return new int[]{listOfPossible.get(indexOfHighestScore - 2), listOfPossible.get(indexOfHighestScore - 1)};
     }
 
 }

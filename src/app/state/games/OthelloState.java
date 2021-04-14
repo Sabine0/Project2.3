@@ -1,37 +1,24 @@
 package app.state.games;
 
 import app.networking.Processor;
-import app.view.gameobjects.Board;
 import app.view.gameobjects.OthelloBoard;
 import javafx.scene.Parent;
 import javafx.scene.paint.Color;
-
 import java.util.ArrayList;
 
 /**
  * The Othello class holds the game logic for Othello
  * @author Sabine Schreuder
- * @version 12-04-21
+ * @author Luc Willemse
+ * @version 14-04-21
  */
-// TO DO: implement game logic IN MVC!!!!
 public class OthelloState extends GameState{
-    public OthelloState(Processor processor, boolean online, OthelloBoard othelloBoard){
-        super(processor, online, othelloBoard);
+    public OthelloState(Processor processor, OthelloBoard othelloBoard){
+        super(processor, othelloBoard);
     }
 
     /**
-     * @param board The current play board
-     * @return boolean if the game has been won
-     */
-    @Override
-    public boolean isWon(Board board) {
-        // implement win condition here, return true if the win condition occurred
-        // if board
-        return false;
-    }
-
-    /**
-     * @return Boolean if the game has been won by someone
+     * @return ArrayList winner, score
      */
     public ArrayList<Object> calcWinner(){
         ArrayList<Object> listWinner = new ArrayList<>();

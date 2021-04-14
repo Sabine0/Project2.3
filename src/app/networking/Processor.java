@@ -9,7 +9,6 @@ package app.networking;
 
 import app.view.LobbyView;
 import app.view.gameobjects.Board;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,11 +16,13 @@ public class Processor {
 
     Thread tNotifier;
     Connection connection;
+    LobbyView lobbyView;
     private Logger ntLogger = Logger.getLogger("NetworkLogger");
 
     // tweede argumet is UI
-    public Processor(Connection connection, LobbyView lobbyView){
+    public Processor(Connection connection){
           this.connection = connection;
+
 
           tNotifier = new Thread(new Notifier(connection, lobbyView));
           tNotifier.start();
@@ -30,6 +31,10 @@ public class Processor {
 
     public void start(){
         // thread maken  voor readArray en die naar de ui toe sturen
+    }
+
+    public void setLobbyView(LobbyView lv){
+        lobbyView = lv;
     }
 
     /**

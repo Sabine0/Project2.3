@@ -17,7 +17,7 @@ import javafx.scene.text.Text;
 /**
  * The LoginScreenView class is used for creating and displaying the components of the login screen
  * @author Sabine Schreuder
- * @version 13/04/21
+ * @version 14/04/21
  */
 public class LoginScreenView implements View{
     private GridPane view;
@@ -26,7 +26,7 @@ public class LoginScreenView implements View{
     /**
      * @param game The game to be played
      */
-    public LoginScreenView(String game){
+    public LoginScreenView(String game, boolean appPlayerHuman){
         // Styling goes here
         this.game = game;
 
@@ -41,9 +41,18 @@ public class LoginScreenView implements View{
 
         Label userName = new Label("Enter a username:");
         view.add(userName, 0, 1);
-
         TextField userTextField = new TextField();
         view.add(userTextField,1,1);
+
+        Label ip = new Label("Enter an IP:");
+        view.add(ip, 0, 2);
+        TextField ipTextField = new TextField();
+        view.add(ipTextField,1,2);
+
+        Label port = new Label("Enter a port:");
+        view.add(port, 0, 3);
+        TextField portTextField = new TextField();
+        view.add(portTextField,1,3);
 
         Button btn = new Button("Enter online lobby");
         btn.setOnAction(actionEvent -> {
@@ -53,7 +62,7 @@ public class LoginScreenView implements View{
                 errorEmptyField.setAlignment(Pos.BOTTOM_CENTER);
             }else {
                 try {
-                    StateController.setState(new LobbyState(game, userTextField.getText()));
+                    StateController.setState(new LobbyState(game, appPlayerHuman, userTextField.getText(), ipTextField.getText(), Integer.parseInt(portTextField.getText())));
                 } catch (ServerNotRespondingException e) {
                     e.printStackTrace();
                 } catch (CommandFailedException e) {
@@ -61,7 +70,6 @@ public class LoginScreenView implements View{
                 }
             }
         });
-
         view.add(btn, 1, 4);
 
         if(game.equalsIgnoreCase("TIC-TAC-TOE")){

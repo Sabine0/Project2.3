@@ -1,6 +1,5 @@
 package app.view;
 
-import app.Main;
 import app.StateController;
 import app.networking.CommandFailedException;
 import app.networking.Processor;
@@ -9,29 +8,24 @@ import app.state.MainMenuState;
 import app.state.games.GameState;
 import app.state.games.OthelloState;
 import app.state.games.TicTacToeState;
-import app.users.OnlineOpponent;
-import app.users.OthelloAI;
-import app.users.Player;
-import app.users.UserPlayer;
-import app.view.gameobjects.Board;
+import app.users.*;
 import app.view.gameobjects.OthelloBoard;
 import app.view.gameobjects.TicTacToeBoard;
 import app.view.menucomponents.Menu;
-import app.view.menucomponents.MenuButton;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 
 /**
  * The LobbyView class is used for creating and displaying the components of the lobby
  * @author Sabine Schreuder
- * @version 13-04-21
+ * @version 14-04-21
  */
 public class LobbyView implements View {
     private BorderPane view;
@@ -42,8 +36,10 @@ public class LobbyView implements View {
     private VBox headerTextBox;
     private Text headerText;
     private Processor processor;
+    private boolean appPlayerHuman;
 
-    public LobbyView(String game, String username, Processor processor){
+    public LobbyView(String game, boolean appPlayerHuman, String username, Processor processor){
+        this.appPlayerHuman = appPlayerHuman;
         this.processor = processor;
         this.game = game;
         this.username = username;
@@ -57,7 +53,7 @@ public class LobbyView implements View {
 
         view.setTop(headerTextBox);
         headerTextBox.setAlignment(Pos.CENTER);
-        view.setCenter(lobbyMenu());
+        view.setCenter(createLobbyMenu());
 
         if(game.equalsIgnoreCase("TIC-TAC-TOE")){
             view.getStyleClass().add("bg-blue-style");
@@ -75,7 +71,7 @@ public class LobbyView implements View {
         headerText.setFont(Font.font(30));
     }
 
-    public Menu lobbyMenu(){
+    public Menu createLobbyMenu(){
         Menu lobbyMenu = new Menu();
 
         lobbyMenu.addButton("LOOK FOR MATCH", event ->{
@@ -89,21 +85,10 @@ public class LobbyView implements View {
             }
             enterMatchMaking();
         });
-        lobbyMenu.addButton("LOOK FOR MATCH AS AI", event ->{
-            try {
-                System.out.println(game);
-                processor.subscribe(game);
-            } catch (ServerNotRespondingException e) {
-                e.printStackTrace();
-            } catch (CommandFailedException e) {
-                e.printStackTrace();
-            }
-            enterMatchMaking();
-        });
         lobbyMenu.addButton("CHALLENGE OPPONENT", event -> {
             view.getChildren().remove(lobbyMenu);
             createLobbyHeader("ONLINE USERS:");
-            view.setCenter(onlineUsersMenu());
+            view.setCenter(createOnlineUsersMenu());
         });
         lobbyMenu.addButton("EXIT LOBBY", event -> {
             StateController.setState(new MainMenuState());
@@ -112,9 +97,9 @@ public class LobbyView implements View {
         return lobbyMenu;
     }
 
-    public Menu onlineUsersMenu(){
+    public Menu createOnlineUsersMenu(){
         Menu onlineUsersMenu = new Menu();
-        getOnlinePlayerList(onlineUsersMenu);
+        createOnlinePlayerList();
         onlineUsersMenu.getChildren().add(playerListBox);
         onlineUsersMenu.addButton("EXIT LOBBY", event -> {
             StateController.setState(new MainMenuState());
@@ -147,7 +132,7 @@ public class LobbyView implements View {
         Button declineButton = new Button("Decline");
         declineButton.setOnMouseClicked(event ->{
             view.getChildren().remove(challengeBox);
-            // send to server challenge declined???
+            // is there no way to tell the server you declined the challenge?
         });
 
         buttonBox.getChildren().addAll(acceptButton, declineButton);
@@ -159,11 +144,7 @@ public class LobbyView implements View {
         view.setBottom(challengeBox);
     }
 
-    /**
-     * Retrieve the list of currently online players
-     * and add it to onlineUsers
-     */
-    public void getOnlinePlayerList(Menu onlineUsersmenu){
+    public void createOnlinePlayerList(){
         try{
             onlineUsers = processor.getPlayerList();
         }catch (ServerNotRespondingException E){
@@ -203,33 +184,14 @@ public class LobbyView implements View {
     }
 
     public void showChallengeDeclinedAlert(int challengeNumber){
-        // show an alert the player has declined the match
-        VBox challengeDeclinedBox = new VBox();
-
-        Text text = new Text();
-        text.setText("The match has been declined! Challenge number: " + challengeNumber);
-
-        HBox buttonBox = new HBox();
-
-        Button okButton = new Button("OK");
-        okButton.setOnMouseClicked(event ->{
-            view.getChildren().remove(1);
-            view.setCenter(lobbyMenu());
-        });
-
-        buttonBox.getChildren().addAll(okButton);
-        challengeDeclinedBox.getChildren().addAll(text, buttonBox);
-
-        challengeDeclinedBox.setAlignment(Pos.TOP_CENTER);
-        buttonBox.setAlignment(Pos.TOP_CENTER);
-
-        view.setBottom(challengeDeclinedBox);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Could not start the match");
+        alert.setHeaderText("The player you challenged declined the match");
+        alert.setContentText("Challenge number: " + challengeNumber);
+        alert.show();
     }
 
-    // server calls this when matchmaking OK
     public void enterMatchMaking(){
-        showChallengeDeclinedAlert(123);
-        // open waiting screen for matchmaking
         view.getChildren().remove(1);
         Menu menu = new Menu();
         Text text = new Text("Finding an opponent...");
@@ -238,10 +200,11 @@ public class LobbyView implements View {
         menu.getChildren().add(text);
         menu.addButton("BACK", event -> {
             view.getChildren().remove(1);
-            view.setCenter(lobbyMenu());
+            view.setCenter(createLobbyMenu());
         });
         view.setCenter(menu);
     }
+
     public void enterWaitingForOpponent(String opponentUsername){
         view.getChildren().remove(1);
         Menu menu = new Menu();
@@ -251,38 +214,54 @@ public class LobbyView implements View {
         menu.getChildren().add(text);
         menu.addButton("BACK", event -> {
             view.getChildren().remove(1);
-            view.setCenter(lobbyMenu());
+            view.setCenter(createLobbyMenu());
         });
         view.setCenter(menu);
     }
 
     public void exitWaitingForOpponent(){
-        // go back to lobby
         view.getChildren().remove(1);
-        view.setCenter(lobbyMenu());
+        view.setCenter(createLobbyMenu());
     }
 
-    // if server starts a game, call this method
+    /**
+     * if server starts a game, call this method to start the visualisation
+     * @param game The game to be played
+     * @param playerToMove The name of the player whose turn it is
+     * @param opponentUsername The name of the other player
+     * @return gameState The game state: othello or tic-tac-toe
+     */
     public GameState startMatch(String game, String playerToMove, String opponentUsername){
+        System.out.println("online match is starting!"); // test
         Player player1;
         Player player2;
-        if(username.equals(playerToMove)){
-            player1 = new OthelloAI(username); // temporary hardcoded as AI when playing online
+
+        if(username.equals(playerToMove) && appPlayerHuman){
+            player1 = new UserPlayer(username);
+            player2 = new OnlineOpponent(opponentUsername);
+        }else if(username.equals(playerToMove)){
+            if(game.equalsIgnoreCase("TIC-TAC-TOE")) {
+                player1 = new TicTacToeAI(username);
+            }else{
+                player1 = new OthelloAI(username);
+            }
             player2 = new OnlineOpponent(opponentUsername);
         }else{
             player1 = new OnlineOpponent(opponentUsername);
-            player2 = new OthelloAI(username); // temporary hardcoded as AI when playing online
+            if(game.equalsIgnoreCase("TIC-TAC-TOE")) {
+                player2 = new TicTacToeAI(username);
+            }else{
+                player2 = new OthelloAI(username);
+            }
         }
 
         GameState gameState;
         if(game.equalsIgnoreCase("TIC-TAC-TOE")) {
-            gameState = new TicTacToeState(processor,true,
-                    new TicTacToeBoard(player1, player2));
+            gameState = new TicTacToeState(processor, new TicTacToeBoard(player1, player2));
             StateController.setState(gameState);
             return gameState;
         }else if(game.equalsIgnoreCase("REVERSI")) {
-            gameState = new OthelloState(processor,true,
-                    new OthelloBoard(player1, player2));
+            gameState = new OthelloState(processor, new OthelloBoard(player1, player2));
             StateController.setState(gameState);
             return gameState;
         }else{

@@ -11,9 +11,9 @@ import java.util.ArrayList;
  * The OthelloBoard class defines the Othello board
  * and handles changes to the board
  * @author Sabine Schreuder
- * @version 13-04-21
+ * @author Luc Willemse
+ * @version 14-04-21
  */
-
 public class OthelloBoard extends Board{
     private ArrayList<Integer> tilesToBeFlipped;
 
@@ -46,7 +46,7 @@ public class OthelloBoard extends Board{
         Paint playingColour;
         Paint notPlayingColour;
 
-        if(isP1turn()){
+        if(getCurrentPlayer().equals(getP1())){
             playingColour = Color.BLACK;
             notPlayingColour = Color.WHITE;
         }else{
@@ -100,7 +100,7 @@ public class OthelloBoard extends Board{
     /**
      * @param c column in board
      * @param r row in board
-     * @param playingColour color of who's turn it is
+     * @param playingColour colour of whose turn it is
      * @return true when is valid row.
      */
     public boolean checkUL(int c, int r, Paint playingColour) {
@@ -125,7 +125,7 @@ public class OthelloBoard extends Board{
     /**
      * @param c column in board
      * @param r row in board
-     * @param playingColour color of who's turn it is
+     * @param playingColour colour of whose turn it is
      * @return true when is valid row.
      */
     public boolean checkUM(int c, int r, Paint playingColour) {
@@ -149,7 +149,7 @@ public class OthelloBoard extends Board{
     /**
      * @param c column in board
      * @param r row in board
-     * @param playingColour color of who's turn it is
+     * @param playingColour colour of whose turn it is
      * @return true when is valid row.
      */
     public boolean checkUR(int c, int r, Paint playingColour) {
@@ -174,7 +174,7 @@ public class OthelloBoard extends Board{
     /**
      * @param c collom in board
      * @param r row in board
-     * @param playingColour color of who's turn it is
+     * @param playingColour colour of whose turn it is
      * @return true when is valid row.
      */
     public boolean checkML(int c, int r, Paint playingColour) {
@@ -198,7 +198,7 @@ public class OthelloBoard extends Board{
     /**
      * @param c collom in board
      * @param r row in board
-     * @param playingColour color of who's turn it is
+     * @param playingColour colour of whose turn it is
      * @return true when is valid row.
      */
     public boolean checkMR(int c, int r, Paint playingColour) {
@@ -222,7 +222,7 @@ public class OthelloBoard extends Board{
     /**
      * @param c collom in board
      * @param r row in board
-     * @param playingColour color of who's turn it is
+     * @param playingColour colour of whose turn it is
      * @return true when is valid row.
      */
     public boolean checkDL(int c, int r, Paint playingColour) {
@@ -247,7 +247,7 @@ public class OthelloBoard extends Board{
     /**
      * @param c collom in board
      * @param r row in board
-     * @param playingColour color of who's turn it is
+     * @param playingColour colour of whose turn it is
      * @return true when is valid row.
      */
     public boolean checkDM(int c, int r, Paint playingColour) {
@@ -271,7 +271,7 @@ public class OthelloBoard extends Board{
     /**
      * @param c collom in board
      * @param r row in board
-     * @param playingColour color of who's turn it is
+     * @param playingColour colour of whose turn it is
      * @return true when is valid row.
      */
     public boolean checkDR(int c, int r, Paint playingColour) {
@@ -293,18 +293,24 @@ public class OthelloBoard extends Board{
         return valid;
     }
 
+    /**
+     * Tracks the coordinates of the tiles that need to be flipped when the move is executed
+     * @param tempListOfCoordinates The coordinates to be added to the tilesToBeFlipped array
+     */
     public void setArrayOfCoordinates(ArrayList<Integer> tempListOfCoordinates) {
         this.tilesToBeFlipped.addAll(tempListOfCoordinates);
     }
 
+    /**
+     * Flip all the tiles that need to be flipped when doing a move
+     */
     public void setTilesForMove(){
-
         for (int tile:tilesToBeFlipped) {
             System.out.println(tile);
         }
 
         for (int i = 0; i< tilesToBeFlipped.size(); i+=2) {
-            if (isP1turn()) {
+            if (getCurrentPlayer().equals(getP1())) {
                 int[] array = {tilesToBeFlipped.get(i), tilesToBeFlipped.get(i + 1)};
                 drawMove(getP1().getUsername(), array[0], array[1]);
             }else{
@@ -312,14 +318,28 @@ public class OthelloBoard extends Board{
                 drawMove(getP2().getUsername(), array[0], array[1]);
             }
         }
-//        tilesToBeFlipped.clear();
+        tilesToBeFlipped.clear();
     }
 
+    @Override
+    public boolean isWon(){
+        // TO DO: implement!
+        return false;
+    }
+
+    /**
+     * @param col column on the play board
+     * @param row row on the play board
+     * @return the Tile in position col, row
+     */
     @Override
     public OthelloTile getTile(int col, int row) {
         return (OthelloTile) getGrid()[col][row];
     }
 
+    /**
+     * @return The view of a Board object as a Parent
+     */
     @Override
     public Parent boardView() {
         return getBoardPane();

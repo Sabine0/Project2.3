@@ -9,8 +9,6 @@ import app.view.gameobjects.Board;
  */
 public abstract class Player {
     private String username;
-    private boolean isPlayer1;
-    private boolean isHuman;
 
     /**
      * @param username The users username
@@ -28,20 +26,6 @@ public abstract class Player {
     /**
      * @return Boolean if user is human
      */
-    public boolean isHuman(){
-        return isHuman;
-    }
-
-    public void setIsHuman(boolean bool){
-        isHuman = bool;
-    }
-
-    public boolean isPlayer1(){
-        return isPlayer1;
-    }
-
-    public void setIsPlayer1(boolean bool){
-        isPlayer1 = bool;
-    }
+    public abstract boolean isHuman();
 
 }

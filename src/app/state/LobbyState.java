@@ -10,23 +10,26 @@ import javafx.scene.Parent;
 /**
  * The LobbyState class is the state in which the lobby is shown
  * @author Sabine Schreuder
- * @version 10-04-21
+ * @version 14-04-21
  */
 public class LobbyState extends State {
     private String game;
     private String username;
     private Processor processor;
+    private boolean appPlayerHuman;
 
-    public LobbyState(String game, String username) throws ServerNotRespondingException, CommandFailedException {
+    public LobbyState(String game, boolean appPlayerHuman, String username, String ip, int port) throws ServerNotRespondingException, CommandFailedException {
         this.game = game;
         this.username = username;
-        LobbyView lobbyView = new LobbyView(game, username, processor);
+        this.appPlayerHuman = appPlayerHuman;
 
         // Start connection
         Connection connection = new Connection();
-        connection.connect("145.33.225.170", 7789);
-        processor = new Processor(connection, lobbyView);
+        connection.connect(ip, port); // "145.33.225.170"   7789
+        processor = new Processor(connection);
 
+        LobbyView lobbyView = new LobbyView(game, appPlayerHuman, username, processor);
+        processor.setLobbyView(lobbyView);
         processor.login(username);
     }
 
@@ -48,7 +51,7 @@ public class LobbyState extends State {
 
     @Override
     public Parent getView(){
-        return new LobbyView(game, username, processor).createView();
+        return new LobbyView(game, appPlayerHuman, username, processor).createView();
     }
 
 }

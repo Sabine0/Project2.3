@@ -34,12 +34,19 @@ public class TicTacToeBoard extends Board {
     }
 
     @Override
+    public boolean isWon(){
+        // TO DO: implement!
+        return false;
+    }
+
+    /**
+     * @param col column on the play board
+     * @param row row on the play board
+     * @return the Tile in position col, row
+     */
+    @Override
     public TicTacToeTile getTile(int col, int row) {
         return (TicTacToeTile) getGrid()[col][row];
-    }
-    @Override
-    public void setTilesForMove(){
-        //NOTHING
     }
 
     @Override

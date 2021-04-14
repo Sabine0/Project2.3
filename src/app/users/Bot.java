@@ -22,10 +22,10 @@ public abstract class Bot extends Player{
     public abstract int[] getMove(Board board);
 
     /**
-     * @return False, the class Bot is never human
+     * @return false A bot is not a human
      */
     @Override
-    public boolean isHuman(){
+    public boolean isHuman() {
         return false;
     }
 }
