@@ -99,12 +99,12 @@ public class Connection {
     /**
      * @return true if there is any new input from the server.
      */
-    public boolean checkForNotification(){
+    public boolean isNotification(){
         synchronized (notificationQueue){
-            if(!notificationQueue.isEmpty()){
-                return true;
-            }else{
+            if(notificationQueue.isEmpty()){
                 return false;
+            }else{
+                return true;
             }
         }
     }

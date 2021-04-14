@@ -30,7 +30,7 @@ public class Notifier implements Runnable{
     @Override
     public void run() {
         while (true){
-            if(connection.checkForNotification()==true) {
+            if(connection.isNotification()) {
                 String notification = connection.readNotification();
                 System.out.println("processing notification " + notification);
 

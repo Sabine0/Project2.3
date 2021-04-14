@@ -17,7 +17,10 @@ public class Processor {
     // tweede argumet is UI
     public Processor(Connection connection, LobbyView lobbyView){
           this.connection = connection;
+
           tNotifier = new Thread(new Notifier(connection, lobbyView));
+          tNotifier.start();
+
     }
 
     public void start(){
