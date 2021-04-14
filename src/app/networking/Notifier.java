@@ -8,6 +8,7 @@ import javafx.application.Platform;
 import app.state.games.GameState;
 import app.view.LobbyView;
 import app.view.gameobjects.Board;
+import org.w3c.dom.ls.LSOutput;
 
 
 import java.util.HashMap;
@@ -52,10 +53,11 @@ public class Notifier implements Runnable{
                             board = gameState.getBoard();
                         }
                     });
-                    System.out.println("SERVER IS STARTING GUI GAME");
-
+                    System.out.println("SERVER IS STARTING GUI FOR GAME");
                 }else if(notification.startsWith(" SVR GAME YOURTURN")){
                     ntLogger.log(Level.INFO,  " - ntf matched with: SVR GAME YOURTURN. calling gameState.doMoveOnline() ");
+                }else if(notification.startsWith(" SVR GAME YOURTURN")){
+                    System.out.println("test your turn statement");
                          // beurt toegewezen krijgen methode met een argument
                     HashMap<String, String> hashMap = toHashMap(notification);
                     try {
@@ -67,13 +69,14 @@ public class Notifier implements Runnable{
                     }
                 }else if(notification.startsWith("SVR GAME MOVE")){
                     ntLogger.log(Level.INFO,  " - ntf matched with: SVR GAME YOURTURN. calling gameState.doMoveOnline() ");
+                    System.out.println("test game move statement");
                         // resultaat van een zet ontvangen methode met 3 argumenten
                     HashMap<String, String> hashMap = toHashMap(notification);
                     // parameter with the move you get from the server -> board.convertMove(int move) will return int[]
                     // parameter with the player name
                     int[] move = board.convertMove(Integer.parseInt(hashMap.get("MOVE")), board.getBoardSize());
                     // if move not illegal: board.drawMove(String player, int col = move[0], int row = move[1]);
-                    if (board.isValidMove(move[0], move[1]) && !hashMap.get("DETAILS").equals("Illegal move")){
+                    if (!hashMap.get("DETAILS").equals("Illegal move")){
                         board.drawMove(hashMap.get("PLAYER"), move[0], move[1]);
                     }
                 }else if(notification.startsWith("SVR GAME CHALLENGE")){

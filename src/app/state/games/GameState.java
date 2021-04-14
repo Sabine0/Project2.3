@@ -13,6 +13,8 @@ import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.Pane;
 
+import java.util.Arrays;
+
 /**
  * The GameState class is a state in which the current game is being displayed
  * @author Sabine Schreuder
@@ -95,6 +97,7 @@ public abstract class GameState extends State {
             move = board.getP2().getMove(board);
         }
 
+        System.out.println("Doing move: " + Arrays.toString(move));
         intMove = board.convertMove(move, board.getBoardSize());
         if(board.isValidMove(move[0], move[1])){
             processor.move(intMove);

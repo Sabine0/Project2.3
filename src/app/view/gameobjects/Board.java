@@ -115,7 +115,11 @@ public abstract class Board {
     public void showWinAlert(int scorep1, int scorep2){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("The game has ended");
-        alert.setHeaderText("The winner is: " + winner);
+        if(scorep1 > scorep2) {
+            alert.setHeaderText("The winner is: " + p1.getUsername());
+        }else{
+            alert.setHeaderText("The winner is: " + p2.getUsername());
+        }
         alert.setContentText("Click OK to return to the main menu");
         alert.setOnCloseRequest(returnEvent ->{
             StateController.setState(new MainMenuState());

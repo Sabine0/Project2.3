@@ -1,5 +1,6 @@
 package app.view;
 
+import app.Main;
 import app.StateController;
 import app.networking.CommandFailedException;
 import app.networking.Processor;
@@ -7,12 +8,16 @@ import app.networking.ServerNotRespondingException;
 import app.state.MainMenuState;
 import app.state.games.GameState;
 import app.state.games.OthelloState;
+import app.state.games.TicTacToeState;
 import app.users.OnlineOpponent;
+import app.users.OthelloAI;
 import app.users.Player;
 import app.users.UserPlayer;
 import app.view.gameobjects.Board;
 import app.view.gameobjects.OthelloBoard;
+import app.view.gameobjects.TicTacToeBoard;
 import app.view.menucomponents.Menu;
+import app.view.menucomponents.MenuButton;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
@@ -21,6 +26,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 
 /**
  * The LobbyView class is used for creating and displaying the components of the lobby
@@ -83,6 +89,17 @@ public class LobbyView implements View {
             }
             enterMatchMaking();
         });
+        lobbyMenu.addButton("LOOK FOR MATCH AS AI", event ->{
+            try {
+                System.out.println(game);
+                processor.subscribe(game);
+            } catch (ServerNotRespondingException e) {
+                e.printStackTrace();
+            } catch (CommandFailedException e) {
+                e.printStackTrace();
+            }
+            enterMatchMaking();
+        });
         lobbyMenu.addButton("CHALLENGE OPPONENT", event -> {
             view.getChildren().remove(lobbyMenu);
             createLobbyHeader("ONLINE USERS:");
@@ -97,11 +114,11 @@ public class LobbyView implements View {
 
     public Menu onlineUsersMenu(){
         Menu onlineUsersMenu = new Menu();
-        getOnlinePlayerList();
+        getOnlinePlayerList(onlineUsersMenu);
+        onlineUsersMenu.getChildren().add(playerListBox);
         onlineUsersMenu.addButton("EXIT LOBBY", event -> {
             StateController.setState(new MainMenuState());
         });
-
         return onlineUsersMenu;
     }
 
@@ -146,7 +163,7 @@ public class LobbyView implements View {
      * Retrieve the list of currently online players
      * and add it to onlineUsers
      */
-    public void getOnlinePlayerList(){
+    public void getOnlinePlayerList(Menu onlineUsersmenu){
         try{
             onlineUsers = processor.getPlayerList();
         }catch (ServerNotRespondingException E){
@@ -155,10 +172,10 @@ public class LobbyView implements View {
             e.printStackTrace();
         }
 
-        // test:
-        for (String user: onlineUsers) {
-            System.out.println(user);
-            HBox onlinePlayerButtons = new HBox();
+        for (int i =0; i<onlineUsers.length; i++) {
+            System.out.println(onlineUsers[i]); // test
+            HBox onlinePlayersWithButton = new HBox();
+            String user = onlineUsers[i];
 
             if (!user.equals(username)) {
                 Text onlineUser = new Text(user);
@@ -168,38 +185,81 @@ public class LobbyView implements View {
                 challengePlayer.setOnMouseClicked(event2 -> {
                     try {
                         processor.challegengePlayer(user, game);
+
                     } catch (ServerNotRespondingException e) {
                         e.printStackTrace();
                     } catch (CommandFailedException e) {
                         e.printStackTrace();
                     }
+                    enterWaitingForOpponent(user);
                     System.out.println("challenged " + user + " in a game of " + game);
                 });
 
-                onlinePlayerButtons.setAlignment(Pos.CENTER);
-
-//                onlinePlayerButtons.getChildren().addAll(onlineUser, challengePlayer);
-                playerListBox.getChildren().add(onlinePlayerButtons);
+                onlinePlayersWithButton.getChildren().addAll(onlineUser, challengePlayer);
+                onlinePlayersWithButton.setAlignment(Pos.CENTER);
             }
+            playerListBox.getChildren().add(onlinePlayersWithButton);
         }
     }
 
     public void showChallengeDeclinedAlert(int challengeNumber){
         // show an alert the player has declined the match
+        VBox challengeDeclinedBox = new VBox();
+
+        Text text = new Text();
+        text.setText("The match has been declined! Challenge number: " + challengeNumber);
+
+        HBox buttonBox = new HBox();
+
+        Button okButton = new Button("OK");
+        okButton.setOnMouseClicked(event ->{
+            view.getChildren().remove(1);
+            view.setCenter(lobbyMenu());
+        });
+
+        buttonBox.getChildren().addAll(okButton);
+        challengeDeclinedBox.getChildren().addAll(text, buttonBox);
+
+        challengeDeclinedBox.setAlignment(Pos.TOP_CENTER);
+        buttonBox.setAlignment(Pos.TOP_CENTER);
+
+        view.setBottom(challengeDeclinedBox);
     }
 
     // server calls this when matchmaking OK
     public void enterMatchMaking(){
+        showChallengeDeclinedAlert(123);
         // open waiting screen for matchmaking
+        view.getChildren().remove(1);
+        Menu menu = new Menu();
+        Text text = new Text("Finding an opponent...");
+        text.setFont(Font.font(17));
+        menu.setAlignment(Pos.TOP_CENTER);
+        menu.getChildren().add(text);
+        menu.addButton("BACK", event -> {
+            view.getChildren().remove(1);
+            view.setCenter(lobbyMenu());
+        });
+        view.setCenter(menu);
     }
-
-    public void enterWaitingForOpponent(){
-        // open waiting screen for matchmaking
+    public void enterWaitingForOpponent(String opponentUsername){
+        view.getChildren().remove(1);
+        Menu menu = new Menu();
+        Text text = new Text("Waiting for response from " +  opponentUsername);
+        text.setFont(Font.font(17));
+        menu.setAlignment(Pos.TOP_CENTER);
+        menu.getChildren().add(text);
+        menu.addButton("BACK", event -> {
+            view.getChildren().remove(1);
+            view.setCenter(lobbyMenu());
+        });
+        view.setCenter(menu);
     }
 
     public void exitWaitingForOpponent(){
         // go back to lobby
-        // let player know the opponent did not accept
+        view.getChildren().remove(1);
+        view.setCenter(lobbyMenu());
     }
 
     // if server starts a game, call this method
@@ -207,17 +267,17 @@ public class LobbyView implements View {
         Player player1;
         Player player2;
         if(username.equals(playerToMove)){
-            player1 = new UserPlayer(username);
+            player1 = new OthelloAI(username); // temporary hardcoded as AI when playing online
             player2 = new OnlineOpponent(opponentUsername);
         }else{
             player1 = new OnlineOpponent(opponentUsername);
-            player2 = new UserPlayer(username);
+            player2 = new OthelloAI(username); // temporary hardcoded as AI when playing online
         }
 
         GameState gameState;
         if(game.equalsIgnoreCase("TIC-TAC-TOE")) {
-            gameState = new OthelloState(processor,true,
-                    new OthelloBoard(player1, player2));
+            gameState = new TicTacToeState(processor,true,
+                    new TicTacToeBoard(player1, player2));
             StateController.setState(gameState);
             return gameState;
         }else if(game.equalsIgnoreCase("REVERSI")) {
