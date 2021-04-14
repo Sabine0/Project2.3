@@ -7,6 +7,7 @@ import app.networking.ServerNotRespondingException;
 import app.state.MainMenuState;
 import app.state.games.GameState;
 import app.state.games.OthelloState;
+import app.view.gameobjects.Board;
 import app.view.gameobjects.OthelloBoard;
 import app.view.menucomponents.Menu;
 import javafx.geometry.Pos;
@@ -51,7 +52,7 @@ public class LobbyView implements View {
 
         if(game.equalsIgnoreCase("TIC-TAC-TOE")){
             view.getStyleClass().add("bg-blue-style");
-        }else if (game.equalsIgnoreCase("OTHELLO")) {
+        }else if (game.equalsIgnoreCase("REVERSI")) {
             view.getStyleClass().add("bg-green-style");
         }
     }
@@ -70,12 +71,14 @@ public class LobbyView implements View {
 
         lobbyMenu.addButton("LOOK FOR MATCH", event ->{
             try {
+                System.out.println(game);
                 processor.subscribe(game);
             } catch (ServerNotRespondingException e) {
                 e.printStackTrace();
             } catch (CommandFailedException e) {
                 e.printStackTrace();
             }
+            enterMatchMaking();
         });
         lobbyMenu.addButton("CHALLENGE OPPONENT", event -> {
             view.getChildren().remove(lobbyMenu);
@@ -107,7 +110,7 @@ public class LobbyView implements View {
         VBox challengeBox = new VBox();
 
         Text text = new Text();
-        text.setText(challengerUsername + " challenged you to a game of "+ game.toLowerCase() + "!");
+        text.setText(challengerUsername + " challenged you to a game of "+ game.toLowerCase() + "! Challenge number: " + challengeNumber);
 
         HBox buttonBox = new HBox();
 
@@ -133,7 +136,7 @@ public class LobbyView implements View {
         challengeBox.setAlignment(Pos.TOP_CENTER);
         buttonBox.setAlignment(Pos.TOP_CENTER);
 
-        view.setRight(challengeBox);
+        view.setBottom(challengeBox);
     }
 
     /**
@@ -172,13 +175,13 @@ public class LobbyView implements View {
 
                 onlinePlayerButtons.setAlignment(Pos.CENTER);
 
-                onlinePlayerButtons.getChildren().addAll(onlineUser, challengePlayer);
+//                onlinePlayerButtons.getChildren().addAll(onlineUser, challengePlayer);
                 playerListBox.getChildren().add(onlinePlayerButtons);
             }
         }
     }
 
-    public void showChallengeDeclinedAlert(){
+    public void showChallengeDeclinedAlert(int challengeNumber){
         // show an alert the player has declined the match
     }
 
@@ -202,12 +205,12 @@ public class LobbyView implements View {
         GameState gameState;
         if(game.equalsIgnoreCase("TIC-TAC-TOE")) {
             gameState = new OthelloState(processor,true, username, opponentUsername,
-                    appUserP1, true, false, new OthelloBoard());
+                    appUserP1, false, false, new OthelloBoard());
             StateController.setState(gameState);
             return gameState;
-        }else if(game.equalsIgnoreCase("OTHELLO")) {
+        }else if(game.equalsIgnoreCase("REVERSI")) {
             gameState = new OthelloState(processor,true, username, opponentUsername,
-                    appUserP1, true, false, new OthelloBoard());
+                    appUserP1, false, false, new OthelloBoard());
             StateController.setState(gameState);
             return gameState;
         }else{

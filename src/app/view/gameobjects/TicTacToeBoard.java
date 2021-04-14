@@ -25,6 +25,7 @@ public class TicTacToeBoard extends Board {
      * @param row The row on the board
      * @return boolean if the move is valid
      */
+    @Override
     public boolean isValidMove(int col, int row){
         if(getTile(col, row).getContent() == "X" || getTile(col, row).getContent() == "O"){
             return false;
@@ -33,13 +34,11 @@ public class TicTacToeBoard extends Board {
     }
 
     @Override
-    public boolean isValidMove(int col, int row, boolean p1turn) {
-        return true;
-    }
-
-    @Override
     public TicTacToeTile getTile(int col, int row) {
         return (TicTacToeTile) getGrid()[col][row];
+    }
+    public void setTilesForMove(){
+        //NOTHING
     }
 
     @Override

@@ -20,11 +20,12 @@ public class LobbyState extends State {
     public LobbyState(String game, String username) throws ServerNotRespondingException, CommandFailedException {
         this.game = game;
         this.username = username;
+        LobbyView lobbyView = new LobbyView(game, username, processor);
 
         // Start connection
         Connection connection = new Connection();
         connection.connect("145.33.225.170", 7789);
-        processor = new Processor(connection); // //TO DO: parameter: gamestate, lobbyview, board
+        processor = new Processor(connection, lobbyView);
 
         processor.login(username);
     }

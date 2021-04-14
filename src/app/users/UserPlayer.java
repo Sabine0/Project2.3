@@ -23,18 +23,7 @@ public class UserPlayer extends Player{
      */
     @Override
     public int[] getMove(Board board){
-        for(int r = 0; r < board.getBoardSize(); r++) {
-            for (int c = 0; c < board.getBoardSize(); c++) {
-                int row = r;
-                int col = c;
-                board.getTile(c,r).setOnMouseClicked(event ->{
-                    //TO DO: fix
-                    moves[0] = row;
-                    moves[1] = col;
-                });
-            }
-        }
-        return this.moves;
+        return board.getClickedTiles();
     }
 
     /**

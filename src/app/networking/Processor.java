@@ -7,14 +7,17 @@
  */
 package app.networking;
 
+import app.view.LobbyView;
+import app.view.gameobjects.Board;
+
 public class Processor {
 
     Thread tNotifier;
     Connection connection;
     // tweede argumet is UI
-    public Processor(Connection connection){ //TO DO: parameter: gamestate, lobbyview, board
+    public Processor(Connection connection, LobbyView lobbyView){
           this.connection = connection;
-          tNotifier = new Thread(new Notifier(connection));
+          tNotifier = new Thread(new Notifier(connection, lobbyView));
     }
 
     public void start(){

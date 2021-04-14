@@ -22,6 +22,7 @@ public class OthelloBoard extends Board{
         getTile(3,4).setTileP1();
         getTile(4,4).setTileP2();
         getTile(4,3).setTileP1();
+        tilesToBeFlipped = new ArrayList<>();
     }
 
     @Override
@@ -34,15 +35,17 @@ public class OthelloBoard extends Board{
      * @param row The row on the board
      * @return boolean if the move is valid
      */
-    // TO DO: fix isValidMove
-    public boolean isValidMove(int col, int row, boolean p1turn){
-        if(getTile(col, row).getContent() == Color.WHITE || getTile(col, row).getContent() == Color.BLACK ){
-            return false;
-        }
+    @Override
+    public boolean isValidMove(int col, int row){
+//        if(getTile(col, row).getContent() == Color.WHITE || getTile(col, row).getContent() == Color.BLACK ){
+//            return false;
+//        } // maybe new method
+        tilesToBeFlipped.clear();
+
         Paint playingColour;
         Paint notPlayingColour;
 
-        if(p1turn){
+        if(isP1turn()){
             playingColour = Color.BLACK;
             notPlayingColour = Color.WHITE;
         }else{
@@ -290,12 +293,23 @@ public class OthelloBoard extends Board{
     }
 
     public void setArrayOfCoordinates(ArrayList<Integer> tempListOfCoordinates) {
-        tilesToBeFlipped.addAll(tempListOfCoordinates);
+        this.tilesToBeFlipped.addAll(tempListOfCoordinates);
     }
 
     public void setTilesForMove(){
+
+        for (int tile:tilesToBeFlipped) {
+            System.out.println(tile);
+        }
+
         for (int i = 0; i< tilesToBeFlipped.size(); i+=2) {
-            //set tiles
+            if (isP1turn()) {
+                int[] array = {tilesToBeFlipped.get(i), tilesToBeFlipped.get(i + 1)};
+                drawMove(getP1().getUsername(), array[0], array[1]);
+            }else{
+                int[] array = {tilesToBeFlipped.get(i), tilesToBeFlipped.get(i + 1)};
+                drawMove(getP2().getUsername(), array[0], array[1]);
+            }
         }
 
     }

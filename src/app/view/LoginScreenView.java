@@ -66,7 +66,7 @@ public class LoginScreenView implements View{
 
         if(game.equalsIgnoreCase("TIC-TAC-TOE")){
             view.getStyleClass().add("bg-blue-style");
-        }else if (game.equalsIgnoreCase("OTHELLO")) {
+        }else if (game.equalsIgnoreCase("REVERSI")) {
             view.getStyleClass().add("bg-green-style");
         }
     }

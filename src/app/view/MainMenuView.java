@@ -113,8 +113,8 @@ public class MainMenuView implements View {
             game = "TIC-TAC-TOE";
             setMenu(createModeMenu(game), "SELECT A MODE");
         });
-        localMenu.addButton("OTHELLO", event ->{
-            game = "OTHELLO";
+        localMenu.addButton("REVERSI", event ->{
+            game = "REVERSI";
             setMenu(createModeMenu(game), "SELECT A MODE");
         });
         localMenu.addButton("BACK", event ->{
@@ -152,13 +152,13 @@ public class MainMenuView implements View {
         Menu onlineMenu = new Menu();
         // getgamelist from server?
 //        String[] gameList = processor.getGamelist();
-        String[] gameList = {"Tic-tac-toe", "Othello"};
+        String[] gameList = {"Tic-tac-toe", "Reversi"};
         for (String serverGame : gameList) {
 //            System.out.println(serverGame);
             onlineMenu.addButton(serverGame.toUpperCase(), event ->{
                 if(serverGame.equalsIgnoreCase("Tic-tac-toe")){
                     StateController.setState(new LoginScreenState(serverGame)); // param processor?
-                } else if(serverGame.equalsIgnoreCase("Othello")){
+                } else if(serverGame.equalsIgnoreCase("Reversi")){
                     StateController.setState(new LoginScreenState(serverGame)); // param processor?
                 }else{
                     System.out.println("This game is currently not available");
@@ -180,7 +180,7 @@ public class MainMenuView implements View {
             StateController.setState(new TicTacToeState(null,false, appUserUsername, opponentUsername,
                     true, p1Human, p2Human, new TicTacToeBoard()));
             System.out.println("ttt game started");
-        }else if(game.equalsIgnoreCase("OTHELLO")){
+        }else if(game.equalsIgnoreCase("REVERSI")){
             StateController.setState(new OthelloState(null, false, appUserUsername, opponentUsername,
                     true, p1Human, p2Human, new OthelloBoard()));
             System.out.println("othello game started");

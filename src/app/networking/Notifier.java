@@ -5,13 +5,22 @@
  */
 package app.networking;
 
+import app.state.games.GameState;
+import app.view.LobbyView;
+import app.view.gameobjects.Board;
+
 import java.util.HashMap;
 
 public class Notifier implements Runnable{
 
     Connection connection;
-    public Notifier(Connection connection){
+    LobbyView lobbyView;
+    GameState gameState;
+    Board board;
+
+    public Notifier(Connection connection, LobbyView lobbyView){
      this.connection = connection;
+     this.lobbyView = lobbyView;
     }
 
     public HashMap call(String s){
@@ -27,23 +36,47 @@ public class Notifier implements Runnable{
 
                 if(notification.startsWith("SVR GAME MATCH")){
                          //een match aangeboden een methode met 3 argumenten
-                    // lobbyView.startMatch(game,playerToMove, opponentUsername); will return gameState
-                    // this.gameState = gameState;
+                    HashMap<String, String> hashMap = toHashMap(notification);
+                    gameState = lobbyView.startMatch(hashMap.get("GAMETYPE"), hashMap.get("PLAYERTOMOVE"), hashMap.get("OPPONENT")); // will return gameState
+                    board = gameState.getBoard();
+                    System.out.println("SERVER IS STARTING GUI GAME");
                 }else if(notification.startsWith(" SVR GAME YOURTURN")){
                          // beurt toegewezen krijgen methode met een argument
-                    // gameState.doMoveOnline(); will call move <int>
+                    HashMap<String, String> hashMap = toHashMap(notification);
+                    try {
+                        gameState.doMoveOnline(); // will call move <int>
+                    } catch (ServerNotRespondingException e) {
+                        e.printStackTrace();
+                    } catch (CommandFailedException e) {
+                        e.printStackTrace();
+                    }
                 }else if(notification.startsWith("SVR GAME MOVE")){
                         // resultaat van een zet ontvangen methode met 3 argumenten
+                    HashMap<String, String> hashMap = toHashMap(notification);
                     // parameter with the move you get from the server -> board.convertMove(int move) will return int[]
                     // parameter with the player name
+                    int[] move = board.convertMove(Integer.parseInt(hashMap.get("MOVE")), board.getBoardSize());
                     // if move not illegal: board.drawMove(String player, int col = move[0], int row = move[1]);
-                    // if move illegal: gameState.showWinAlert(winner)
+                    if (board.isValidMove(move[0], move[1]) && !hashMap.get("DETAILS").equals("Illegal move")){
+                        board.drawMove(hashMap.get("PLAYER"), move[0], move[1]);
+                    }
                 }else if(notification.startsWith("SVR GAME CHALLENGE")){
                         // een challenge ontvangen methode met 3 argumenten
-                    // lobbyView.showChallengeAlert()
+                    HashMap<String, String> hashMap = toHashMap(notification);
+                     lobbyView.showChallengeAlert(hashMap.get("CHALLENGER"), Integer.parseInt(hashMap.get("CHALLENGENUMBER")));
                 }else if(notification.startsWith("SVR GAME CHALLENGE CANCELLED")){
                        // challenge cancelled methode met een argument
-                    // lobbyView.exitWaitingForOpponent()
+                    HashMap<String, String> hashMap = toHashMap(notification);
+                     lobbyView.exitWaitingForOpponent();
+                     lobbyView.showChallengeDeclinedAlert(Integer.parseInt(hashMap.get("CHALLENGENUMBER")));
+                }else if(notification.startsWith("SVR GAME WIN")){
+                    HashMap<String, String> hashMap = toHashMap(notification);
+                    board.showWinAlert(Integer.parseInt(hashMap.get("PLAYERONESCORE")), Integer.parseInt(hashMap.get("PLAYERONESCORE")));
+                }else if(notification.startsWith("SVR GAME LOSE")){
+                    HashMap<String, String> hashMap = toHashMap(notification);
+                     board.showWinAlert(Integer.parseInt(hashMap.get("PLAYERONESCORE")), Integer.parseInt(hashMap.get("PLAYERONESCORE")));
+                }else if(notification.startsWith("SVR GAME DRAW")){
+                     board.showDrawAlert();
                 }
             }
         }

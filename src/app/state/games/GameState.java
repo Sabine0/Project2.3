@@ -23,9 +23,7 @@ public abstract class GameState extends State {
     private Player p2;
     private Board board;
     private String winner;
-    private boolean playing;
-    private boolean p1turn;
-    private int points; // unsure if we need this
+
     Processor processor;
 
     public GameState(Processor processor, boolean online, String appUserUsername, String opponentUsername,
@@ -46,6 +44,7 @@ public abstract class GameState extends State {
                 p1.setIsPlayer1(false);
             }
             board.setPlayer1(p1);
+            board.setPlayer2(p2);
             launchOnline();
         }else{
             if(p1Human && p2Human){
@@ -64,28 +63,44 @@ public abstract class GameState extends State {
                 p2 = new UserPlayer(opponentUsername);
                 p2.setIsPlayer1(false);
             }
+            board.setPlayer1(p1);
             board.setPlayer2(p2);
             launchLocal();
         }
     }
 
     public void launchLocal(){
-        // TO DO: implement
-        p1turn = true;
-        playing = true;
+        // TO DO: fix
+        board.setP1turn(true);
+//        while(!isWon(getBoard())) {
+            if(board.isP1turn()) {
+                int[] move = doMoveLocal(getP1());
+                if(board.isValidMove(move[0], move[1])) {
+                    board.drawMove(getP1().getUsername(), move[0], move[1]);
+                    board.setTilesForMove();
+                    System.out.println("p1 did turn "+ move[0] + " " + move[1]);
+                }
+            }else{
+                int[] move = doMoveLocal(getP2());
+                if(board.isValidMove(move[0], move[1])) {
+                    board.drawMove(p2.getUsername(), move[0], move[1]);
+                    board.setTilesForMove();
+                    System.out.println("p2 did turn "+ move[0] + " " + move[1]);
+                }
+            }
+//        }
     }
 
     public int[] doMoveLocal(Player player){
         int[] move;
 
-        // not sure if this works
-        if(p1turn){
+        if(board.isP1turn()){
             move = p1.getMove(board);
         }else{
             move = p2.getMove(board);
         }
 
-        if(board.isValidMove(move[0], move[1], p1turn)) {
+        if(board.isValidMove(move[0], move[1])) {
             board.drawMove(player.getUsername(), move[0], move[1]);
         }
 
@@ -95,22 +110,20 @@ public abstract class GameState extends State {
     public void launchOnline(){
         // TO DO: implement?
         // I guess everything happens in/through notifier?
-        playing = true;
-        p1turn = true;
     }
 
     public void doMoveOnline() throws ServerNotRespondingException, CommandFailedException {
         int[] move;
         int intMove;
 
-        if(p1turn){
+        if(board.isP1turn()){
             move = p1.getMove(board);
         }else{
             move = p2.getMove(board);
         }
 
         intMove = board.convertMove(move, board.getBoardSize());
-        if(board.isValidMove(move[0], move[1], p1turn)){
+        if(board.isValidMove(move[0], move[1])){
             processor.move(intMove);
         }else{
             System.out.println("INVALID MOVE!!");
@@ -129,7 +142,6 @@ public abstract class GameState extends State {
             StateController.setState(new MainMenuState());
         });
         alert.show();
-        playing = false;
     }
 
     public void showDrawAlert(){
@@ -141,14 +153,13 @@ public abstract class GameState extends State {
             StateController.setState(new MainMenuState());
         });
         alert.show();
-        playing = false;
     }
 
     /**
      * @return A child of Board
      */
-    public <T extends Board> T getBoard(){
-        return (T) board;
+    public Board getBoard(){
+        return board;
     }
 
     public Player getP1() {
@@ -162,10 +173,6 @@ public abstract class GameState extends State {
     public void setWinner(String winnerName){
         winner = winnerName;
     }
-
-    public void setWinnerPoints(int winnerPoints){
-        points = winnerPoints;
-    } // not sure if we should implement
 
     // only for othello
     public abstract boolean isWon(Board board);

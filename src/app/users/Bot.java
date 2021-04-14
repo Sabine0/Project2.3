@@ -2,6 +2,8 @@ package app.users;
 
 import app.view.gameobjects.Board;
 
+import java.util.ArrayList;
+
 /**
  * The Bot class holds the attributes of the bot user
  * @author Sabine Schreuder
@@ -17,14 +19,40 @@ public class Bot extends Player{
 
     @Override
     public int[] getMove(Board board){
-        System.out.println("bot p1 go brr");
+        ArrayList<Integer> listOfPossible = new ArrayList<>();
+        for(int col = 0; col < board.getBoardSize(); col++) {
+            for(int row = 0; row < board.getBoardSize(); row++) {
+                if(board.isValidMove(col, row)) {
+                    //setListOfCoordinatesEmpty();
+                    listOfPossible.add(col);
+                    listOfPossible.add(row);
+                    if((col == 0 && row == 0) || (col == 0 && row == 7) ||(col == 7 && row == 0) ||(col == 7 && row == 7)) {
+                        listOfPossible.add(5);
+                    } else if((col == 0 && row == 1) || (col == 1 && row == 0) || (col == 1 && row == 1) || (col == 0 && row == 6)
+                            || (col == 1 && row == 6) || (col == 1 && row == 7) || (col == 6 && row == 0) || (col == 6 && row == 1)
+                            || (col == 7 && row == 1) || (col == 6 && row == 7) || (col == 6 && row == 6) || (col == 7 && row == 6)) {
+                        listOfPossible.add(1);
+                    } else if (col == 0 || col == 7 || row == 0 || row == 7) {
+                        listOfPossible.add(4);
+                    } else if (col == 1 || col == 6 || row == 1 || row == 6) {
+                        listOfPossible.add(2);
+                    } else {
+                        listOfPossible.add(3);
+                    }
+                }
+            }
+        }
 
-        // TO DO: implement
-        int[] array = new int[2];
-        array[0] = 2;
-        array[1] = 1;
-
-        return array;
+        int highestScore = 0;
+        int indexOfHighestScore = 0;
+        for (int i = 2; i < listOfPossible.size(); i += 3) {
+            if(listOfPossible.get(i) > highestScore) {
+                highestScore = listOfPossible.get(i);
+                indexOfHighestScore = i;
+            }
+        }
+        int[] coordinatesBestMove = new int[]{listOfPossible.get(indexOfHighestScore - 2), listOfPossible.get(indexOfHighestScore - 1)};
+        return coordinatesBestMove;
     }
     
     /**
