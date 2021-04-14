@@ -10,10 +10,15 @@ package app.networking;
 import app.view.LobbyView;
 import app.view.gameobjects.Board;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class Processor {
 
     Thread tNotifier;
     Connection connection;
+    private Logger ntLogger = Logger.getLogger("NetworkLogger");
+
     // tweede argumet is UI
     public Processor(Connection connection, LobbyView lobbyView){
           this.connection = connection;
@@ -32,6 +37,7 @@ public class Processor {
      * @throws ServerNotRespondingException if disconnected or no response from the server
      */
     public String[] getGamelist() throws ServerNotRespondingException, CommandFailedException {
+        ntLogger.log(Level.INFO,"getGamelist() is called"  );
         connection.write("get gamelist");
         String gameList = connection.readDubbleLine();
         System.out.println("proccesor" + gameList);
@@ -43,6 +49,7 @@ public class Processor {
      * @throws ServerNotRespondingException if disconnected or no response from the server
      */
     public String[] getPlayerList() throws ServerNotRespondingException, CommandFailedException {
+        ntLogger.log(Level.INFO," - getPlayerList() is called"  );
         connection.write("get playerlist");
 
         return toStringArray(connection.readDubbleLine());
@@ -53,7 +60,7 @@ public class Processor {
      * @param name name of the player
      */
     public void login(String name) throws ServerNotRespondingException, CommandFailedException {
-
+        ntLogger.log(Level.INFO," - login() is called. arg: " + name );
         connection.write("login "+ name);
         if (connection.readSingleLine().equals("OK")){
 
@@ -68,6 +75,7 @@ public class Processor {
     }
 
     public void move(int location) throws ServerNotRespondingException, CommandFailedException {
+        ntLogger.log(Level.INFO," - move() is called. arg: " + location  );
           connection.write("move " + location);
           connection.readSingleLine();
     }
@@ -79,6 +87,7 @@ public class Processor {
      * @throws CommandFailedException if server returns an error.
      */
     public void setChallengeAccept(int challengeNumber) throws ServerNotRespondingException, CommandFailedException {
+        ntLogger.log(Level.INFO," - setChallengeAccept() is called. arg: " + challengeNumber  );
         connection.write("challenge accept " + challengeNumber);
         connection.readSingleLine();
     }
@@ -90,6 +99,7 @@ public class Processor {
      * @throws CommandFailedException  if server returns an error.
      */
     public void subscribe(String game) throws ServerNotRespondingException, CommandFailedException {
+        ntLogger.log(Level.INFO," - subscribe() is called. arg: " + game  );
         connection.write("subscribe " + game);
         connection.readSingleLine();
     }
@@ -102,6 +112,7 @@ public class Processor {
      * @throws CommandFailedException if server returns an error.
      */
     public void challegengePlayer(String playerName, String gameType) throws ServerNotRespondingException, CommandFailedException {
+        ntLogger.log(Level.INFO," - challegengePlayer() is called. args: playerName: " + playerName + "gametype: " + gameType );
         connection.write("challenge "+ "\"" + playerName + "\""+ " " + "\""+ gameType+ "\"");
         connection.readSingleLine();
     }

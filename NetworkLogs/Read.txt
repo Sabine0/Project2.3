@@ -1,0 +1,1 @@
+In this folder the log files wil be stored. You can put all the of this folder in gitignore. 
