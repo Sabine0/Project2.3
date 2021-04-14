@@ -2,7 +2,10 @@ package app.view.gameobjects;
 
 import app.StateController;
 import app.state.MainMenuState;
+import app.users.OnlineOpponent;
+import app.users.OthelloAI;
 import app.users.Player;
+import app.users.UserPlayer;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.Pane;
@@ -17,13 +20,17 @@ public abstract class Board {
     private Tile[][] grid;
     private Player p1;
     private Player p2;
+    private Player currentPlayer;
     private boolean p1turn;
     private String winner;
-    private int[] clickedTiles = {0,0}; // hardcoded for testing!
 
-    public Board(int boardSize, Tile[][]tempGrid, String game){
+    public Board(int boardSize, Tile[][]tempGrid, String game, Player player1, Player player2){
+        p1 = player1;
+        p2 = player2;
+
         boardPane = new Pane();
         boardPane.setPrefSize(800, 800);
+        currentPlayer = p1;
 
         for (int i = 0; i < boardSize; i++) {
             for (int j = 0; j < boardSize; j++) {
@@ -40,11 +47,13 @@ public abstract class Board {
                 int finalJ = j;
                 int finalI = i;
                 tile.setOnMouseClicked(event -> {
-                    // TO DO: fix clicking
-                    clickedTiles[0] = finalJ;
-                    clickedTiles[1] = finalI;
-//                    System.out.println(finalJ);
-//                    System.out.println(finalI);
+                    if(isValidMove(finalJ, finalI)) {
+                        System.out.println("Correct tile clicked");
+                        drawMove(currentPlayer.getUsername(), finalJ, finalI);
+                        if(game.equalsIgnoreCase("Reversi")){
+                            setTilesForMove(); // doesnt work?
+                        }
+                    }
                 });
 
                 tile.setTranslateX(j*80);
@@ -59,36 +68,42 @@ public abstract class Board {
         p1turn = true;
     }
 
+    /**
+     * Will draw the move at the coordinates col, row depending on whose move it is
+     * @param playerName The current players name as a String
+     * @param col The column on the board
+     * @param row The row on the board
+     */
     public void drawMove(String playerName, int col, int row){
-        if(playerName.equals(p1.getUsername())){
+        if(playerName.equals(p1.getUsername()) && p1turn){
             getTile(col, row).setTileP1();
-        }else{
+            p1turn = false;
+            currentPlayer = p2;
+        }else if(playerName.equals(p2.getUsername()) && !p1turn){
             getTile(col, row).setTileP2();
+            p1turn = true;
+            currentPlayer = p1;
         }
     }
 
-    public int[] getClickedTiles(){
-        return clickedTiles;
-    }
-
-    // You will receive an array with 2 ints, return 1 int
     /**
      * @param array An array of 2 coordinates, containing column and row on the board
      * @param gridSize The size of the board (8x8 = 8, we assume all board are squares)
      * @return int coordinate on the board
      */
     public int convertMove(int[] array, int gridSize){
+        // You will receive an array with 2 ints, return 1 int
         // TO DO: implement
         return 0;
     }
 
-    // You will receive an int, return an array with 2 ints
     /**
      * @param integer The int to be converted to an int[]
      * @param gridSize The size of the board (8x8 = 8), we assume all board are squares
      * @return An array of 2 coordinates containing column and row on the board
      */
     public int[] convertMove(int integer, int gridSize){
+        // You will receive an int, return an array with 2 ints
         // TO DO: implement
         int[] array = new int[2]; // temporary
         return array;
@@ -119,9 +134,6 @@ public abstract class Board {
         alert.show();
     }
 
-    public void setTurnP1(Boolean bool){
-        p1turn = bool;
-    }
     /**
      * @return the grid
      */
@@ -134,14 +146,6 @@ public abstract class Board {
      */
     public Pane getBoardPane() {
         return boardPane;
-    }
-
-    public void setPlayer1(Player player){
-        p1 = player;
-    }
-
-    public void setPlayer2(Player player){
-        p2 = player;
     }
 
     public boolean isP1turn(){

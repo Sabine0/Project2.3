@@ -7,6 +7,9 @@ import app.networking.ServerNotRespondingException;
 import app.state.MainMenuState;
 import app.state.games.GameState;
 import app.state.games.OthelloState;
+import app.users.OnlineOpponent;
+import app.users.Player;
+import app.users.UserPlayer;
 import app.view.gameobjects.Board;
 import app.view.gameobjects.OthelloBoard;
 import app.view.menucomponents.Menu;
@@ -201,16 +204,25 @@ public class LobbyView implements View {
 
     // if server starts a game, call this method
     public GameState startMatch(String game, String playerToMove, String opponentUsername){
-        boolean appUserP1 = !playerToMove.equals(opponentUsername);
+        Player player1;
+        Player player2;
+        if(username.equals(playerToMove)){
+            player1 = new UserPlayer(username);
+            player2 = new OnlineOpponent(opponentUsername);
+        }else{
+            player1 = new OnlineOpponent(opponentUsername);
+            player2 = new UserPlayer(username);
+        }
+
         GameState gameState;
         if(game.equalsIgnoreCase("TIC-TAC-TOE")) {
-            gameState = new OthelloState(processor,true, username, opponentUsername,
-                    appUserP1, false, false, new OthelloBoard());
+            gameState = new OthelloState(processor,true,
+                    new OthelloBoard(player1, player2));
             StateController.setState(gameState);
             return gameState;
         }else if(game.equalsIgnoreCase("REVERSI")) {
-            gameState = new OthelloState(processor,true, username, opponentUsername,
-                    appUserP1, false, false, new OthelloBoard());
+            gameState = new OthelloState(processor,true,
+                    new OthelloBoard(player1, player2));
             StateController.setState(gameState);
             return gameState;
         }else{

@@ -8,7 +8,6 @@ import app.view.gameobjects.Board;
  * @version 09-04-21
  */
 public class UserPlayer extends Player{
-    int[] moves = new int[2];
 
     /**
      * @param username The UserPlayer's username
@@ -23,7 +22,8 @@ public class UserPlayer extends Player{
      */
     @Override
     public int[] getMove(Board board){
-        return board.getClickedTiles();
+        int[] array = {6,9}; // do nothing, just click?!
+        return array;
     }
 
     /**

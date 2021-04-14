@@ -15,9 +15,8 @@ import java.util.ArrayList;
  */
 // TO DO: implement game logic IN MVC!!!!
 public class OthelloState extends GameState{
-    public OthelloState(Processor processor, boolean online, String appUserUsername, String opponentUsername,
-                        boolean appUserPlayer1, boolean p1Human, boolean p2Human, OthelloBoard othelloBoard){
-        super(processor, online, appUserUsername, opponentUsername, appUserPlayer1, p1Human, p2Human, othelloBoard);
+    public OthelloState(Processor processor, boolean online, OthelloBoard othelloBoard){
+        super(processor, online, othelloBoard);
     }
 
     /**
@@ -50,11 +49,11 @@ public class OthelloState extends GameState{
             }
         }
         if (countBlack > countWhite) {
-            winner = getP1().getUsername();
+            winner = getBoard().getP1().getUsername();
             listWinner.add(winner);
             listWinner.add(countBlack);
         } else if (countBlack < countWhite) {
-            winner = getP2().getUsername();
+            winner = getBoard().getP2().getUsername();
             listWinner.add(winner);
             listWinner.add(countWhite);
         } else {

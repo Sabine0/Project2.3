@@ -1,5 +1,6 @@
 package app.view.gameobjects;
 
+import app.users.Player;
 import javafx.scene.Parent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -16,8 +17,8 @@ import java.util.ArrayList;
 public class OthelloBoard extends Board{
     private ArrayList<Integer> tilesToBeFlipped;
 
-    public OthelloBoard(){
-        super(8, new OthelloTile[8][8], "OTHELLO");
+    public OthelloBoard(Player player1, Player player2){
+        super(8, new OthelloTile[8][8], "OTHELLO", player1, player2);
         getTile(3,3).setTileP2();
         getTile(3,4).setTileP1();
         getTile(4,4).setTileP2();
@@ -311,7 +312,7 @@ public class OthelloBoard extends Board{
                 drawMove(getP2().getUsername(), array[0], array[1]);
             }
         }
-
+//        tilesToBeFlipped.clear();
     }
 
     @Override

@@ -3,6 +3,7 @@ package app.view;
 import app.StateController;
 import app.networking.CommandFailedException;
 import app.networking.ServerNotRespondingException;
+import app.users.*;
 import app.view.gameobjects.OthelloBoard;
 import app.view.gameobjects.TicTacToeBoard;
 import app.state.LoginScreenState;
@@ -131,13 +132,13 @@ public class MainMenuView implements View {
     public Menu createModeMenu(String game){
         Menu modeMenu = new Menu();
         modeMenu.addButton("PLAYER vs PLAYER", event ->{
-            enterGameState(game, "Player 1", "Player 2", true, true);
+            enterGameState(game, "Player 1", "Player 2");
         });
         modeMenu.addButton("PLAYER vs AI", event ->{
-            enterGameState(game, "Player 1", "Victor BOT", true, false);
+            enterGameState(game, "Player 1", "Victor BOT");
         });
         modeMenu.addButton("AI vs AI", event ->{
-            enterGameState(game, "Jean BOT", "Victor BOT", false, false);
+            enterGameState(game, "Jean BOT", "Victor BOT");
         });
         modeMenu.addButton("BACK", event ->{
             setMenu(createLocalMenu(),"LOCAL PLAY");
@@ -175,14 +176,40 @@ public class MainMenuView implements View {
     /**
      * @param game The name of the game state to be entered
      */
-    public void enterGameState(String game, String appUserUsername, String opponentUsername, boolean p1Human, boolean p2Human){
+    public void enterGameState(String game, String player1username, String player2username){
+        Player player1;
+        Player player2;
+
         if(game.equalsIgnoreCase("TIC-TAC-TOE")){
-            StateController.setState(new TicTacToeState(null,false, appUserUsername, opponentUsername,
-                    true, p1Human, p2Human, new TicTacToeBoard()));
+            if(player1username.contains("BOT")){
+                player1 = new TicTacToeAI(player1username);
+            }else {
+                player1 = new UserPlayer(player1username);
+            }
+            if (player2username.contains("BOT")) {
+                player2 = new TicTacToeAI(player2username);
+            }else{
+                player2 = new UserPlayer(player2username);
+            }
+
+            StateController.setState(new TicTacToeState(null,false,
+                    new TicTacToeBoard(player1, player2)));
             System.out.println("ttt game started");
+
         }else if(game.equalsIgnoreCase("REVERSI")){
-            StateController.setState(new OthelloState(null, false, appUserUsername, opponentUsername,
-                    true, p1Human, p2Human, new OthelloBoard()));
+            if(player1username.contains("BOT")){
+                player1 = new OthelloAI(player1username);
+            }else {
+                player1 = new UserPlayer(player1username);
+            }
+            if (player2username.contains("BOT")) {
+                player2 = new OthelloAI(player2username);
+            }else{
+                player2 = new UserPlayer(player2username);
+            }
+
+            StateController.setState(new OthelloState(null, false,
+                    new OthelloBoard(player1, player2)));
             System.out.println("othello game started");
         }else{
             System.out.println("Game not found");
@@ -196,5 +223,4 @@ public class MainMenuView implements View {
     public Parent createView(){
         return view;
     }
-
 }
