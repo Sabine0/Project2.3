@@ -124,7 +124,7 @@ public class Notifier implements Runnable{
                         }
                     });
 
-                }else if(notification.startsWith("SVR GAME LOSE")){
+                }else if(notification.startsWith("SVR GAME LOSS")){
                     ntLogger.log(Level.INFO,  " - ntf matched with: SVR GAME LOSE. calling  board.showWinAlert(Integer.parseInt");
                     HashMap<String, String> hashMap = toHashMap(notification);
                     Platform.runLater(new Runnable(){
