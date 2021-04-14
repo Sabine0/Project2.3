@@ -55,10 +55,10 @@ public abstract class GameState extends State {
             }else if(p1Human){
                 p1 = new UserPlayer(appUserUsername);
                 p1.setIsPlayer1(true);
-                p2 = new Bot(opponentUsername);
+                p2 = new OthelloAI(opponentUsername); // TEMPORARY!! should be dynamic
                 p2.setIsPlayer1(false);
             } else{
-                p1 = new Bot(appUserUsername);
+                p1 = new OthelloAI(appUserUsername); // TEMPORARY!! should be dynamic
                 p1.setIsPlayer1(true);
                 p2 = new UserPlayer(opponentUsername);
                 p2.setIsPlayer1(false);
