@@ -44,8 +44,8 @@ public class Notifier implements Runnable{
                          //een match aangeboden een methode met 3 argumenten
                     HashMap<String, String> hashMap = toHashMap(notification);
                     // In the methode run you can change the javaFx threads. Use this lambda anytime you want to
-                    // make change to javafx thread.
                     ntLogger.log(Level.INFO,  " - ntf matched with: SVR GAME MATCH. calling lobbyView ");
+                    // make change to javafx thread.
                     Platform.runLater(new Runnable(){
                         @Override
                         public void run(){
@@ -54,19 +54,24 @@ public class Notifier implements Runnable{
                         }
                     });
                     System.out.println("SERVER IS STARTING GUI FOR GAME");
-                }else if(notification.startsWith(" SVR GAME YOURTURN")){
+                }else if(notification.startsWith("SVR GAME YOURTURN")){
                     ntLogger.log(Level.INFO,  " - ntf matched with: SVR GAME YOURTURN. calling gameState.doMoveOnline() ");
-                }else if(notification.startsWith(" SVR GAME YOURTURN")){
                     System.out.println("test your turn statement");
                          // beurt toegewezen krijgen methode met een argument
                     HashMap<String, String> hashMap = toHashMap(notification);
-                    try {
-                        gameState.doMoveOnline(); // will call move <int>
-                    } catch (ServerNotRespondingException e) {
-                        e.printStackTrace();
-                    } catch (CommandFailedException e) {
-                        e.printStackTrace();
-                    }
+                    // make change to javafx thread.
+                    Platform.runLater(new Runnable(){
+                        @Override
+                        public void run(){
+                            try {
+                                gameState.doMoveOnline(); // will call move <int>
+                            } catch (ServerNotRespondingException e) {
+                                e.printStackTrace();
+                            } catch (CommandFailedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
                 }else if(notification.startsWith("SVR GAME MOVE")){
                     ntLogger.log(Level.INFO,  " - ntf matched with: SVR GAME YOURTURN. calling gameState.doMoveOnline() ");
                     System.out.println("test game move statement");
@@ -74,33 +79,70 @@ public class Notifier implements Runnable{
                     HashMap<String, String> hashMap = toHashMap(notification);
                     // parameter with the move you get from the server -> board.convertMove(int move) will return int[]
                     // parameter with the player name
-                    int[] move = board.convertMove(Integer.parseInt(hashMap.get("MOVE")), board.getBoardSize());
-                    // if move not illegal: board.drawMove(String player, int col = move[0], int row = move[1]);
-                    if (!hashMap.get("DETAILS").equals("Illegal move")){
-                        board.drawMove(hashMap.get("PLAYER"), move[0], move[1]);
-                    }
+                    Platform.runLater(new Runnable(){
+                        @Override
+                        public void run(){
+                            int[] move = board.convertMove(Integer.parseInt(hashMap.get("MOVE")), board.getBoardSize());
+                            // if move not illegal: board.drawMove(String player, int col = move[0], int row = move[1]);
+                            if (!hashMap.get("DETAILS").equals("Illegal move")){
+                                board.drawMove(hashMap.get("PLAYER"), move[0], move[1]);
+                            }
+                        }
+                    });
+
                 }else if(notification.startsWith("SVR GAME CHALLENGE")){
                     ntLogger.log(Level.INFO,  " - ntf matched with: SVR GAME CHALLENGE. calling gameState.doMoveOnline(lobbyView.showChallengeAlert ");
                         // een challenge ontvangen methode met 3 argumenten
                     HashMap<String, String> hashMap = toHashMap(notification);
-                     lobbyView.showChallengeAlert(hashMap.get("CHALLENGER"), Integer.parseInt(hashMap.get("CHALLENGENUMBER")));
+
+                    Platform.runLater(new Runnable(){
+                        @Override
+                        public void run(){
+                            lobbyView.showChallengeAlert(hashMap.get("CHALLENGER"), Integer.parseInt(hashMap.get("CHALLENGENUMBER")));
+                        }
+                    });
+
                 }else if(notification.startsWith("SVR GAME CHALLENGE CANCELLED")){
                     ntLogger.log(Level.INFO,  " - ntf matched with: SVR GAME CHALLENGE CANCELLED. calling lobbyView.exitWaitingForOpponent();");
                        // challenge cancelled methode met een argument
                     HashMap<String, String> hashMap = toHashMap(notification);
-                     lobbyView.exitWaitingForOpponent();
-                     lobbyView.showChallengeDeclinedAlert(Integer.parseInt(hashMap.get("CHALLENGENUMBER")));
+                    Platform.runLater(new Runnable(){
+                        @Override
+                        public void run(){
+                            lobbyView.exitWaitingForOpponent();
+                            lobbyView.showChallengeDeclinedAlert(Integer.parseInt(hashMap.get("CHALLENGENUMBER")));
+                        }
+                    });
+
                 }else if(notification.startsWith("SVR GAME WIN")){
                     ntLogger.log(Level.INFO,  " - ntf matched with: SVR GAME WIN. calling  board.showWinAlert(Integer.parseInt");
                     HashMap<String, String> hashMap = toHashMap(notification);
-                    board.showWinAlert(Integer.parseInt(hashMap.get("PLAYERONESCORE")), Integer.parseInt(hashMap.get("PLAYERONESCORE")));
+                    Platform.runLater(new Runnable(){
+                        @Override
+                        public void run(){
+                            board.showWinAlert(Integer.parseInt(hashMap.get("PLAYERONESCORE")), Integer.parseInt(hashMap.get("PLAYERONESCORE")));
+                        }
+                    });
+
                 }else if(notification.startsWith("SVR GAME LOSE")){
                     ntLogger.log(Level.INFO,  " - ntf matched with: SVR GAME LOSE. calling  board.showWinAlert(Integer.parseInt");
                     HashMap<String, String> hashMap = toHashMap(notification);
-                     board.showWinAlert(Integer.parseInt(hashMap.get("PLAYERONESCORE")), Integer.parseInt(hashMap.get("PLAYERONESCORE")));
+                    Platform.runLater(new Runnable(){
+                        @Override
+                        public void run(){
+                            board.showWinAlert(Integer.parseInt(hashMap.get("PLAYERONESCORE")), Integer.parseInt(hashMap.get("PLAYERONESCORE")));
+                        }
+                    });
+
                 }else if(notification.startsWith("SVR GAME DRAW")){
                     ntLogger.log(Level.INFO,  " - ntf matched with: SVR GAME DRAW. calling  board.showDrawAlert()");
-                     board.showDrawAlert();
+                    Platform.runLater(new Runnable(){
+                        @Override
+                        public void run(){
+                            board.showDrawAlert();
+                        }
+                    });
+
                 }
             }
         }
