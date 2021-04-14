@@ -85,7 +85,7 @@ public class Connection {
 
                         }
                     }else{
-                        throw new ServerNotRespondingException("There is no response form the the serve");
+                        throw new ServerNotRespondingException("There is no response form the server");
                     }
                 }
             }catch (IllegalArgumentException | InterruptedException e){
