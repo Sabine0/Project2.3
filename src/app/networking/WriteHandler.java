@@ -10,6 +10,8 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class WriteHandler implements Runnable {
 
@@ -17,6 +19,7 @@ public class WriteHandler implements Runnable {
     private PrintWriter toServer;
     private List<String> writeQueue;
     BufferedReader userInput;
+    private Logger ntLogger = Logger.getLogger("NetworkLogger");
 
     //scanner is bedoeld voor test doeleiden
     Scanner scanner = new Scanner(System.in);
@@ -36,8 +39,10 @@ public class WriteHandler implements Runnable {
         while (true) {
             synchronized (writeQueue) {
                 while (!writeQueue.isEmpty()) {
+                    ntLogger.log(Level.INFO, " - Write queue size: " + writeQueue.size() );
                     System.out.println("wq size = " + writeQueue.size());
                     String tosend = writeQueue.remove(0);
+                    ntLogger.log(Level.INFO, " - is writing: "+ tosend );
                     System.out.println("is writing: "+ tosend);
                     toServer.println(tosend);
                 }

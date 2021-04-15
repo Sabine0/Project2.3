@@ -1,148 +1,123 @@
 package app.view;
 
-import app.Main;
-import app.games.*;
+import app.StateController;
 import app.state.LoginScreenState;
-import app.state.MainMenuState;
+import app.view.menucomponents.Menu;
 import javafx.scene.Parent;
-import app.view.components.Menu;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
-
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 
 /**
  * The MainMenuView class is used for creating and displaying the components of the main menu
  * @author Sabine Schreuder
- * @version 01/04/21
+ * @version 14-04-21
  */
-public class MainMenuView implements View{
-    StackPane view;
-    Menu currentMenu;
-    String game;
+public class MainMenuView implements View {
+    private BorderPane view;
+    private Menu currentMenu;
+    private StackPane currentMenuTextBox;
+    private Text menuText;
+    private String game;
+//    private Processor processor;
 
-    public MainMenuView(){
-        view = new StackPane();
+    /**
+//     * @param processor The connections processor
+     */
+    public MainMenuView(){ // param processor for getgamelist?
+//        this.processor = processor;
+
+        // Styling goes here
+        view = new BorderPane();
+        currentMenuTextBox = new StackPane();
+        menuText = new Text();
 
         view.getStyleClass().add("bg-grey-style");
-        setMenu(startMenu());
+        setMenu(createStartMenu(), "WELCOME!");
     }
 
     /**
-     * Set the current menu to the menu given in the parameter
-     * @param menu The menu to be set to
+     * @param menu The menu to be set
+     * @param textString The text to be displayed at the top of the menu
      */
-    public void setMenu(Menu menu){
+    public void setMenu(Menu menu, String textString){
         if(currentMenu!=null){
             view.getChildren().remove(currentMenu);
+        } else if(currentMenuTextBox !=null){
+            view.getChildren().remove(currentMenuTextBox);
         }
-        view.getChildren().add(menu);
+
         currentMenu = menu;
+        menuText.setText(textString);
+        menuText.setFont(Font.font(50));
+        menuText.setFill(Color.WHITE);
+
+        StackPane menuTextBox = new StackPane();
+        menuTextBox.getChildren().add(menuText);
+
+        view.setTop(menuTextBox);
+        view.setCenter(menu);
     }
 
     /**
-     * Create the starting menu and return it
-     * @return The start menu
+     * @return The initial menu
      */
-    public Menu startMenu(){
-        Menu menu = new Menu();
-
-        menu.addButton("PLAY", event ->{
-            setMenu(gameMenu());
+    public Menu createStartMenu(){
+        Menu startMenu = new Menu();
+        startMenu.addButton("PLAY", event->{
+            setMenu(createOnlineMenu(), "CHOOSE A GAME");
         });
-        menu.addButton("EXIT", event ->{
+        startMenu.addButton("EXIT", event->{
             System.exit(0);
         });
-
-        return menu;
-    }
-
-    /**
-     * Create the game menu and return it
-     * @return The menu containing all available games
-     */
-    public Menu gameMenu(){
-        Menu menu = new Menu();
-        menu.addButton("TICTACTOE", event ->{
-            game = "TICTACTOE";
-            setMenu(connectionMenu());
-        });
-        menu.addButton("OTHELLO", event ->{
-            setMenu(connectionMenu());
-            game = "OTHELLO";
-        });
-        menu.addButton("BACK", event ->{
-            setMenu(startMenu());
-        });
-
-        return menu;
-    }
-
-    /**
-     * Create the connection menu and return it
-     * @return The menu containing all connection options
-     */
-    public Menu connectionMenu(){
-        Menu menu = new Menu();
-        menu.addButton("LOCAL", event ->{
-            setMenu(modeMenu(game));
-        });
-        menu.addButton("ONLINE", event ->{
-            Main.setState(new LoginScreenState(game));
-        });
-        menu.addButton("BACK", event ->{
-            setMenu(gameMenu());
-        });
-
-        return menu;
+        return startMenu;
     }
 
 
     /**
-     * Create the mode menu and return it
      * @param game The game to be played
-     * @return The menu containing all mode options
+     * @return The menu containing the game modes for the game
      */
-    public Menu modeMenu(String game){
-        Menu menu = new Menu();
-        menu.addButton("PLAYER VS PLAYER", event -> {
-            if (game == "TICTACTOE") {
-                Main.setState(new TicTacToe(false,true, true, true, "Player 1", "Player 2"));
-            } else if (game == "OTHELLO") {
-                Main.setState(new Othello(false, true, true, true, "Player 1", "Player 2"));
-            } else {
-                Main.setState(new MainMenuState());
-            }
+    public Menu createModeMenu(String game){
+        Menu modeMenu = new Menu();
+        modeMenu.addButton("PLAY AS HUMAN PLAYER", event ->{
+            StateController.setState(new LoginScreenState(game, true));
         });
-        menu.addButton("PLAYER VS AI", event ->{
-            if(game == "TICTACTOE"){
-                Main.setState(new TicTacToe(false, true, false, true,"Player1", "Victor BOT"));
-            }else if(game == "OTHELLO"){
-                Main.setState(new Othello(false, true, false,true, "Player 1","Victor BOT"));
-            }else {
-                Main.setState(new MainMenuState());
-            }
+        modeMenu.addButton("PLAY AS AI", event ->{
+            StateController.setState(new LoginScreenState(game, false));
         });
-        menu.addButton("AI VS AI", event ->{
-            if(game == "TICTACTOE"){
-                Main.setState(new TicTacToe(false, false, false, true, "Jean BOT", "Victor BOT"));
-            }else if(game == "OTHELLO"){
-                Main.setState(new Othello(false, false, false, true, "Jean BOT","Victor BOT"));
-            }else {
-                Main.setState(new MainMenuState());
-            }
+        modeMenu.addButton("BACK", event ->{
+            setMenu(createOnlineMenu(),"WELCOME");
         });
-        menu.addButton("BACK", event ->{
-            setMenu(connectionMenu());
-        });
-
-        return menu;
+        return modeMenu;
     }
 
     /**
-     * Return the combination of nodes that make up the main menu view
-     * @return The main menu view
+     * @return The menu containing all games that are available for online
      */
-    @Override
-    public Parent buildSceneGraph() {
+    public Menu createOnlineMenu() {
+        Menu onlineMenu = new Menu();
+        // getgamelist from server?
+//        String[] gameList = processor.getGamelist();
+        String[] gameList = {"Tic-tac-toe", "Reversi"};
+        for (String serverGame : gameList) {
+            onlineMenu.addButton(serverGame.toUpperCase(), event ->{
+                setMenu(createModeMenu(serverGame), "ONLINE "+ serverGame.toUpperCase());
+            });
+        }
+        onlineMenu.addButton("BACK", event ->{
+            setMenu(createStartMenu(),"WELCOME");
+        });
+        return onlineMenu;
+    }
+
+    /**
+     * Returns the combination of nodes that make up the main menu
+     * @return A Parent containing the main menu view
+     */
+    public Parent createView(){
         return view;
     }
 }
