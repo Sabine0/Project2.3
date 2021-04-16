@@ -5,10 +5,12 @@
  */
 package app.networking;
 
+import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.*;
 
 public class Connection {
     // readQueue
@@ -17,11 +19,17 @@ public class Connection {
     private List<String> writeQueue;
     //notification queue for massage unpredictable messages
     private List<String> notificationQueue;
+    //Network logger for logging all the events across the network
+    private Logger ntLogger;
 
     public Connection() {
                readQueue = Collections.synchronizedList(new ArrayList<String>());
                writeQueue = Collections.synchronizedList(new ArrayList<String>());
                notificationQueue = Collections.synchronizedList(new ArrayList<String>());
+               ntLogger = Logger.getLogger("NetworkLogger");
+               initializeNetworkLogger();
+               ntLogger.log(Level.INFO, " - connection object created. Logger networkLogger initialized. ");
+
     }
 
     public boolean connect(String host, int port) {
@@ -33,7 +41,7 @@ public class Connection {
             Thread tWtrite = new Thread(new WriteHandler(s, writeQueue));
             tWtrite.start();
 
-
+            ntLogger.log(Level.INFO," - connected to ip address: " + host + "prot number: " + port );
             return true;
 
         } catch (Exception e) {
@@ -56,15 +64,17 @@ public class Connection {
                     if (!readQueue.isEmpty()) {
                         String response = readQueue.remove(0);
                         checkRespose(response);
-                        System.out.println("rq size after read:"+readQueue.size());
+                        ntLogger.log(Level.INFO,  " - Read queue size after read"+ readQueue.size());
+                        System.out.println(" - rq size after read:"+readQueue.size());
                         return response;
                     }else{
                         throw new ServerNotRespondingException("There is no response form the the serve");
                     }
                 }
             }catch (IllegalArgumentException | InterruptedException e){
+                ntLogger.log(Level.INFO, " - problem while reading"+ e );
                 System.out.println("problem while reading"+ e);
-                return  "exception occurd";
+                return  "exception occurred";
             }
         }
         return " read methode server is not responding";
@@ -77,18 +87,21 @@ public class Connection {
                     readQueue.wait(2000);
                     if (!readQueue.isEmpty()) {
                         checkRespose(readQueue.remove(0));
-                        System.out.println(readQueue.size());
+                        ntLogger.log(Level.INFO, " - Read queue size after the first read" + readQueue.size() );
+                        System.out.println("Read queue size after the first read" + readQueue.size());
                         if(!readQueue.isEmpty()) {
-                            System.out.println("is exceuted");
+                            ntLogger.log(Level.INFO,  " - second read is executed. rq size after the second read: "+ + readQueue.size());
+                            System.out.println("is executed");
                             return readQueue.remove(0);
                         }else {
 
                         }
                     }else{
-                        throw new ServerNotRespondingException("There is no response form the the serve");
+                        throw new ServerNotRespondingException("There is no response form the server");
                     }
                 }
             }catch (IllegalArgumentException | InterruptedException e){
+                ntLogger.log(Level.INFO, " - problem while reading"+ e );
                 System.out.println("problem while reading"+ e);
                 return  "exception occurd";
             }
@@ -99,12 +112,12 @@ public class Connection {
     /**
      * @return true if there is any new input from the server.
      */
-    public boolean checkForNotification(){
+    public boolean isNotification(){
         synchronized (notificationQueue){
-            if(!notificationQueue.isEmpty()){
-                return true;
-            }else{
+            if(notificationQueue.isEmpty()){
                 return false;
+            }else{
+                return true;
             }
         }
     }
@@ -163,6 +176,20 @@ public class Connection {
             throw new CommandFailedException(s);
         }else{
             throw new CommandFailedException(s);
+        }
+    }
+
+    private void initializeNetworkLogger(){
+
+        try {
+            System.setProperty("java.util.logging.SimpleFormatter.format","%1$tF %1$tT %4$s %2$s %5$s%6$s%n");
+            FileHandler fh = new FileHandler("NetworkLogs/networkLogs.log", true);
+            ntLogger.addHandler(fh);
+            ntLogger.setUseParentHandlers(false);
+            SimpleFormatter formatter = new SimpleFormatter();
+            fh.setFormatter(formatter);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

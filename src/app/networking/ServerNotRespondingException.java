@@ -5,7 +5,7 @@ package app.networking;
 
 public class ServerNotRespondingException extends Exception{
 
-    public ServerNotRespondingException(String message){
-        super(message);
+    public ServerNotRespondingException(String messege){
+        super(messege);
     }
 }

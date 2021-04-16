@@ -1,6 +1,9 @@
 package app.view;
 
-import app.Main;
+import app.StateController;
+import app.networking.CommandFailedException;
+import app.networking.Processor;
+import app.networking.ServerNotRespondingException;
 import app.state.LobbyState;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -9,22 +12,22 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 /**
  * The LoginScreenView class is used for creating and displaying the components of the login screen
  * @author Sabine Schreuder
- * @version 01/04/21
+ * @version 14/04/21
  */
 public class LoginScreenView implements View{
-    GridPane view;
-    String game;
+    private GridPane view;
+    private String game;
 
     /**
      * @param game The game to be played
      */
-    public LoginScreenView(String game){
+    public LoginScreenView(String game, boolean appPlayerHuman){
+        // Styling goes here
         this.game = game;
 
         view = new GridPane();
@@ -32,36 +35,56 @@ public class LoginScreenView implements View{
         view.setHgap(10);
         view.setVgap(10);
 
-        Text loginTitle = new Text("WELCOME TO ONLINE " + game + "!");
+        Text loginTitle = new Text("WELCOME TO ONLINE " + this.game.toUpperCase() + "!");
         loginTitle.setFont(Font.font(20));
         view.add(loginTitle,0, 0, 2, 1);
 
-        Label userName = new Label("Username:");
+        Label userName = new Label("Enter a username:");
         view.add(userName, 0, 1);
-
         TextField userTextField = new TextField();
         view.add(userTextField,1,1);
+
+        Label ip = new Label("Enter an IP:");
+        view.add(ip, 0, 2);
+        TextField ipTextField = new TextField();
+        view.add(ipTextField,1,2);
+
+        Label port = new Label("Enter a port:");
+        view.add(port, 0, 3);
+        TextField portTextField = new TextField();
+        view.add(portTextField,1,3);
 
         Button btn = new Button("Enter online lobby");
         btn.setOnAction(actionEvent -> {
             if(userTextField.getText()==""){
-                Label errorEmptyField = new Label("Please enter a username!");
+                Label errorEmptyField = new Label("You cannot join the lobby \n without a username!!");
                 view.add(errorEmptyField, 1, 6);
                 errorEmptyField.setAlignment(Pos.BOTTOM_CENTER);
             }else {
-                Main.setState(new LobbyState(game, userTextField.getText()));
+                try {
+                    StateController.setState(new LobbyState(game, appPlayerHuman, userTextField.getText(), ipTextField.getText(), Integer.parseInt(portTextField.getText())));
+                } catch (ServerNotRespondingException e) {
+                    e.printStackTrace();
+                } catch (CommandFailedException e) {
+                    e.printStackTrace();
+                }
             }
         });
-
         view.add(btn, 1, 4);
+
+        if(game.equalsIgnoreCase("TIC-TAC-TOE")){
+            view.getStyleClass().add("bg-blue-style");
+        }else if (game.equalsIgnoreCase("REVERSI")) {
+            view.getStyleClass().add("bg-green-style");
+        }
     }
 
     /**
-     * Return the combination of nodes that make up the lobby screen view
-     * @return The lobby screen view
+     * Returns the combination of nodes that make up the login screen
+     * @return A Parent containing the login screen view
      */
     @Override
-    public Parent buildSceneGraph() {
+    public Parent createView() {
         return view;
     }
 }

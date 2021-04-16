@@ -1,18 +1,20 @@
 package app.state;
 
-import app.Main;
+import app.networking.Processor;
 import app.view.MainMenuView;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 
 /**
  * The MainMenuState class is the state in which the main menu is shown
  * @author Sabine Schreuder
  * @version 01-04-21
  */
-public class MainMenuState implements State {
+public class MainMenuState extends State {
+    Processor processor;
+
+    public MainMenuState(){
+    }
+
     /**
      * Code to be executed upon entering the login screen state
      */
@@ -35,6 +37,6 @@ public class MainMenuState implements State {
      */
     @Override
     public Parent getView() {
-        return new MainMenuView().buildSceneGraph();
+        return new MainMenuView().createView(); // param processor?
     }
 }
