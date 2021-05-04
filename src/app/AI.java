@@ -26,7 +26,9 @@ public class AI {
         return board[row][col];
     }
 
-    public void setMove(int col, int row, int turn) {
+    public void setMove(int move, int turn) {
+        int row = (move % 8);
+        int col = (move - row) / 8;
         if(isValidMove(col, row, turn) && turn == them){
             for(int i = 0; i < tilesToBeFlipped.size(); i+= 2){
                 board[tilesToBeFlipped.get(i)][tilesToBeFlipped.get(i+1)] = them;
@@ -39,7 +41,7 @@ public class AI {
         }
     }
 
-    public int[] getMove(){
+    public int getMove(){
         ArrayList<Integer> listOfPossible = new ArrayList<>();
         for(int col = 0; col < 8; col++) {
             for(int row = 0; row < 8; row++) {
@@ -72,8 +74,9 @@ public class AI {
                 indexOfHighestScore = i;
             }
         }
-        setMove(listOfPossible.get(indexOfHighestScore - 2), listOfPossible.get(indexOfHighestScore - 1), us);
-        return new int[]{listOfPossible.get(indexOfHighestScore - 2), listOfPossible.get(indexOfHighestScore - 1)};
+        int move = (listOfPossible.get(indexOfHighestScore - 2) * 8) + listOfPossible.get(indexOfHighestScore - 1);
+        setMove(move, us);
+        return move;
     }
 
     /**
