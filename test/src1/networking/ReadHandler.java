@@ -2,8 +2,6 @@
  * This class is responsible for getting the input from the server and put it in the right queue.
  * @author Danial.B
  */
-package networking;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;

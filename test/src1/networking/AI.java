@@ -1,5 +1,3 @@
-package networking;
-
 import java.util.ArrayList;
 
 public class AI {
@@ -8,10 +6,12 @@ public class AI {
     int us;
     int them;
     private ArrayList<Integer> tilesToBeFlipped;
+    int l = 1;
 
     public AI(int us, int them) {
         this.us = us;
         this.them = them;
+        this.tilesToBeFlipped = new ArrayList<Integer>();
         board = new int[][]{{0,0,0,0,0,0,0,0},
                             {0,0,0,0,0,0,0,0},
                             {0,0,0,0,0,0,0,0},
@@ -23,7 +23,16 @@ public class AI {
     }
 
     public int getTile(int col, int row){
-        return board[row][col];
+        return board[col][row];
+    }
+
+    public void printBoard(){
+        for(int i = 0; i < 8; i++){
+            for(int j = 0; j < 8; j++){
+                System.out.print(board[i][j]);
+            }
+            System.out.println("\n");
+        }
     }
 
     public void setMove(int move, int turn) {
@@ -33,16 +42,19 @@ public class AI {
             for(int i = 0; i < tilesToBeFlipped.size(); i+= 2){
                 board[tilesToBeFlipped.get(i)][tilesToBeFlipped.get(i+1)] = them;
             }
+            tilesToBeFlipped.clear();
         } 
         if(isValidMove(col, row, turn) && turn == us){
             for(int i = 0; i < tilesToBeFlipped.size(); i+= 2){
                 board[tilesToBeFlipped.get(i)][tilesToBeFlipped.get(i+1)] = us;
             }
+            tilesToBeFlipped.clear();
         }
     }
 
     public int getMove(){
         ArrayList<Integer> listOfPossible = new ArrayList<>();
+        int move;
         for(int col = 0; col < 8; col++) {
             for(int row = 0; row < 8; row++) {
                 if(isValidMove(col, row, us)) {
@@ -74,19 +86,29 @@ public class AI {
                 indexOfHighestScore = i;
             }
         }
-        int move = (listOfPossible.get(indexOfHighestScore - 2) * 8) + listOfPossible.get(indexOfHighestScore - 1);
+        if (!listOfPossible.isEmpty()) {
+            move = (listOfPossible.get(indexOfHighestScore - 2) * 8) + listOfPossible.get(indexOfHighestScore - 1);
+        } else {
+            move = -1;
+            return move;
+        }
+        tilesToBeFlipped.clear();
         setMove(move, us);
+        l++;
         return move;
     }
 
-    /**
+     /**
      * @param col The column on the board
      * @param row The row on the board
      * @return boolean if the move is valid
      */
     public boolean isValidMove(int col, int row, int turn){
 
-        tilesToBeFlipped.clear();
+        if(getTile(col, row) != 0) {
+            return false;
+        }
+
         boolean valid = false;
         int playingColour;
         int notPlayingColour;
@@ -99,43 +121,47 @@ public class AI {
             notPlayingColour = them;
         }
 
+        if(getTile(col, row) == them || getTile(col, row) == us) {
+            return false;
+        }
+        // hier zit de fout, hij kan niet bij de rand
         if(col - 1 > -1 && row - 1 > -1) {
             if (getTile(col-1, row-1) == notPlayingColour && checkUL(col, row, playingColour)) {
                 valid = true;
             }
         }
         if(col - 1 > -1) {
-            if (getTile(col-1, row-1) == notPlayingColour && checkUM(col, row, playingColour)) {
+            if (getTile(col-1, row) == notPlayingColour && checkUM(col, row, playingColour)) {
                 valid = true;
             }
         }
         if(col - 1 > -1 && row + 1 < 8) {
-            if (getTile(col-1, row-1) == notPlayingColour && checkUR(col, row, playingColour)) {
+            if (getTile(col-1, row+1) == notPlayingColour && checkUR(col, row, playingColour)) {
                 valid = true;
             }
         }
         if(row - 1 > -1) {
-            if (getTile(col-1, row-1) == notPlayingColour && checkML(col, row, playingColour)) {
+            if (getTile(col, row-1) == notPlayingColour && checkML(col, row, playingColour)) {
                 valid = true;
             }
         }
         if(row + 1 < 8) {
-            if (getTile(col-1, row-1) == notPlayingColour && checkMR(col, row, playingColour)) {
+            if (getTile(col, row+1) == notPlayingColour && checkMR(col, row, playingColour)) {
                 valid = true;
             }
         }
-        if(col + 1 < 8 && row - 1 > -1) {
-            if (getTile(col-1, row-1) == notPlayingColour && checkDL(col, row, playingColour)) {
+        if(row - 1 > -1 && col + 1 < 8) {
+            if (getTile(col+1, row-1) == notPlayingColour && checkDL(col, row, playingColour)) {
                 valid = true;
             }
         }
         if(col + 1 < 8) {
-            if (getTile(col-1, row-1) == notPlayingColour && checkDM(col, row, playingColour)) {
+            if (getTile(col+1, row) == notPlayingColour && checkDM(col, row, playingColour)) {
                 valid = true;
             }
         }
         if(col + 1 < 8 && row + 1 < 8) {
-            if (getTile(col-1, row-1) == notPlayingColour && checkDR(col, row, playingColour)) {
+            if (getTile(col+1, row+1) == notPlayingColour && checkDR(col, row, playingColour)) {
                 valid = true;
             }
         }
@@ -343,6 +369,9 @@ public class AI {
      * @param tempListOfCoordinates The coordinates to be added to the tilesToBeFlipped array
      */
     public void setArrayOfCoordinates(ArrayList<Integer> tempListOfCoordinates) {
-        this.tilesToBeFlipped.addAll(tempListOfCoordinates);
+        for (int coordinate : tempListOfCoordinates) {
+            tilesToBeFlipped.add(coordinate);
+        }
+        //this.tilesToBeFlipped.addAll(tempListOfCoordinates);
     }
 }

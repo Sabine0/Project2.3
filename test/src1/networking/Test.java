@@ -2,7 +2,6 @@
 /**
  * puur bedoeld voor testen
  */
-package networking;
 
 public class Test {
     public static void main(String[] args) {
@@ -14,7 +13,7 @@ public class Test {
         try{
             p.getGamelist();
             p.getPlayerList();
-            p.login("Danial");
+            p.login("lucw");
             p.subscribe("Reversi");
             p.getPlayerList();
           //  Thread.sleep(10000);

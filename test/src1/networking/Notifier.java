@@ -3,8 +3,6 @@
  * if there is any it wil notify the relevant class.
  * @author Danial.B
  */
-package networking;
-
 import com.sun.jdi.IntegerValue;
 import org.w3c.dom.ls.LSOutput;
 
@@ -36,7 +34,7 @@ public class Notifier implements Runnable{
             if(connection.isNotification()) {
                 String notification = connection.readNotification();
                 ntLogger.log(Level.INFO,  " - processing notification " + notification);
-                System.out.println("processing notification " + notification);
+                //System.out.println("processing notification " + notification);
 
                 if(notification.startsWith("SVR GAME MATCH")){
                          //een match aangeboden een methode met 3 argumenten
@@ -44,23 +42,27 @@ public class Notifier implements Runnable{
                     // In the methode run you can change the javaFx threads. Use this lambda anytime you want to
                     ntLogger.log(Level.INFO,  " - ntf matched with: SVR GAME MATCH. calling lobbyView ");
                     // make change to javafx thread.
-                   if(hashMap.get("PLAYERTOMOVE").equals("Danial")) {
+                   if(hashMap.get("PLAYERTOMOVE").equals("lucw")) {
                       this.ai = new AI(1,2);
                       turn = 2;
                    }else{
                        this.ai = new AI(2,1);
                        turn = 1;
                    }
-                    System.out.println("SERVER IS STARTING GUI FOR GAME");
+                    //System.out.println("SERVER IS STARTING GUI FOR GAME");
                 }else if(notification.startsWith("SVR GAME YOURTURN")){
                     ntLogger.log(Level.INFO,  " - ntf matched with: SVR GAME YOURTURN. calling gameState.doMoveOnline() ");
-                    System.out.println("test your turn statement");
+                    //System.out.println("test your turn statement");
                          // beurt toegewezen krijgen methode met een argument
                     HashMap<String, String> hashMap = toHashMap(notification);
                     // make change to javafx thread.
                     if(ai != null){
                         try {
-                            processor.move( ai.getMove());
+                            int move = ai.getMove();
+                            if (move != -1){
+                                processor.move( move);
+                            }
+                            ai.printBoard();
                         } catch (ServerNotRespondingException e) {
                             e.printStackTrace();
                         } catch (CommandFailedException e) {
@@ -70,13 +72,13 @@ public class Notifier implements Runnable{
                     }
                 }else if(notification.startsWith("SVR GAME MOVE")){
                     ntLogger.log(Level.INFO,  " - ntf matched with: SVR GAME YOURTURN. calling gameState.doMoveOnline() ");
-                    System.out.println("test game move statement");
+                    //System.out.println("test game move statement");
                         // resultaat van een zet ontvangen methode met 3 argumenten
                     HashMap<String, String> hashMap = toHashMap(notification);
                     // parameter with the move you get from the server -> board.convertMove(int move) will return int[]
                     // parameter with the player name
                  if(ai != null){
-                     ai.setMove((Integer.parseInt(hashMap.get("Move"))),turn);
+                    ai.setMove((Integer.parseInt(hashMap.get("MOVE"))),turn);
                  }
 
                 }else if(notification.startsWith("SVR GAME CHALLENGE")){

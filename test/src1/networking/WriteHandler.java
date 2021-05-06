@@ -2,7 +2,6 @@
  * This class is responsible for writing data to the server.
  * @author Danial.B
  */
-package networking;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -40,10 +39,10 @@ public class WriteHandler implements Runnable {
             synchronized (writeQueue) {
                 while (!writeQueue.isEmpty()) {
                     ntLogger.log(Level.INFO, " - Write queue size: " + writeQueue.size() );
-                    System.out.println("wq size = " + writeQueue.size());
+                    //System.out.println("wq size = " + writeQueue.size());
                     String tosend = writeQueue.remove(0);
                     ntLogger.log(Level.INFO, " - is writing: "+ tosend );
-                    System.out.println("is writing: "+ tosend);
+                    //System.out.println("is writing: "+ tosend);
                     toServer.println(tosend);
                 }
             }

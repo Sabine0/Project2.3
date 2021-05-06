@@ -3,7 +3,6 @@
  * and notification queues.
  * @author Danial.B
  */
-package networking;
 
 import java.io.IOException;
 import java.net.Socket;
