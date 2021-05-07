@@ -73,3 +73,5 @@ Main.java
 temp123
 src/app/networking/ServerNotRespondingException.java
 NetworkLogs/networkLogs.log
+.DS_Store
+src/app/games/Othello.java
