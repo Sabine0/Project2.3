@@ -1,7 +1,14 @@
 package app.view;
 
 import app.StateController;
+import app.networking.Processor;
 import app.state.LoginScreenState;
+import app.state.games.OthelloState;
+import app.state.games.TicTacToeState;
+import app.users.Player;
+import app.users.UserPlayer;
+import app.view.gameobjects.OthelloBoard;
+import app.view.gameobjects.TicTacToeBoard;
 import app.view.menucomponents.Menu;
 import javafx.scene.Parent;
 import javafx.scene.layout.BorderPane;
@@ -21,7 +28,7 @@ public class MainMenuView implements View {
     private StackPane currentMenuTextBox;
     private Text menuText;
     private String game;
-//    private Processor processor;
+    private Processor processor;
 
     /**
 //     * @param processor The connections processor
@@ -82,11 +89,27 @@ public class MainMenuView implements View {
      */
     public Menu createModeMenu(String game){
         Menu modeMenu = new Menu();
+
+        UserPlayer p1 = new UserPlayer("p1");
+        UserPlayer p2 = new UserPlayer("p2");
+        TicTacToeBoard tttBoard = new TicTacToeBoard(p1, p2);
+        OthelloBoard oBoard = new OthelloBoard(p1, p2);
+
         modeMenu.addButton("PLAY AS HUMAN PLAYER", event ->{
             StateController.setState(new LoginScreenState(game, true));
         });
         modeMenu.addButton("PLAY AS AI", event ->{
             StateController.setState(new LoginScreenState(game, false));
+        });
+
+//        testen om weer een UI board te krijgen
+        modeMenu.addButton("2 PLAYER (LOCAL)", event ->{
+            if(game == "Tic-tac-toe"){
+                StateController.setState(new TicTacToeState(processor, tttBoard));
+            }
+            else{
+                StateController.setState(new OthelloState(processor, oBoard));
+            }
         });
         modeMenu.addButton("BACK", event ->{
             setMenu(createOnlineMenu(),"WELCOME");
