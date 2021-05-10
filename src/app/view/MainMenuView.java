@@ -2,6 +2,7 @@ package app.view;
 
 import app.StateController;
 import app.networking.Processor;
+import app.state.LocalState;
 import app.state.LoginScreenState;
 import app.state.games.OthelloState;
 import app.state.games.TicTacToeState;
@@ -92,24 +93,15 @@ public class MainMenuView implements View {
 
         UserPlayer p1 = new UserPlayer("p1");
         UserPlayer p2 = new UserPlayer("p2");
-        TicTacToeBoard tttBoard = new TicTacToeBoard(p1, p2);
-        OthelloBoard oBoard = new OthelloBoard(p1, p2);
 
         modeMenu.addButton("PLAY AS HUMAN PLAYER", event ->{
-            StateController.setState(new LoginScreenState(game, true));
+            StateController.setState(new LoginScreenState(game, true, true));
         });
         modeMenu.addButton("PLAY AS AI", event ->{
-            StateController.setState(new LoginScreenState(game, false));
+            StateController.setState(new LoginScreenState(game, false, true));
         });
-
-//        testen om weer een UI board te krijgen
         modeMenu.addButton("2 PLAYER (LOCAL)", event ->{
-            if(game == "Tic-tac-toe"){
-                StateController.setState(new TicTacToeState(processor, tttBoard));
-            }
-            else{
-                StateController.setState(new OthelloState(processor, oBoard));
-            }
+            StateController.setState(new LocalState(game, false));
         });
         modeMenu.addButton("BACK", event ->{
             setMenu(createOnlineMenu(),"WELCOME");

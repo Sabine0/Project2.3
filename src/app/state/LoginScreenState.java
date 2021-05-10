@@ -6,10 +6,12 @@ import javafx.scene.Parent;
 public class LoginScreenState extends State{
     private String game;
     private boolean appUserHuman;
+    private boolean online;
 
-    public LoginScreenState(String game, boolean appUserHuman){
+    public LoginScreenState(String game, boolean appUserHuman, boolean online){
         this.appUserHuman = appUserHuman;
         this.game = game;
+        this.online=online;
     }
     /**
      * Code to be executed upon entering the state
@@ -30,6 +32,6 @@ public class LoginScreenState extends State{
 
     @Override
     public Parent getView(){
-        return new LoginScreenView(game, appUserHuman).createView();
+        return new LoginScreenView(game, appUserHuman, online).createView();
     }
 }

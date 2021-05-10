@@ -22,13 +22,15 @@ import javafx.scene.text.Text;
 public class LoginScreenView implements View{
     private GridPane view;
     private String game;
+    private boolean online;
 
     /**
      * @param game The game to be played
      */
-    public LoginScreenView(String game, boolean appPlayerHuman){
+    public LoginScreenView(String game, boolean appPlayerHuman, boolean online){
         // Styling goes here
         this.game = game;
+        this.online=online;
 
         view = new GridPane();
         view.setAlignment(Pos.CENTER);
@@ -62,7 +64,7 @@ public class LoginScreenView implements View{
                 errorEmptyField.setAlignment(Pos.BOTTOM_CENTER);
             }else {
                 try {
-                    StateController.setState(new LobbyState(game, appPlayerHuman, userTextField.getText(), ipTextField.getText(), Integer.parseInt(portTextField.getText())));
+                    StateController.setState(new LobbyState(game, appPlayerHuman, userTextField.getText(), ipTextField.getText(), Integer.parseInt(portTextField.getText()), online));
                 } catch (ServerNotRespondingException e) {
                     e.printStackTrace();
                 } catch (CommandFailedException e) {

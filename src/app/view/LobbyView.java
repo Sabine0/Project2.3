@@ -37,12 +37,14 @@ public class LobbyView implements View {
     private Text headerText;
     private Processor processor;
     private boolean appPlayerHuman;
+    private boolean online;
 
-    public LobbyView(String game, boolean appPlayerHuman, String username, Processor processor){
+    public LobbyView(String game, boolean appPlayerHuman, String username, Processor processor, boolean online){
         this.appPlayerHuman = appPlayerHuman;
         this.processor = processor;
         this.game = game;
         this.username = username;
+        this.online=online;
 
         view = new BorderPane();
         headerTextBox = new VBox();
@@ -257,11 +259,11 @@ public class LobbyView implements View {
 
         GameState gameState;
         if(game.equalsIgnoreCase("TIC-TAC-TOE")) {
-            gameState = new TicTacToeState(processor, new TicTacToeBoard(player1, player2));
+            gameState = new TicTacToeState(processor, new TicTacToeBoard(player1, player2, online));
             StateController.setState(gameState);
             return gameState;
         }else if(game.equalsIgnoreCase("REVERSI")) {
-            gameState = new OthelloState(processor, new OthelloBoard(player1, player2));
+            gameState = new OthelloState(processor, new OthelloBoard(player1, player2, online));
             StateController.setState(gameState);
             return gameState;
         }else{

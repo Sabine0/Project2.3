@@ -17,18 +17,20 @@ public class LobbyState extends State {
     private String username;
     private Processor processor;
     private boolean appPlayerHuman;
+    private boolean online;
 
-    public LobbyState(String game, boolean appPlayerHuman, String username, String ip, int port) throws ServerNotRespondingException, CommandFailedException {
+    public LobbyState(String game, boolean appPlayerHuman, String username, String ip, int port, boolean online) throws ServerNotRespondingException, CommandFailedException {
         this.game = game;
         this.username = username;
         this.appPlayerHuman = appPlayerHuman;
+        this.online=online;
 
         // Start connection
         Connection connection = new Connection();
         connection.connect(ip, port); // "145.33.225.170"   7789
         processor = new Processor(connection);
 
-        LobbyView lobbyView = new LobbyView(game, appPlayerHuman, username, processor);
+        LobbyView lobbyView = new LobbyView(game, appPlayerHuman, username, processor, online);
         processor.setLobbyView(lobbyView);
         processor.login(username);
     }
@@ -51,7 +53,7 @@ public class LobbyState extends State {
 
     @Override
     public Parent getView(){
-        return new LobbyView(game, appPlayerHuman, username, processor).createView();
+        return new LobbyView(game, appPlayerHuman, username, processor, online).createView();
     }
 
 }

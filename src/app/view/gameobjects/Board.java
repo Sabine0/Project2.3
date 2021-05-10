@@ -18,10 +18,16 @@ public abstract class Board {
     private Player p1;
     private Player p2;
     private Player currentPlayer;
+    private boolean online;
+    private int serverX;
+    private int serverY;
 
-    public Board(int boardSize, Tile[][]tempGrid, String game, Player player1, Player player2){
+    public Board(int boardSize, Tile[][]tempGrid, String game, Player player1, Player player2, boolean online){
         p1 = player1;
         p2 = player2;
+
+        this.online = online;
+
 
         boardPane = new Pane();
         boardPane.setPrefSize(800, 800);
@@ -43,14 +49,26 @@ public abstract class Board {
 
                 int finalJ = j;
                 int finalI = i;
-                tile.setOnMouseClicked(event -> {
-                    if ((p1.isHuman() && currentPlayer.equals(p1)) || (p2.isHuman() && currentPlayer.equals(p2))){
-                        if (isValidMove(finalJ, finalI)) {
-                            System.out.println("Correct tile clicked");
-                            drawMove(currentPlayer.getUsername(), finalJ, finalI);
+
+                if(online){
+//                    System.out.println("online");
+
+//                    hier nog wat mee
+                    tile.setOnMouseClicked(event -> {
+                        drawMove(currentPlayer.getUsername(), serverX, serverY);
+                    });
+                }
+                else{
+//                    System.out.println("offline");
+                    tile.setOnMouseClicked(event -> {
+                        if ((p1.isHuman() && currentPlayer.equals(p1)) || (p2.isHuman() && currentPlayer.equals(p2))){
+                            if (isValidMove(finalJ, finalI)) {
+                                System.out.println("Correct tile clicked");
+                                drawMove(currentPlayer.getUsername(), finalJ, finalI);
+                            }
                         }
-                    }
-                });
+                    });
+                }
 
                 tile.setTranslateX(j*80);
                 tile.setTranslateY(i*80);
@@ -62,6 +80,13 @@ public abstract class Board {
         }
         grid = tempGrid;
     }
+
+//      DEZE METHODE IS BELANGRIJK OM DE JUISTE COORDINATEN VANUIT DE SERVER TE ZETTEN
+    public void setServerCoordinates(int x, int y){
+        this.serverX=x;
+        this.serverY=y;
+    }
+
     /**
      * Will draw the move at the coordinates col, row depending on whose move it is
      * @param playerName The current players name as a String

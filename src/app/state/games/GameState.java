@@ -23,7 +23,7 @@ public abstract class GameState extends State {
         this.board = board;
         this.processor = processor;
 
-        launchOnline();
+//        launchOnline();
     }
 
     /**

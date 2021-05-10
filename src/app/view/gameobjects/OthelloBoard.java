@@ -17,8 +17,8 @@ import java.util.ArrayList;
 public class OthelloBoard extends Board{
     private ArrayList<Integer> tilesToBeFlipped;
 
-    public OthelloBoard(Player player1, Player player2){
-        super(8, new OthelloTile[8][8], "OTHELLO", player1, player2);
+    public OthelloBoard(Player player1, Player player2, boolean online){
+        super(8, new OthelloTile[8][8], "OTHELLO", player1, player2, online);
         getTile(3,3).setTileP2();
         getTile(3,4).setTileP1();
         getTile(4,4).setTileP2();
@@ -293,12 +293,18 @@ public class OthelloBoard extends Board{
         return valid;
     }
 
+
+
+
+
     /**
      * Tracks the coordinates of the tiles that need to be flipped when the move is executed
      * @param tempListOfCoordinates The coordinates to be added to the tilesToBeFlipped array
      */
     public void setArrayOfCoordinates(ArrayList<Integer> tempListOfCoordinates) {
-        this.tilesToBeFlipped.addAll(tempListOfCoordinates);
+
+//        doet deze lijn wel iets?
+//        this.tilesToBeFlipped.addAll(tempListOfCoordinates);
     }
 
     /**
