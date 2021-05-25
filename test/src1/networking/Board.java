@@ -13,17 +13,21 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
 
 public class Board extends Application {
-    int serverX;
-    int serverY;
-    int boardSize;
-    private Pane boardPane;
+    private int serverX;
+    private int serverY;
+//    int boardSize;
+//    private Pane boardPane;
+    private int indexTile;
+    public Pane root;
 
     private Parent createContent(){
-        Pane root = new Pane();
+        root = new Pane();
         root.setPrefSize(800, 800);
 
         serverX = 3;
         serverY = 2;
+        indexTile = 0;
+
 
         for(int i =0; i < 8; i++){
             for(int j =0; j < 8; j++){
@@ -31,14 +35,15 @@ public class Board extends Application {
                 tile.setTranslateX(j * 100);
                 tile.setTranslateY(i * 100);
 
-                if(j == serverX && i == serverY){
-                    tile.draw1();
-                }
+//                dit is om coordinates te matcehn met een tile
+//                if(j == serverX && i == serverY){
+//                    tile.draw1();
+//                }
 
-                root.getChildren().add(tile);
+                root.getChildren().add(indexTile, tile);
+                indexTile ++;
             }
         }
-
         return root;
     }
 
@@ -78,6 +83,15 @@ public class Board extends Application {
         private void draw2(){
             move.setText("2");
         }
+    }
+
+    public void setCoordinates(int X, int Y){
+        serverX = X;
+        serverY = Y;
+    }
+
+    public Tile getTile(int i){
+        return (Tile) root.getChildren().get(i);
     }
 
 //    private void drawMove(int setX, int setY){
