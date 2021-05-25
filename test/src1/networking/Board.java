@@ -13,10 +13,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
 
 public class Board extends Application {
-    private int serverX;
-    private int serverY;
-//    int boardSize;
-//    private Pane boardPane;
     private int indexTile;
     public Pane root;
 
@@ -24,21 +20,13 @@ public class Board extends Application {
         root = new Pane();
         root.setPrefSize(800, 800);
 
-        serverX = 3;
-        serverY = 2;
         indexTile = 0;
-
 
         for(int i =0; i < 8; i++){
             for(int j =0; j < 8; j++){
                 Tile tile = new Tile();
                 tile.setTranslateX(j * 100);
                 tile.setTranslateY(i * 100);
-
-//                dit is om coordinates te matcehn met een tile
-//                if(j == serverX && i == serverY){
-//                    tile.draw1();
-//                }
 
                 root.getChildren().add(indexTile, tile);
                 indexTile ++;
@@ -52,7 +40,9 @@ public class Board extends Application {
         primaryStage.setScene(new Scene(createContent()));
         primaryStage.show();
 
-//        drawMove(3,2);
+//        test move
+        drawMove(3,1);
+        drawMove(30, 2);
     }
 
     private class Tile extends StackPane {
@@ -85,29 +75,20 @@ public class Board extends Application {
         }
     }
 
-    public void setCoordinates(int X, int Y){
-        serverX = X;
-        serverY = Y;
-    }
-
     public Tile getTile(int i){
         return (Tile) root.getChildren().get(i);
     }
 
-//    private void drawMove(int setX, int setY){
-//        boardSize = 8;
-//
-//        for (int i = 0; i < boardSize; i++) {
-//            for (int j = 0; j < boardSize; j++) {
-//                Tile tile = new Tile();
-//
-//                if(j == serverX && i == serverY){
-//                    tile.draw1();
-//                    System.out.println("gevonden");
-//                }
-//            }
-//        }
-//    }
+    public void drawMove(int index, int player){
+        Tile temp = getTile(index);
+
+        if(player == 1){
+            temp.draw1();
+        }
+        else if(player == 2){
+            temp.draw2();
+        }
+    }
 
     public static void main(String[] args){
         launch(args);
