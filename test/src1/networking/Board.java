@@ -67,11 +67,17 @@ public class Board extends Application {
         }
 
         private void draw1(){
-            move.setText("1");
+            move.setText("\u25CF");
+            setSize();
         }
 
         private void draw2(){
-            move.setText("2");
+            move.setText("\u25CB");
+            setSize();
+        }
+
+        private void setSize(){
+            move.setStyle("-fx-font: 74 arial;");
         }
     }
 

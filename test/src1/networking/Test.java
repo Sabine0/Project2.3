@@ -1,4 +1,4 @@
-
+import javafx.application.Application;
 /**
  * puur bedoeld voor testen
  */
@@ -10,10 +10,12 @@ public class Test {
 
         Processor p = new Processor(c);
 
+        Application.launch(Board.class, args);
+
         try{
             p.getGamelist();
             p.getPlayerList();
-            p.login("lucw");
+            p.login("yannick");
             p.subscribe("Reversi");
             p.getPlayerList();
           //  Thread.sleep(10000);
@@ -23,6 +25,7 @@ public class Test {
             System.out.println(e);
         }
 
+//        Application.launch(Board.class, args);
     }
 }
 

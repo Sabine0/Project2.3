@@ -4,6 +4,7 @@
  * @author Danial.B
  */
 import com.sun.jdi.IntegerValue;
+import javafx.stage.Stage;
 import org.w3c.dom.ls.LSOutput;
 
 
@@ -18,6 +19,9 @@ public class Notifier implements Runnable{
     private AI ai;
     private Logger ntLogger = Logger.getLogger("NetworkLogger");
     private Processor processor;
+    private Board board;
+    private Stage primaryStage;
+
     public Notifier(Connection connection, Processor processor){//networking.AI ai
         this.processor = processor;
         this.ai = null;
@@ -37,12 +41,16 @@ public class Notifier implements Runnable{
                 //System.out.println("processing notification " + notification);
 
                 if(notification.startsWith("SVR GAME MATCH")){
-                         //een match aangeboden een methode met 3 argumenten
+                    board = new Board();
+                    primaryStage = new Stage();
+
+
+                    //een match aangeboden een methode met 3 argumenten
                     HashMap<String, String> hashMap = toHashMap(notification);
                     // In the methode run you can change the javaFx threads. Use this lambda anytime you want to
                     ntLogger.log(Level.INFO,  " - ntf matched with: SVR GAME MATCH. calling lobbyView ");
                     // make change to javafx thread.
-                   if(hashMap.get("PLAYERTOMOVE").equals("lucw")) {
+                   if(hashMap.get("PLAYERTOMOVE").equals("yannick")) {
                       this.ai = new AI(1,2);
                       turn = 2;
                    }else{
